@@ -1,2 +1,2 @@
-# scampbella.github.io
-Website
+# scottcampbell.me
+Personal Website

@@ -1,7 +1,155 @@
 <!DOCTYPE html>
-<html>
-<head><title>Scott's Website</title></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Scott Campbell — ECE student, hardware tinkerer, and builder." />
+  <title>Scott Campbell</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 <body>
-<p align="left">Scott's Website</p>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="wordmark">SC</span>
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Scott<br>Campbell</h1>
+      <p class="hero__sub">
+        Engineering student. Hardware tinkerer.<br>
+        I like building things that save people time.
+      </p>
+      <div class="hero__links">
+        <a href="#contact">Get in touch</a>
+        <a href="Scott%20Campbell.pdf" download="Scott-Campbell-Resume.pdf" class="link-quiet">Resume (PDF)</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="band">
+      <div class="contain">
+        <h2>About me</h2>
+        <div class="about-body">
+          <p>
+            I'm an Electrical and Computer Engineering student at Oregon State
+            University with a minor in Computer Science. I'm drawn to the
+            intersection of software and hardware — building servers, writing
+            tools, and figuring out how systems actually work under the hood.
+          </p>
+          <p>
+            Outside of classes I co-founded Oregon State's Computer Hardware
+            Club, where we build multi-use servers and learn networking
+            hands-on. I'm also a member of the App Development Club,
+            collaborating on projects with Python, JavaScript, and various APIs.
+          </p>
+          <p>
+            When I'm not studying I'm usually assembling hardware,
+            self-hosting services, or looking for a better way to do something
+            that shouldn't be complicated.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="band band--alt">
+      <div class="contain">
+        <h2>What I'm working on</h2>
+        <div class="cards">
+
+          <article class="card">
+            <h3>Notebook</h3>
+            <p class="card__meta">Collaborative project · 2024 – present</p>
+            <p>
+              An AI-powered calendar for college students. It pulls your Canvas
+              calendar and class schedule, then tells you when to tackle each
+              assignment to make the best use of your time. Built with the
+              OpenAI API and iCal imports.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Hardware Club</h3>
+            <p class="card__meta">Co-founder & VP · 2024 – present</p>
+            <p>
+              Building practical, multi-use servers from scratch and learning
+              device communication through real networking projects at Oregon
+              State.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="band">
+      <div class="contain">
+        <h2>Skills</h2>
+        <div class="skill-grid">
+          <div class="skill-group">
+            <h3>Languages</h3>
+            <p>Java, C++, Python</p>
+          </div>
+          <div class="skill-group">
+            <h3>Tools</h3>
+            <p>Git, VS Code, Vim</p>
+          </div>
+          <div class="skill-group">
+            <h3>Systems</h3>
+            <p>Linux, Windows, macOS</p>
+          </div>
+          <div class="skill-group">
+            <h3>Hardware</h3>
+            <p>Servers, desktops, networking</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interests -->
+    <section class="band band--alt">
+      <div class="contain">
+        <h2>Interests</h2>
+        <ul class="interest-list">
+          <li>Computer hardware &amp; system assembly</li>
+          <li>Server setup &amp; networking</li>
+          <li>Self-hosted alternatives to big-name services</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="band band--dark">
+      <div class="contain contact-section">
+        <h2>Get in touch</h2>
+        <p>Email is the best way to reach me.</p>
+        <ul class="contact-list">
+          <li><a href="mailto:mail@scottcampbell.me">mail@scottcampbell.me</a></li>
+          <li><a href="https://github.com/scampbella">GitHub</a></li>
+          <li><a href="Scott%20Campbell.pdf" download="Scott-Campbell-Resume.pdf">Resume (PDF)</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="contain">
+      <small>&copy; 2026 Scott Campbell</small>
+    </div>
+  </footer>
 </body>
 </html>
