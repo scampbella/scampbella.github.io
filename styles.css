@@ -1,0 +1,410 @@
+/* ------------------------------------------------
+   Palette
+   #32292F  Shadow Grey   — dark bg, headings
+   #99E1D9  Pearl Aqua    — primary accent / links
+   #F0F7F4  Mint Cream    — light background
+   #70ABAF  Tropical Teal — hover / secondary accent
+   #705D56  Taupe Grey    — muted text
+   ------------------------------------------------ */
+
+:root {
+  --dark:    #32292F;
+  --aqua:    #99E1D9;
+  --cream:   #F0F7F4;
+  --teal:    #70ABAF;
+  --taupe:   #705D56;
+
+  --text:    var(--dark);
+  --bg:      #ffffff;
+  --radius:  10px;
+}
+
+/* ---- Reset ---- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---- Layout helpers ---- */
+
+.contain {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ---- Skip link ---- */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  width: auto;
+  height: auto;
+  padding: 10px 18px;
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: var(--radius);
+  z-index: 100;
+}
+
+/* ---- Header / Nav ---- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.wordmark {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+}
+
+.nav {
+  display: flex;
+  gap: 28px;
+}
+
+.nav a {
+  color: var(--taupe);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.15s;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  color: var(--dark);
+}
+
+/* ---- Hero ---- */
+
+.hero {
+  padding: 120px 28px 100px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--dark);
+}
+
+.hero__sub {
+  margin-top: 24px;
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--taupe);
+  max-width: 480px;
+}
+
+.hero__links {
+  margin-top: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hero__links a {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 980px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--dark);
+  color: var(--cream);
+  transition: background 0.15s;
+}
+
+.hero__links a:hover {
+  background: var(--teal);
+}
+
+.hero__links .link-quiet {
+  background: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--teal);
+}
+
+.hero__links .link-quiet:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+/* ---- Bands (full-width sections) ---- */
+
+.band {
+  padding: 80px 0;
+}
+
+.band--alt {
+  background: var(--cream);
+}
+
+.band--dark {
+  background: var(--dark);
+  color: var(--cream);
+}
+
+.band h2 {
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 32px;
+}
+
+/* ---- About ---- */
+
+.about-body {
+  max-width: 620px;
+}
+
+.about-body p {
+  color: var(--taupe);
+  margin-bottom: 16px;
+}
+
+.about-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Cards ---- */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 32px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.card__meta {
+  font-size: 0.88rem;
+  color: var(--teal);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.card p:last-child {
+  color: var(--taupe);
+  margin: 0;
+}
+
+/* ---- Skills ---- */
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 48px;
+}
+
+.skill-group h3 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.skill-group p {
+  color: var(--taupe);
+  font-size: 1rem;
+}
+
+/* ---- Interests ---- */
+
+.interest-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.interest-list li {
+  padding: 10px 20px;
+  border-radius: 980px;
+  background: #fff;
+  color: var(--taupe);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ---- Contact ---- */
+
+.contact-section {
+  text-align: center;
+}
+
+.contact-section h2 {
+  color: var(--aqua);
+}
+
+.contact-section p {
+  color: var(--taupe);
+  margin-bottom: 24px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.contact-list a {
+  color: var(--aqua);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: color 0.15s;
+}
+
+.contact-list a:hover {
+  color: #fff;
+}
+
+/* ---- Footer ---- */
+
+.site-footer {
+  padding: 24px 0;
+  text-align: center;
+}
+
+.site-footer small {
+  color: var(--taupe);
+  font-size: 0.85rem;
+}
+
+/* ---- Responsive ---- */
+
+@media (min-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .skill-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .hero {
+    padding: 72px 20px 64px;
+  }
+
+  .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .band {
+    padding: 56px 0;
+  }
+
+  .contain {
+    padding: 0 20px;
+  }
+
+  .header-inner {
+    padding: 0 20px;
+  }
+
+  .nav {
+    gap: 18px;
+  }
+
+  .skill-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+  }
+}
+
+/* ---- Print ---- */
+
+@media print {
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .hero__links {
+    display: none !important;
+  }
+
+  .band--dark {
+    background: #fff;
+    color: var(--dark);
+  }
+
+  .band--alt {
+    background: #fff;
+  }
+
+  .band {
+    padding: 24px 0;
+  }
+}
