@@ -241,6 +241,16 @@ img {
   margin-bottom: 4px;
 }
 
+.card h3 a {
+  color: var(--dark);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.card h3 a:hover {
+  color: var(--aqua);
+}
+
 .card__meta {
   font-size: 0.88rem;
   color: var(--teal);
