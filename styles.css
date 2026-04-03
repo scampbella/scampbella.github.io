@@ -84,9 +84,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--dark);
 }
 
 .header-inner {
@@ -103,7 +101,7 @@ img {
   font-weight: 700;
   font-size: 1.15rem;
   letter-spacing: -0.02em;
-  color: var(--dark);
+  color: var(--teal);
 }
 
 .nav {
@@ -112,7 +110,7 @@ img {
 }
 
 .nav a {
-  color: var(--taupe);
+  color: var(--teal);
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 500;
