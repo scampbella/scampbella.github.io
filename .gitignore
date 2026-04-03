@@ -1,0 +1,24 @@
+# Local / private notes
+ideas.txt
+
+# npm
+node_modules/
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local env and secrets (if you add tooling later)
+.env
+.env.local
+.env.*.local
