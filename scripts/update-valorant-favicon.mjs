@@ -6,7 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
-const publicStatePath = path.join(repoRoot, 'valorant-favicon-config.js');
+const faviconPath = path.join(repoRoot, 'favicon-rank.png');
+const statusPath = path.join(repoRoot, 'valorant-favicon-status.json');
 const privateConfigPath = path.join(
   repoRoot,
   '.github',
@@ -15,21 +16,6 @@ const privateConfigPath = path.join(
 
 const COMPETITIVE_TIERS_UUID = '03621f52-342b-cf4e-4f86-9350a49c6d04';
 const apiKey = process.env.HENRIKDEV_API_KEY;
-
-function buildPublicState({ defaultIconHref, iconHref, name, tag, lastUpdated }) {
-  return `/**
- * Public favicon state consumed by the website.
- * This file is safe to publish because it contains no secrets.
- * It is updated by the GitHub Actions workflow.
- */
-window.__VALORANT_FAVICON__ = {
-  defaultIconHref: ${JSON.stringify(defaultIconHref)},
-  iconHref: ${iconHref ? JSON.stringify(iconHref) : 'null'},
-  player: ${JSON.stringify(`${name}#${tag}`)},
-  lastUpdated: ${lastUpdated ? JSON.stringify(lastUpdated) : 'null'},
-};
-`;
-}
 
 function extractTierId(body) {
   if (!body || typeof body !== 'object' || !body.data || typeof body.data !== 'object') {
@@ -53,17 +39,19 @@ function tierIconHref(tierId) {
   return `https://media.valorant-api.com/competitivetiers/${COMPETITIVE_TIERS_UUID}/${tierId}/smallicon.png`;
 }
 
-function readCurrentIconHref(source) {
-  const match = source.match(/iconHref:\s*(null|"[^"]*")/);
-  if (!match) {
-    return null;
-  }
-
-  if (match[1] === 'null') {
-    return null;
-  }
-
-  return JSON.parse(match[1]);
+function buildPublicStatus({ name, tag, region, platform, tierId, iconHref, lastUpdated }) {
+  return `${JSON.stringify(
+    {
+      player: `${name}#${tag}`,
+      region,
+      platform,
+      tierId,
+      iconHref,
+      lastUpdated,
+    },
+    null,
+    2
+  )}\n`;
 }
 
 async function main() {
@@ -75,7 +63,6 @@ async function main() {
     tag,
     region = 'na',
     platform = 'pc',
-    defaultIconHref = 'favicon.svg',
   } = config;
 
   if (!name || !tag) {
@@ -114,24 +101,37 @@ async function main() {
   }
 
   const nextIconHref = tierIconHref(tierId);
-  const previousState = await readFile(publicStatePath, 'utf8').catch(() => '');
-  const previousIconHref = readCurrentIconHref(previousState);
+  const iconResponse = await fetch(nextIconHref);
+  if (!iconResponse.ok) {
+    throw new Error(`Rank icon download failed: ${iconResponse.status} ${iconResponse.statusText}`);
+  }
 
-  if (previousIconHref === nextIconHref) {
+  const nextIconBytes = Buffer.from(await iconResponse.arrayBuffer());
+  const previousIconBytes = await readFile(faviconPath).catch(() => null);
+  const hasSameIcon =
+    previousIconBytes !== null && Buffer.compare(previousIconBytes, nextIconBytes) === 0;
+
+  const lastUpdated = new Date().toISOString();
+  const nextStatus = buildPublicStatus({
+    name,
+    tag,
+    region,
+    platform,
+    tierId,
+    iconHref: nextIconHref,
+    lastUpdated,
+  });
+  const previousStatus = await readFile(statusPath, 'utf8').catch(() => '');
+
+  if (hasSameIcon && previousStatus === nextStatus) {
     console.log('Rank icon is unchanged.');
     return;
   }
 
-  const nextState = buildPublicState({
-    defaultIconHref,
-    iconHref: nextIconHref,
-    name,
-    tag,
-    lastUpdated: new Date().toISOString(),
-  });
-
-  await writeFile(publicStatePath, nextState, 'utf8');
-  console.log(`Updated ${path.relative(repoRoot, publicStatePath)}.`);
+  await writeFile(faviconPath, nextIconBytes);
+  await writeFile(statusPath, nextStatus, 'utf8');
+  console.log(`Updated ${path.relative(repoRoot, faviconPath)}.`);
+  console.log(`Updated ${path.relative(repoRoot, statusPath)}.`);
 }
 
 main().catch((error) => {

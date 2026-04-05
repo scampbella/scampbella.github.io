@@ -15,17 +15,19 @@ concurrency:
 jobs:
   update-favicon:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "24"
 
-      - name: Update public favicon state
+      - name: Update favicon image
         env:
           HENRIKDEV_API_KEY: ${{ secrets.HENRIKDEV_API_KEY }}
         run: node scripts/update-valorant-favicon.mjs
@@ -39,6 +41,6 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add valorant-favicon-config.js
+          git add favicon-rank.png valorant-favicon-status.json
           git commit -m "Update Valorant favicon"
           git push
