@@ -1,0 +1,44 @@
+name: Update Valorant Favicon
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-valorant-favicon
+  cancel-in-progress: true
+
+jobs:
+  update-favicon:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Update public favicon state
+        env:
+          HENRIKDEV_API_KEY: ${{ secrets.HENRIKDEV_API_KEY }}
+        run: node scripts/update-valorant-favicon.mjs
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add valorant-favicon-config.js
+          git commit -m "Update Valorant favicon"
+          git push
