@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
-const faviconPath = path.join(repoRoot, 'favicon-rank.png');
+const faviconPath = path.join(repoRoot, 'icons', 'favicon-rank.png');
 const statusPath = path.join(repoRoot, 'valorant-favicon-status.json');
 const privateConfigPath = path.join(
   repoRoot,
