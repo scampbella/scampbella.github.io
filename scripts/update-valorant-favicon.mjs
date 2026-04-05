@@ -54,6 +54,18 @@ function buildPublicStatus({ name, tag, region, platform, tierId, iconHref, last
   )}\n`;
 }
 
+function parseStatus(source) {
+  if (!source) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(source);
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   const rawConfig = await readFile(privateConfigPath, 'utf8');
   const config = JSON.parse(rawConfig);
@@ -111,7 +123,25 @@ async function main() {
   const hasSameIcon =
     previousIconBytes !== null && Buffer.compare(previousIconBytes, nextIconBytes) === 0;
 
-  const lastUpdated = new Date().toISOString();
+  const previousStatusSource = await readFile(statusPath, 'utf8').catch(() => '');
+  const previousStatus = parseStatus(previousStatusSource);
+  const hasSameStatus =
+    previousStatus !== null &&
+    previousStatus.player === `${name}#${tag}` &&
+    previousStatus.region === region &&
+    previousStatus.platform === platform &&
+    previousStatus.tierId === tierId &&
+    previousStatus.iconHref === nextIconHref;
+
+  if (hasSameIcon && hasSameStatus) {
+    console.log('Rank icon is unchanged.');
+    return;
+  }
+
+  const lastUpdated =
+    hasSameStatus && previousStatus && previousStatus.lastUpdated
+      ? previousStatus.lastUpdated
+      : new Date().toISOString();
   const nextStatus = buildPublicStatus({
     name,
     tag,
@@ -121,12 +151,6 @@ async function main() {
     iconHref: nextIconHref,
     lastUpdated,
   });
-  const previousStatus = await readFile(statusPath, 'utf8').catch(() => '');
-
-  if (hasSameIcon && previousStatus === nextStatus) {
-    console.log('Rank icon is unchanged.');
-    return;
-  }
 
   await writeFile(faviconPath, nextIconBytes);
   await writeFile(statusPath, nextStatus, 'utf8');
