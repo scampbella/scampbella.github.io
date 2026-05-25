@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>How Does GPS Work? | Scott Campbell</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="../../js/tailwind.config.js"></script>
+</head>
+
+<body class="bg-background text-on-background font-body-md overflow-x-hidden antialiased">
+    <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
+        <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
+            <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1">SCOTT CAMPBELL</div>
+            <div class="flex items-center gap-10">
+                <div class="hidden md:flex items-center gap-10">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="../../">Home</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md active-nav"
+                        href="../">Blog</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="../../games/">Games</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="pt-32 pb-section-gap">
+        <!-- Article Header -->
+        <article class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+            <div
+                class="max-w-4xl mx-auto text-center mb-16 transition-all duration-1000 ease-out opacity-100 translate-y-0">
+                <h1
+                    class="font-headline-lg text-headline-lg-mobile md:text-display-lg text-primary mb-6 leading-tight font-extrabold uppercase tracking-[-0.05em]">
+                    How Does GPS Work?
+                </h1>
+                <div
+                    class="flex items-center justify-center gap-4 text-on-surface-variant font-label-md text-label-md">
+                    <span class="">February 15, 2024</span>
+                    <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span class="">6 min read</span>
+                </div>
+            </div>
+            <!-- Hero Image -->
+            <div
+                class="relative w-full aspect-video md:aspect-[21/9] mb-section-gap group transition-all duration-1000 ease-out opacity-100 translate-y-0">
+                <div class="absolute inset-0 rounded-2xl overflow-hidden border border-white/20 glass-card">
+                    <img alt="Abstract procedural landscape"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        data-alt="A mesmerizing digital rendering of a vast, procedurally generated landscape consisting of soft geometric crystals and fluid topographical layers. The color palette is dominated by airy light blues, pristine whites, and subtle slate grays under a diffused, ethereal glow. The lighting is high-key and soft, creating a clean, professional aesthetic that feels both futuristic and organic. This wide-angle shot emphasizes negative space and architectural precision in a light-mode environment."
+                        src="../../assets/images/placeholder.svg" />
+                </div>
+            </div>
+            <!-- Article Content -->
+            <div class="max-w-3xl mx-auto transition-all duration-1000 ease-out opacity-100 translate-y-0">
+                <div class="prose prose-lg prose-slate max-w-none">
+                    <p
+                        class="font-body-lg text-body-lg text-on-surface-variant mb-12 first-letter:text-5xl first-letter:font-bold first-letter:mr-3 first-letter:float-left leading-relaxed">
+                        The Global Positioning System is one of those technologies we use every single day without a
+                        second thought. Your phone knows exactly where you are, down to a few meters, anywhere on Earth.
+                        But the engineering behind this seemingly magical capability is a masterclass in physics,
+                        mathematics, and precise timing.
+                    </p>
+                    <h2 class="font-headline-md text-headline-md text-primary mt-16 mb-6">The Satellite Constellation</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+                        At the heart of GPS is a constellation of at least 24 satellites orbiting Earth at roughly
+                        20,200 kilometers above the surface. These satellites are arranged in six orbital planes, ensuring
+                        that at any given moment, at least four satellites are visible from any point on the planet.
+                        Each satellite completes two orbits per day and broadcasts a signal containing its precise
+                        location and the exact time the signal was sent.
+                    </p>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-12 leading-relaxed">
+                        The time signals are generated by atomic clocks on board each satellite, accurate to within a
+                        few nanoseconds. Without this precision, the entire system would crumble. A timing error of just
+                        one microsecond translates to a positioning error of roughly 300 meters.
+                    </p>
+                    <h2 class="font-headline-md text-headline-md text-primary mt-16 mb-6">Trilateration: The Math of Positioning</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+                        Your GPS receiver doesn't actually communicate back to the satellites. Instead, it passively
+                        listens for signals and measures how long each signal took to arrive. Since radio waves travel at
+                        the speed of light, the time delay gives the distance to each satellite. With distances to at
+                        least four satellites, your receiver can solve for your exact latitude, longitude, altitude, and
+                        correct for any clock bias in the receiver itself.
+                    </p>
+                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        What blows my mind is that this system also has to account for relativistic effects. The
+                        satellites are moving fast enough and are high enough in Earth's gravity well that both special
+                        and general relativity come into play. Without relativistic corrections, GPS would accumulate
+                        errors of about 10 kilometers per day. It's one of the few everyday technologies where Einstein's
+                        theories have a directly measurable impact on your life.
+                    </p>
+                </div>
+                <!-- Author Signature -->
+            </div>
+        </article>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full py-12 bg-surface-container-lowest border-t border-outline-variant/30">
+        <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8">
+            <div class="flex flex-wrap justify-center gap-8 text-on-surface-variant font-label-md"><a
+                    class="hover:text-primary transition-colors duration-200" href="#">LinkedIn</a><a
+                    class="hover:text-primary transition-colors duration-200" href="#">GitHub</a><a
+                    class="hover:text-primary transition-colors duration-200" href="#">Resume</a><a
+                    class="hover:text-primary transition-colors duration-200" href="#">Email</a></div>
+            <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm">© 2026 Scott
+                Campbell</div>
+        </div>
+    </footer>
+    <script src="../../js/main.js"></script>
+    <script>
+        // Micro-interactions: Intersection Observer for fade-in effects
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('article > div').forEach(el => {
+            el.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

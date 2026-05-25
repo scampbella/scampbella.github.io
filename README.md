@@ -1,2 +1,0 @@
-# scottcampbell.me
-Personal Website

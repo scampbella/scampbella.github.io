@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahtzee</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+    <header class="top-bar">
+        <h1 class="title">YAHTZEE</h1>
+        <span class="round-badge">Round <strong id="round-num">1</strong> / 13</span>
+    </header>
+
+    <main class="game-layout">
+
+        <!-- Dice Area -->
+        <section class="dice-panel">
+            <div id="dice-tray" class="dice-tray"></div>
+            <div class="held-info">
+                <span id="held-label" class="held-label held-hidden">Held: None</span>
+            </div>
+            <div class="roll-area">
+                <span class="rolls-badge">Rolls: <strong id="rolls-left">3</strong></span>
+                <button id="roll-btn" class="roll-button">ROLL DICE</button>
+            </div>
+            <p class="hint">Click dice to lock / unlock</p>
+        </section>
+
+        <!-- Scorecard -->
+        <section class="scorecard-panel">
+            <div class="scorecard">
+                <h2 class="section-title">Upper Section</h2>
+                <div id="upper-scores"></div>
+                <div class="summary-row">
+                    <span>Upper Total</span>
+                    <strong id="upper-total">0</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Bonus (63+)</span>
+                    <strong id="upper-bonus">0</strong>
+                </div>
+
+                <h2 class="section-title">Lower Section</h2>
+                <div id="lower-scores"></div>
+                <div class="summary-row">
+                    <span>Lower Total</span>
+                    <strong id="lower-total">0</strong>
+                </div>
+                <div class="summary-row grand">
+                    <span>Grand Total</span>
+                    <strong id="grand-total">0</strong>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Game Over Overlay -->
+    <div id="game-over-overlay" class="overlay hidden">
+        <div class="overlay-card">
+            <h2>Game Over!</h2>
+            <p class="final-score-label">Final Score</p>
+            <p id="final-score" class="final-score">0</p>
+            <p id="high-score-display" class="high-score-line">High Score: <strong>0</strong></p>
+            <div id="score-breakdown" class="score-breakdown"></div>
+            <button id="play-again-btn" class="play-again-btn">🔄 Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

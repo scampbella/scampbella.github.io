@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>404 - Page Not Found | Scott Campbell</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind.config.js"></script>
+</head>
+
+<body class="bg-background text-on-background font-body-md overflow-x-hidden antialiased">
+    <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
+        <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
+            <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1">SCOTT CAMPBELL</div>
+            <div class="flex items-center gap-10">
+                <div class="hidden md:flex items-center gap-10">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="./">Home</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="blogs/">Blog</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="games/">Games</a>
+                </div>
+                
+            </div>
+        </nav>
+    </header>
+    <main class="min-h-screen flex items-center justify-center">
+        <div class="max-w-container-max mx-auto px-margin-desktop text-center">
+            <span class="material-symbols-outlined text-[120px] text-primary/30 mb-8 block">error</span>
+            <h1 class="font-display-lg text-[72px] md:text-[96px] leading-[0.9] mb-6 tracking-[-0.05em] font-extrabold text-on-surface uppercase">404</h1>
+            <p class="font-headline-md text-headline-md text-on-surface-variant mb-4">Page Not Found</p>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-lg mx-auto leading-relaxed">
+                The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+            <a class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 transition-all inline-flex items-center gap-3"
+                href="./">
+                <span class="material-symbols-outlined">home</span> Back to Home
+            </a>
+        </div>
+    </main>
+    <script src="js/main.js"></script>
+</body>
+</html>

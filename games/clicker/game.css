@@ -1,0 +1,454 @@
+/* === CSS Reset — Complete Isolation === */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* === Design Tokens === */
+:root {
+    --bg-deep: #1a0f0a;
+    --bg-stone: #2a1f18;
+    --bg-parchment: #3d2b1f;
+    --bg-panel: #251810;
+    --text-gold: #e8c84a;
+    --text-parchment: #d4c3a3;
+    --text-dim: #8a7a6a;
+    --border-stone: #4a3828;
+    --hp-green: #4caf50;
+    --hp-bg: #3a1a1a;
+    --xp-blue: #5b9bd5;
+    --xp-bg: #1a2a3a;
+    --btn-attack: #c0392b;
+    --btn-attack-hover: #e74c3c;
+    --btn-buy: #8b6914;
+    --btn-buy-hover: #a67c1e;
+    --btn-buy-disabled: #3a3020;
+    --btn-reset: #5a1a1a;
+    --btn-reset-hover: #7a2020;
+    --btn-alloc: #2a4a2a;
+    --btn-alloc-hover: #3a6a3a;
+    --gem-purple: #b388eb;
+    --fly-damage: #ff4444;
+    --fly-gold: #ffd700;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-deep);
+    color: var(--text-parchment);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* === Header === */
+.top-bar {
+    background: var(--bg-stone);
+    border-bottom: 2px solid var(--border-stone);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.game-title {
+    font-size: 1.5rem;
+    color: var(--text-gold);
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.currency-bar {
+    display: flex;
+    gap: 20px;
+}
+
+.currency {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.currency.gold {
+    color: var(--text-gold);
+}
+
+.currency.gem {
+    color: var(--gem-purple);
+}
+
+.currency .icon {
+    margin-right: 2px;
+}
+
+/* === Main Layout === */
+.game-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    gap: 16px;
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 70px);
+}
+
+/* === Panels === */
+.panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-stone);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.panel-title {
+    font-size: 1rem;
+    color: var(--text-gold);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--border-stone);
+    padding-bottom: 8px;
+}
+
+/* === Shop Panel === */
+.shopkeeper {
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.shop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.shop-item {
+    background: var(--bg-stone);
+    border: 1px solid var(--border-stone);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.shop-item .item-name {
+    font-weight: bold;
+    color: var(--text-parchment);
+    font-size: 0.9rem;
+}
+
+.shop-item .item-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin: 4px 0;
+}
+
+.shop-item .item-cost {
+    font-size: 0.8rem;
+    color: var(--text-gold);
+    margin: 4px 0;
+}
+
+.shop-item .buy-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 6px 0;
+    background: var(--btn-buy);
+    color: var(--text-parchment);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: background 0.15s;
+}
+
+.shop-item .buy-btn:hover:not(:disabled) {
+    background: var(--btn-buy-hover);
+}
+
+.shop-item .buy-btn:disabled {
+    background: var(--btn-buy-disabled);
+    color: #5a5040;
+    cursor: not-allowed;
+}
+
+.shop-item .owned-tag {
+    color: #5a8a5a;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* === Combat Panel === */
+.combat-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enemy-zone {
+    text-align: center;
+}
+
+.enemy-sprite {
+    font-size: 5rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+}
+
+.enemy-sprite:active {
+    transform: scale(0.9);
+}
+
+.enemy-sprite:hover {
+    transform: scale(1.05);
+}
+
+.enemy-name {
+    font-size: 1.2rem;
+    color: var(--text-parchment);
+    margin: 8px 0;
+}
+
+.hp-bar-outer {
+    width: 280px;
+    height: 18px;
+    background: var(--hp-bg);
+    border: 1px solid var(--border-stone);
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(180deg, #5cb85c 0%, #3d8b3d 100%);
+    transition: width 0.2s ease-out;
+    border-radius: 9px;
+}
+
+.hp-text {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+}
+
+.attack-button {
+    padding: 14px 48px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    font-family: inherit;
+    background: var(--btn-attack);
+    color: #fff;
+    border: 2px solid #8b1a1a;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 0 #6b1010;
+    position: relative;
+    user-select: none;
+}
+
+.attack-button:hover {
+    background: var(--btn-attack-hover);
+}
+
+.attack-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #6b1010;
+}
+
+.damage-fly, .gold-fly {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.2rem;
+    pointer-events: none;
+    animation: flyUp 1s ease-out forwards;
+    opacity: 0;
+}
+
+.damage-fly { color: var(--fly-damage); }
+.gold-fly { color: var(--fly-gold); }
+
+@keyframes flyUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-60px); }
+}
+
+/* === Stats Panel === */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--border-stone);
+}
+
+.stat-row span { color: var(--text-dim); }
+.stat-row strong { color: var(--text-parchment); }
+
+.xp-bar-outer {
+    width: 100%;
+    height: 10px;
+    background: var(--xp-bg);
+    border: 1px solid var(--border-stone);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 8px 0 4px;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4a90d9 0%, #7bb3e8 100%);
+    transition: width 0.3s ease-out;
+    border-radius: 5px;
+}
+
+.xp-text {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.stat-points-area {
+    margin-top: 8px;
+    background: var(--bg-stone);
+    border: 1px solid #4a6a2a;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.stat-points-area.hidden {
+    display: none;
+}
+
+.stat-points-label {
+    font-size: 0.85rem;
+    color: var(--text-gold);
+    margin-bottom: 8px;
+}
+
+.alloc-row {
+    display: flex;
+    gap: 6px;
+}
+
+.alloc-btn {
+    flex: 1;
+    padding: 6px 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-family: inherit;
+    background: var(--btn-alloc);
+    color: var(--text-parchment);
+    border: 1px solid #3a6a3a;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.alloc-btn:hover {
+    background: var(--btn-alloc-hover);
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-stone);
+    margin: 12px 0;
+}
+
+/* === Challenges === */
+.challenges-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.challenge-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    background: var(--bg-stone);
+    border: 1px solid var(--border-stone);
+    border-radius: 4px;
+}
+
+.challenge-item.completed {
+    border-color: #4a6a2a;
+    background: #1a2a1a;
+}
+
+.challenge-item .challenge-name {
+    color: var(--text-parchment);
+}
+
+.challenge-item .challenge-progress {
+    color: var(--text-dim);
+}
+
+.challenge-item.completed .challenge-progress {
+    color: var(--text-gold);
+}
+
+/* === Reset Button === */
+.reset-button {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: inherit;
+    background: var(--btn-reset);
+    color: #d48888;
+    border: 1px solid #7a2020;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.reset-button:hover {
+    background: var(--btn-reset-hover);
+    color: #e8a8a8;
+}
+
+/* === Mobile Responsive === */
+@media (max-width: 900px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 8px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .enemy-sprite {
+        font-size: 3.5rem;
+    }
+
+    .hp-bar-outer {
+        width: 220px;
+    }
+
+    .attack-button {
+        padding: 12px 36px;
+        font-size: 1.1rem;
+    }
+}
