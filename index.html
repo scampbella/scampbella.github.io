@@ -1,145 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="scroll-smooth" lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Scott Campbell"/>
-  <title>Scott Campbell</title>
-  <link rel="icon" href="/icons/favicon-rank.png" type="image/png" sizes="32x32" />
-  <link rel="shortcut icon" href="/icons/favicon-rank.png" type="image/png" />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Scott Campbell</title>
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind.config.js"></script>
 </head>
-<body>
-  <a class="skip-link" href="#content">Skip to content</a>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <span class="wordmark">SC</span>
-      <nav class="nav" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#work">Work</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
+        <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
+            <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1">SCOTT
+                CAMPBELL</div>
+            <div class="flex items-center gap-10">
+                <div class="hidden md:flex items-center gap-10">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md active-nav"
+                        href="./">Home</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="blogs/">Blog</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
+                        href="games/">Games</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <!-- Hero Section - Full Height -->
+        <section
+            class="min-h-screen flex flex-col justify-center items-center max-w-container-max mx-auto px-margin-desktop text-center relative flex-grow">
+            <h1
+                class="font-display-lg text-[100px] md:text-[140px] leading-[0.9] mb-0 tracking-[-0.05em] font-extrabold text-on-surface uppercase">
+                &nbsp; &nbsp; &nbsp;Scott&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Campbell</h1>
+            <div
+                class="absolute bottom-10 left-0 right-0 flex flex-col items-center gap-2 text-on-surface-variant animate-bounce">
+                <span class="font-label-sm uppercase tracking-widest text-[10px]">Scroll to explore</span>
+                <span class="material-symbols-outlined text-2xl">expand_more</span>
+            </div>
+        </section>
+        <!-- Album of the Week -->
+        <section class="bg-surface-container-lowest py-section-gap border-y border-outline-variant/30">
+            <div class="max-w-container-max mx-auto px-margin-desktop">
+                <div class="flex flex-col md:flex-row gap-16 items-center">
+                    <div class="w-full md:w-1/2 relative group">
+                        <div
+                            class="absolute -inset-4 bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                        </div>
+                        <picture class="relative w-full aspect-square block">
+                            <source srcset="assets/images/albums/hurryuptomorrow-sm.avif" media="(max-width: 640px)"
+                                type="image/avif">
+                            <source srcset="assets/images/albums/hurryuptomorrow-md.avif" type="image/avif">
+                            <img alt="Album Cover"
+                                class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
+                                src="assets/images/albums/hurryuptomorrow.jpg">
+                        </picture>
 
-  <main id="content">
-
-    <!-- Hero -->
-    <section class="hero">
-      <h1>Scott<br>Campbell</h1>
-      <p class="hero__sub">
-        Data Science student @ Oregon State University.
-      </p>
-      <div class="hero__links">
-        <a href="#contact">Contact Me</a>
-        <a href="ScottCampbell.pdf" download="Scott-Campbell-Resume.pdf" class="link-quiet">Resume (PDF)</a>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="band">
-      <div class="contain">
-        <h2>About me</h2>
-        <div class="about-body">
-          <p>
-            I am a part of the brand new Data Science program at OSU. Understanding how thing work is my forte,
-            especially when it comes to the systems we interact with daily. You may not think about it much but
-            how do trains always arrive within minutes of the scheduled time? How are map apps so accurate? How
-            is this website so awesome?
-          </p>
-          <p>
-            I co-founded the Computer Hardware Club here at OSU and am the sitting vice-president
-            and treasurer. We have weekly meetings ranging from in-depth workshops to fun community-building
-            activities. I really enjoy being able to lead our club meetings, especially on the social side. I
-            pride myself on this club being a safe space for anyone to hang out and chat about technology.
-          </p>
-         <!-- <p>
-            I have a deep interest in consumer-grade tech hardware that improves day to day quality of life.
-            Things like laptops, monitors, phones, and other similar hardware.
-
-          </p> -->
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <span class="text-primary font-label-md tracking-[0.2em] mb-4 block uppercase">Currently
+                            Listening</span>
+                        <h2 class="font-headline-lg text-[48px] md:text-[64px] mb-2 text-on-surface">Album of the Week
+                        </h2>
+                        <div class="mb-8">
+                            <h3 class="text-on-surface font-headline-md text-2xl">Hurry Up Tomorrow</h3>
+                            <p class="text-on-surface-variant font-body-md italic text-lg">by The Weeknd</p>
+                        </div>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 leading-relaxed">
+                            This week's pick is an album that suffers from some serious recency bias. It is no question
+                            one of The Weeknd's best (and longest) albums to date. While this album has some seriously
+                            amazing songs like Big Sleep and Hurry Up Tomorrow, it definitely has some stinkers too. I'd
+                            say this is definitely worth a listen, especially for those who still think The Weeknd is
+                            "co-worker music."</p>
+                        <div class="flex flex-wrap items-center gap-6">
+                            <a class="flex items-center gap-3 font-label-md text-primary hover:underline group"
+                                href="https://open.spotify.com/album/3OxfaVgvTxUTy7276t7SPU" target="_blank"
+                                rel="noopener noreferrer">
+                                Listen on Spotify <span
+                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </a>
+                            <a class="flex items-center gap-3 px-6 py-2.5 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-all font-label-md group"
+                                href="#">
+                                <span class="material-symbols-outlined text-xl">history</span> Rotation Archive
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- OSU Computer Hardware Club -->
+        <section class="bg-surface-container-lowest py-section-gap border-y border-outline-variant/30">
+            <div class="max-w-container-max mx-auto px-margin-desktop">
+                <div class="flex flex-col md:flex-row gap-16 items-center">
+                    <div class="w-full md:w-1/2">
+                        <span class="text-primary font-label-md tracking-[0.2em] mb-6 block uppercase">Campus
+                            Community</span>
+                        <h2 class="text-on-surface font-headline-lg text-headline-lg md:text-[56px] leading-tight mb-8">
+                            Computer Hardware Club at OSU</h2>
+                        <p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-lg">
+                            A laid back community for hardware enthusiasts, engineers, and gamers. We host meetings that
+                            range from informational lessons on things like CUDA and Docker to fun team building games
+                            like
+                            computer themed Jeopardy and prime number script contests.</p>
+                        <div class="flex flex-col gap-4 mb-10">
+                            <div class="flex items-center gap-4 text-on-surface">
+                                <span class="material-symbols-outlined text-primary">precision_manufacturing</span>
+                                <span class="font-body-md">Bi-weekly workshops</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-on-surface">
+                                <span class="material-symbols-outlined text-primary">settings_input_component</span>
+                                <span class="font-body-md">Learning opportunities open to all!</span>
+                            </div>
+                        </div>
+                        <a class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 transition-all inline-flex items-center gap-3"
+                            href="https://computerhardwareclub.org/" target="_blank" rel="noopener noreferrer">
+                            Visit Club Website <span class="material-symbols-outlined">open_in_new</span>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/2 relative group">
+                        <div class="w-full aspect-square rounded-3xl overflow-hidden border border-on-surface/20">
+                            <picture class="w-full h-full block">
+                                <source srcset="assets/images/chclogo-sm.avif" type="image/avif">
+                                <img alt="Computer Hardware Enthusiasts"
+                                    class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
+                                    src="assets/images/chclogo.jpg">
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Redesigned Personal Computers Section -->
+        <section class="bg-surface-container-lowest py-section-gap border-t border-outline-variant/30">
+            <div class="max-w-container-max mx-auto px-margin-desktop">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+                    <div class="max-w-xl">
+                        <span class="text-primary font-label-md tracking-[0.2em] mb-4 block uppercase">My
+                            workflow</span>
+                        <h2 class="font-headline-lg text-headline-lg md:text-[48px] text-on-surface mb-4">Personal
+                            Computers</h2>
+                        <p class="font-body-lg text-on-surface-variant">These beautiful machines power all the work I do
+                            every day from school to building this very website!</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                    <!-- MacBook Air M3 - Large Highlight -->
+                    <div
+                        class="md:col-span-6 group computer-card border-2 border-on-surface/20 p-8 rounded-[32px] flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="w-full aspect-[4/3] bg-surface-container rounded-2xl mb-8 flex items-center justify-center overflow-hidden">
+                                <picture class="w-full h-full block">
+                                    <source srcset="assets/images/macbook-sm.avif" type="image/avif">
+                                    <img alt="MacBook Air M3" class="w-full h-full object-contain"
+                                        src="assets/images/macbook.jpg">
+                                </picture>
+                            </div>
+                            <span
+                                class="inline-block px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm mb-4">Primary
+                                Laptop</span>
+                            <h4 class="font-headline-md text-on-surface mb-2">MacBook Air M3</h4>
+                            <p class="text-on-surface-variant font-body-md">This fanless leighweight design marvel is my
+                                main device for schoolwork and writing code.</p>
+                        </div>
+                        <div
+                            class="mt-6 pt-4 border-t border-on-surface/20 flex items-start gap-2 text-on-surface-variant font-body-md text-sm italic">
+                            <span class="material-symbols-outlined text-primary text-lg flex-shrink-0">lightbulb</span>
+                            <p>Fun Fact: This model of the M3 Air was the last MacBook Apple ever shipped with
+                                8gb of unified memory. Lucky me!</p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-on-surface/20">
+                            <div class="flex justify-between items-center text-sm font-label-md">
+                                <span class="text-on-surface-variant">Apple M3 8-Core CPU</span>
+                                <span class="text-primary">8GB Unified Memory</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Zenbook S16 -->
+                    <div
+                        class="group computer-card border-2 border-on-surface/20 p-8 rounded-[32px] flex flex-col justify-between md:col-span-6">
+                        <div>
+                            <div
+                                class="w-full aspect-[4/3] bg-surface-container rounded-2xl mb-8 flex items-center justify-center overflow-hidden">
+                                <picture class="w-full h-full block">
+                                    <source srcset="assets/images/zenbook-sm.avif" media="(max-width: 640px)"
+                                        type="image/avif">
+                                    <source srcset="assets/images/zenbook-md.avif" media="(max-width: 1280px)"
+                                        type="image/avif">
+                                    <source srcset="assets/images/zenbook-lg.avif" type="image/avif">
+                                    <img alt="Zenbook S16" class="w-full h-full object-contain scale-[1.25]"
+                                        src="assets/images/zenbook.png">
+                                </picture>
+                            </div>
+                            <span
+                                class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm mb-4">Windows/Linux
+                                Laptop</span>
+                            <h4 class="font-headline-md text-on-surface mb-2">Zenbook S16</h4>
+                            <p class="text-on-surface-variant font-body-md">Anything requiring windows or a bigger
+                                screen is dedicated to this thin and light laptop.</p>
+                        </div>
+                        <div
+                            class="mt-6 pt-4 border-t border-on-surface/20 flex items-start gap-2 text-on-surface-variant font-body-md text-sm italic">
+                            <span class="material-symbols-outlined text-primary text-lg flex-shrink-0">lightbulb</span>
+                            <p>Fun Fact: The S16 weighs only 3.3lbs. Thats less than a 14" MacBook Pro while
+                                being 2" bigger!</p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-on-surface/20">
+                            <div class="flex justify-between items-center text-sm font-label-md">
+                                <span class="text-on-surface-variant">Ryzen AI 9 HX 370</span>
+                                <span class="text-primary">32GB LPDDR5X</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 4070 Super PC - Horizontal Wide -->
+                    <div
+                        class="md:col-span-12 group computer-card border-2 border-on-surface/20 p-8 md:p-12 rounded-[32px] flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-full md:w-1/2 order-2 md:order-1">
+                            <span
+                                class="inline-block px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm mb-4">Workstation
+                                / Gaming</span>
+                            <h4 class="font-headline-md text-headline-md text-on-surface mb-2">PLSWORK2024</h4>
+                            <p class="text-on-surface-variant font-body-md mb-6">This is my low power SFX pc I use every
+                                single day. It draws around 300W while under full load and runs all my demanding tasks
+                                from videogame to local LLMs.</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10">
+                                    <span class="block text-primary font-bold mb-1">RTX 4070 Super</span>
+                                    <span class="text-xs text-on-surface-variant uppercase font-label-sm">GPU</span>
+                                </div>
+                                <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10">
+                                    <span class="block text-primary font-bold mb-1">Ryzen 7 7800X3D</span>
+                                    <span class="text-xs text-on-surface-variant uppercase font-label-sm">CPU</span>
+                                </div>
+                            </div>
+                            <div
+                                class="mt-6 pt-4 border-t border-on-surface/20 flex items-start gap-2 text-on-surface-variant font-body-md text-sm italic">
+                                <span
+                                    class="material-symbols-outlined text-primary text-lg flex-shrink-0">lightbulb</span>
+                                <p>Fun Fact: I wrote a blog about me building this computer!</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 order-1 md:order-2 flex items-center justify-center">
+                            <div
+                                class="w-full aspect-[4/3] bg-surface-container rounded-[32px] flex items-center justify-center overflow-hidden">
+                                <picture class="w-full h-full block">
+                                    <source srcset="assets/images/pc-sm.avif" media="(max-width: 640px)"
+                                        type="image/avif">
+                                    <source srcset="assets/images/pc-lg.avif" type="image/avif">
+                                    <img alt="PLSWORK2024 PC" class="w-full h-full object-cover"
+                                        src="assets/images/pc.jpg">
+                                </picture>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full py-12 bg-surface-container-lowest border-t border-outline-variant/30">
+        <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8">
+            <div class="flex flex-wrap justify-center gap-8 text-on-surface-variant font-label-md">
+                <a class="hover:text-primary transition-colors duration-200"
+                    href="https://www.linkedin.com/in/scott-campbell-891547381/" target="_blank"
+                    rel="noopener noreferrer">LinkedIn</a>
+                <a class="hover:text-primary transition-colors duration-200" href="https://github.com/scampbella"
+                    target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a class="hover:text-primary transition-colors duration-200" href="assets/scottcampbell.pdf"
+                    download>Resume</a>
+                <a class="hover:text-primary transition-colors duration-200"
+                    href="mailto:mail@scottcampbell.me">Email</a>
+            </div>
+            <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm">
+                © 2026 Scott Campbell</div>
         </div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section id="work" class="band band--alt">
-      <div class="contain">
-        <h2>What I'm working on</h2>
-        <div class="cards">
-
-          <article class="card">
-            <h3><a href="https://scottcampbell.me" target="_blank">scottcampbell.me</a></h3>
-            <p class="card__meta">Personal Website · 2025 – present</p>
-            <p>
-              This website you are on right now is a work in progress where I
-              want to add all of my personal projects over time. It is currently
-              using very simple HTML, JavaScript, and CSS. I plan to develop
-              this website much more as time goes on.
-            </p>
-          </article>
-
-          <article class="card">
-            <h3><a href="https://computerhardwareclub.org" target="_blank">Computer Hardware Club @ OSU</a></h3>
-            <p class="card__meta">Co-Founder, VP, & Treasurer · 2024 – present</p>
-            <p>
-              This club is a passion project that me and my Co-Founder have been
-              building over the past couple years. We have grown from just ourselves
-              to nearly 100 members and counting. From Cuda workshops to computer
-              themed Jeopardy, we love to create activities for our members to
-              learn and find a community here at our college.
-            </p>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="band">
-      <div class="contain">
-        <h2>Skills</h2>
-        <div class="skill-grid">
-          <div class="skill-group">
-            <h3>Languages</h3>
-            <p>Python, C++, R</p>
-          </div>
-          <div class="skill-group">
-            <h3>Tools</h3>
-            <p>Git, Bash, RStudio</p>
-          </div>
-          <div class="skill-group">
-            <h3>Systems</h3>
-            <p>Linux, Windows, macOS</p>
-          </div>
-          <div class="skill-group">
-            <h3>Hardware</h3>
-            <p>Servers, PC Assembly</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="band band--dark">
-      <div class="contain contact-section">
-        <h2>Get in touch</h2>
-        <ul class="contact-list">
-          <li><a href="mailto:mail@scottcampbell.me">mail@scottcampbell.me</a></li>
-          <li><a href="https://github.com/scampbella" target="_blank">GitHub</a></li>
-          <li><a href="ScottCampbell.pdf" download="Scott-Campbell-Resume.pdf">Resume (PDF)</a></li>
-        </ul>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="contain">
-      <small>&copy; 2026 Scott Campbell</small>
-    </div>
-  </footer>
+    </footer>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

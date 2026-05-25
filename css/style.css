@@ -1,0 +1,92 @@
+:root {
+    --ct-primary: #7DD3FC;
+    --ct-on-primary: #000000;
+    --ct-primary-container: #003545;
+    --ct-on-primary-container: #c0e8ff;
+    --ct-secondary: #c4d0e2;
+    --ct-on-secondary: #192433;
+    --ct-secondary-container: #3b4756;
+    --ct-on-secondary-container: #d7e3f7;
+    --ct-tertiary: #d7bef4;
+    --ct-on-tertiary: #351b45;
+    --ct-tertiary-container: #534d63;
+    --ct-on-tertiary-container: #f2daff;
+    --ct-error: #ffb4ab;
+    --ct-on-error: #690005;
+    --ct-error-container: #93000a;
+    --ct-on-error-container: #ffdad6;
+    --ct-outline: #8d9198;
+    --ct-background: #000000;
+    --ct-on-background: #FFFFFF;
+    --ct-surface: #000000;
+    --ct-on-surface: #FFFFFF;
+    --ct-surface-variant: #3f4a4b;
+    --ct-on-surface-variant: #A1A1AA;
+    --ct-inverse-surface: #f0f1f3;
+    --ct-inverse-on-surface: #2e3133;
+    --ct-primary-fixed-dim: #7DD3FC;
+    --ct-surface-container-highest: #242424;
+    --ct-surface-container-high: #1a1a1a;
+    --ct-surface-container: #131313;
+    --ct-surface-container-low: #0a0a0a;
+    --ct-surface-container-lowest: #000000;
+    --ct-surface-bright: #1a1a1a;
+    --ct-outline-variant: rgba(255, 255, 255, 0.15);
+    --ct-shadow: rgba(125, 211, 252, 0.05);
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.active-nav {
+    border-bottom: 2px solid var(--ct-primary);
+    color: var(--ct-primary) !important;
+    font-weight: 700;
+}
+
+.glass-card {
+    background: color-mix(in srgb, var(--ct-surface-container-lowest) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.computer-card {
+    background: var(--ct-surface-container);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.computer-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--ct-primary);
+}
+
+.blog-post-card {
+    background: var(--ct-surface-container-lowest);
+    border-radius: 32px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-post-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--ct-primary);
+}
+
+.game-card {
+    background: var(--ct-surface-container-lowest);
+    border-radius: 32px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--ct-primary);
+}
+
+::selection {
+    background-color: var(--ct-primary-container);
+    color: var(--ct-on-primary-container);
+}

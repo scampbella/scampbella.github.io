@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker: Goblin Slayer</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+    <!-- Header Bar -->
+    <header class="top-bar">
+        <h1 class="game-title">Clicker: Goblin Slayer</h1>
+        <div class="currency-bar">
+            <span class="currency gold"><span class="icon">🪙</span> Gold: <strong id="gold-display">0</strong></span>
+            <span class="currency gem"><span class="icon">💎</span> Gems: <strong id="gem-display">0</strong></span>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="game-layout">
+
+        <!-- Left: Goblin Shop -->
+        <aside class="panel shop-panel">
+            <h2 class="panel-title">🛒 Goblin Shop</h2>
+            <p class="shopkeeper">"Buy somethin', will ya?"</p>
+            <div id="shop-items" class="shop-list"></div>
+        </aside>
+
+        <!-- Center: Combat Area -->
+        <section class="panel combat-panel">
+            <div id="enemy-container" class="enemy-zone">
+                <div id="enemy-sprite" class="enemy-sprite">👹</div>
+                <h2 id="enemy-name" class="enemy-name">Goblin Grunt</h2>
+                <div class="hp-bar-outer">
+                    <div id="hp-bar-fill" class="hp-bar-fill"></div>
+                </div>
+                <p id="hp-text" class="hp-text">100 / 100 HP</p>
+            </div>
+            <button id="attack-btn" class="attack-button">⚔️ ATTACK!</button>
+            <p id="damage-fly" class="damage-fly"></p>
+            <p id="gold-fly" class="gold-fly"></p>
+        </section>
+
+        <!-- Right: Player Stats + Challenges -->
+        <aside class="panel stats-panel">
+            <!-- Player Stats -->
+            <h2 class="panel-title">⚔️ Player</h2>
+            <div class="stat-row"><span>Level</span> <strong id="level-display">1</strong></div>
+            <div class="xp-bar-outer">
+                <div id="xp-bar-fill" class="xp-bar-fill"></div>
+            </div>
+            <p class="xp-text"><span id="xp-current">0</span> / <span id="xp-needed">100</span> XP</p>
+            <div class="stat-row"><span>HP</span> <strong id="hp-display">100</strong></div>
+            <div class="stat-row"><span>Attack</span> <strong id="atk-display">10</strong></div>
+            <div class="stat-row"><span>Defense</span> <strong id="def-display">0</strong></div>
+            <div class="stat-row"><span>Enemies Killed</span> <strong id="kills-display">0</strong></div>
+
+            <!-- Stat Points -->
+            <div id="stat-points-area" class="stat-points-area hidden">
+                <p class="stat-points-label">⭐ Stat Points: <strong id="sp-display">0</strong></p>
+                <div class="alloc-row">
+                    <button class="alloc-btn" data-stat="hp">+HP</button>
+                    <button class="alloc-btn" data-stat="atk">+ATK</button>
+                    <button class="alloc-btn" data-stat="def">+DEF</button>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Challenges -->
+            <h2 class="panel-title">🏆 Challenges</h2>
+            <div id="challenges-list" class="challenges-list"></div>
+
+            <hr class="divider">
+
+            <!-- Hard Reset -->
+            <button id="reset-btn" class="reset-button">🔥 Hard Reset</button>
+        </aside>
+
+    </main>
+
+    <script src="game.js"></script>
+</body>
+</html>
