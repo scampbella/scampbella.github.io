@@ -119,7 +119,7 @@ class Dice {
     }
 
     private freshSet(): DieState[] {
-        return [1, 2, 3, 4, 5].map(() => ({ value: this.randomValue(), locked: false }));
+        return [1, 2, 3, 4, 5].map(() => ({ value: 1, locked: false }));
     }
 
     private randomValue(): number {
@@ -154,6 +154,12 @@ class Dice {
         this.dice = this.freshSet();
     }
 
+    resetValues(): void {
+        for (const die of this.dice) {
+            die.value = 1;
+        }
+    }
+
     snapshot(): DieState[] {
         return this.dice.map(d => ({ ...d }));
     }
@@ -181,23 +187,30 @@ class Scorecard {
     scoreCategory(index: number, dice: number[]): number {
         if (!this.canScore(index)) return 0;
 
-        // Yahtzee bonus logic
-        if (index === this.yahtzeeCategoryIndex && isYahtzee(dice)) {
-            // If Yahtzee category is already filled with 50 (or 0), grant 100 bonus
-            if (this.slots[index].score !== null) {
-                this.bonusYahtzees++;
-                return 100;
+        let score = this.slots[index].def.scoreFn(dice);
+
+        // Joker rule scoring: subsequent Yahtzee and main Yahtzee box is filled (50 or 0)
+        if (isYahtzee(dice) && this.slots[this.yahtzeeCategoryIndex].score !== null) {
+            const val = dice[0];
+            const upperIdx = val - 1;
+            // If the corresponding upper section slot is already filled
+            if (this.slots[upperIdx].score !== null) {
+                const name = this.slots[index].def.name;
+                if (name === 'Full House') {
+                    score = 25;
+                } else if (name === 'Sm Straight') {
+                    score = 30;
+                } else if (name === 'Lg Straight') {
+                    score = 40;
+                }
             }
         }
 
-        // Check for bonus Yahtzee on non-Yahtzee categories
-        if (index !== this.yahtzeeCategoryIndex
-            && isYahtzee(dice)
-            && this.slots[this.yahtzeeCategoryIndex].score === 50) {
+        // Yahtzee bonus: main Yahtzee box must be filled with 50 (not 0)
+        if (isYahtzee(dice) && this.slots[this.yahtzeeCategoryIndex].score === 50) {
             this.bonusYahtzees++;
         }
 
-        const score = this.slots[index].def.scoreFn(dice);
         this.slots[index].score = score;
         return score;
     }
@@ -277,19 +290,53 @@ class Game {
     }
 
     toggleLock(index: number): void {
+        if (this.rollsLeft === 3) return; // cannot lock dice unless we have rolled at least once
         this.dice.toggleLock(index);
         this.notify();
     }
 
+    isValidCategorySelection(index: number, dice: number[]): boolean {
+        // Must be an empty slot
+        if (!this.scorecard.canScore(index)) return false;
+
+        // If it's a subsequent Yahtzee (i.e. isYahtzee(dice) and main Yahtzee box is filled)
+        const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
+        const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
+
+        if (isYahtzee(dice) && isMainYahtzeeFilled) {
+            const val = dice[0]; // value of the Yahtzee (1 to 6)
+            const upperIdx = val - 1; // corresponding Upper Section index
+
+            // If corresponding Upper Section slot is empty
+            if (this.scorecard.slots[upperIdx].score === null) {
+                // Must select corresponding Upper Section slot
+                return index === upperIdx;
+            }
+        }
+
+        return true;
+    }
+
     previewScore(index: number): number | null {
+        if (this.rollsLeft === 3) return null; // no preview before rolling
         if (!this.scorecard.canScore(index)) return null;
 
         const dice = this.dice.values();
-        const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
+        if (!this.isValidCategorySelection(index, dice)) return null;
 
-        if (index === yahtzeeIdx && isYahtzee(dice)
-            && this.scorecard.slots[index].score !== null) {
-            return 100;
+        // Joker rule preview
+        const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
+        const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
+
+        if (isYahtzee(dice) && isMainYahtzeeFilled) {
+            const val = dice[0];
+            const upperIdx = val - 1;
+            if (this.scorecard.slots[upperIdx].score !== null) {
+                const name = this.scorecard.slots[index].def.name;
+                if (name === 'Full House') return 25;
+                if (name === 'Sm Straight') return 30;
+                if (name === 'Lg Straight') return 40;
+            }
         }
 
         return this.scorecard.slots[index].def.scoreFn(dice);
@@ -297,8 +344,8 @@ class Game {
 
     selectCategory(index: number): boolean {
         if (this.rollsLeft === 3) return false; // must roll at least once
-        if (!this.scorecard.canScore(index)) return false;
         if (this.gameOver) return false;
+        if (!this.isValidCategorySelection(index, this.dice.values())) return false;
 
         this.scorecard.scoreCategory(index, this.dice.values());
 
@@ -312,6 +359,7 @@ class Game {
         this.round++;
         this.rollsLeft = 3;
         this.dice.unlockAll();
+        this.dice.resetValues(); // reset dice to 1 at start of new turn
         this.notify();
         return true;
     }
@@ -355,7 +403,7 @@ class UI {
             'upper-scores', 'lower-scores',
             'upper-total', 'upper-bonus', 'lower-total', 'grand-total',
             'game-over-overlay', 'final-score', 'score-breakdown',
-            'play-again-btn', 'held-label', 'high-score-display',
+            'play-again-btn', 'held-label', 'high-score-display', 'bonus-tracker',
         ];
         for (const id of ids) {
             this.el[id] = document.getElementById(id)!;
@@ -374,7 +422,7 @@ class UI {
         return patterns[value] || [];
     }
 
-    private createDieHTML(value: number, locked: boolean, index: number, gameOver: boolean): string {
+    private createDieHTML(value: number, locked: boolean, index: number, gameOver: boolean, rollStart: boolean): string {
         const pips = this.pipPositions(value);
         const dots = [];
         for (let p = 0; p < 9; p++) {
@@ -384,8 +432,9 @@ class UI {
 
         const lockClass = locked ? ' locked' : '';
         const gameOverClass = gameOver ? ' filled' : '';
+        const unrollableClass = rollStart ? ' unrolled' : '';
 
-        return `<div class="die${lockClass}${gameOverClass}" data-index="${index}">
+        return `<div class="die${lockClass}${gameOverClass}${unrollableClass}" data-index="${index}">
             <div class="pip-grid">${dots.join('')}</div>
         </div>`;
     }
@@ -394,12 +443,14 @@ class UI {
         slot: ScoreSlot,
         index: number,
         previewScore: number | null,
-        currentDiceValues: number[],
         gameOver: boolean,
+        selectable: boolean,
     ): string {
         const filled = slot.score !== null;
-        const canSelect = !filled && !gameOver;
-        const cls = filled ? 'score-row filled' : 'score-row empty';
+        const canSelect = selectable && !filled && !gameOver;
+        const cls = filled 
+            ? 'score-row filled' 
+            : (canSelect ? 'score-row empty' : 'score-row empty disabled');
         const data = canSelect ? `data-category="${index}"` : '';
 
         let scoreDisplay: string;
@@ -428,7 +479,7 @@ class UI {
         // dice
         const tray = this.el['dice-tray'] as HTMLElement;
         tray.innerHTML = s.dice.map((d, i) =>
-            this.createDieHTML(d.value, d.locked, i, s.gameOver)
+            this.createDieHTML(d.value, d.locked, i, s.gameOver, s.rollsLeft === 3)
         ).join('');
 
         // dice click handlers
@@ -462,11 +513,14 @@ class UI {
         const upperSlots = s.scorecard.filter(sl => sl.def.section === Section.Upper);
         const lowerSlots = s.scorecard.filter(sl => sl.def.section === Section.Lower);
 
+        const diceVals = s.dice.map(d => d.value);
+
         this.el['upper-scores'].innerHTML = upperSlots
             .map((slot, i) => {
                 const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
                 const preview = slot.score === null ? game.previewScore(globalIdx) : null;
-                return this.createScoreRow(slot, globalIdx, preview, s.dice.map(d => d.value), s.gameOver);
+                const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
+                return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
             })
             .join('');
 
@@ -474,9 +528,32 @@ class UI {
             .map((slot, i) => {
                 const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
                 const preview = slot.score === null ? game.previewScore(globalIdx) : null;
-                return this.createScoreRow(slot, globalIdx, preview, s.dice.map(d => d.value), s.gameOver);
+                const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
+                return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
             })
             .join('');
+
+        // Upper Section Bonus Tracker
+        const tracker = this.el['bonus-tracker'];
+        if (tracker) {
+            const upperTotal = game.scorecard.upperTotal();
+            if (upperTotal >= 63) {
+                tracker.innerHTML = `<span class="bonus-secured">Bonus Secured: +35</span>`;
+            } else {
+                let potential = upperTotal;
+                for (let i = 0; i < 6; i++) {
+                    if (game.scorecard.slots[i].score === null) {
+                        potential += 5 * (i + 1);
+                    }
+                }
+                if (potential < 63) {
+                    tracker.innerHTML = `<span class="bonus-missed">Bonus Missed</span>`;
+                } else {
+                    const diff = 63 - upperTotal;
+                    tracker.innerHTML = `<span class="bonus-progress">${diff} points until +35 bonus</span>`;
+                }
+            }
+        }
 
         // totals
         this.el['upper-total'].textContent = String(game.scorecard.upperTotal());

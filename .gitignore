@@ -3,6 +3,7 @@ ideas.txt
 
 # npm
 node_modules/
+.npm-cache/
 
 # JetBrains (WebStorm, IntelliJ, etc.)
 .idea/
@@ -22,3 +23,7 @@ Desktop.ini
 .env
 .env.local
 .env.*.local
+
+# Editor & Tooling
+.playwright-mcp/
+.vscode/

@@ -6,6 +6,9 @@
     "convert-images": "node scripts/convert-to-avif.mjs"
   },
   "devDependencies": {
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.5"
+  },
+  "dependencies": {
+    "typescript": "^6.0.3"
   }
 }

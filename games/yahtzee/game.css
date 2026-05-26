@@ -151,6 +151,16 @@ body::before {
     box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
+.die.unrolled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.die.unrolled:hover {
+    transform: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
 .die.locked {
     border-color: var(--gold-bright);
     box-shadow: 0 0 14px var(--gold), 0 0 28px rgba(212,168,67,0.4), 0 3px 8px rgba(0,0,0,0.3);
@@ -326,6 +336,18 @@ body::before {
     background: var(--score-hover);
     border-color: var(--border-gold);
     transform: scale(1.015);
+}
+
+.score-row.empty.disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.score-row.empty.disabled:hover {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+    transform: none;
 }
 
 .score-row.filled {
