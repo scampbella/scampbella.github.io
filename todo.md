@@ -10,9 +10,17 @@ A structured template for tracking features, bugs, and tasks.
   - [ ] Find game assets
 - [ ] 
 
-## Future Stuff
+## Game Stuff
 
-- [ ] Add previous album of the week section
 - [ ] Create casino game
 - [ ] Create survivor game
+- [ ] Update Yahtzee
+   - [ ] Create Yahtzee! animation
+   - [ ] Remove "held" dice display
+   - [ ] Change "Aces" to ones
+- [ ] Create snake game
 
+
+## Home Page
+
+- [ ] Add previous album of the week section

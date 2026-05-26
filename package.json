@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "convert-images": "node scripts/convert-to-avif.mjs"
+    "convert-images": "node scripts/convert-to-avif.mjs",
+    "build:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css",
+    "dev:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css --watch"
   },
   "devDependencies": {
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.19"
   },
   "dependencies": {
     "typescript": "^6.0.3"
