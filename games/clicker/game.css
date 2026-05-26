@@ -304,6 +304,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 .ore-sprite {
     font-size: 5rem;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     transition: transform 0.1s;
     filter: drop-shadow(0 0 12px rgba(232, 200, 74, 0.3));
@@ -535,6 +536,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.8);
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
