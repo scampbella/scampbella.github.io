@@ -1,23 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
     <defs>
-        <linearGradient id="bgYahtzee" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ef4444"/>
-            <stop offset="100%" stop-color="#991b1b"/>
-        </linearGradient>
+        <radialGradient id="feltGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stop-color="#245c38" />
+            <stop offset="100%" stop-color="#0e2b17" />
+        </radialGradient>
         <filter id="shadow">
-            <feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity="0.3"/>
+            <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.5"/>
         </filter>
+        <g id="pip">
+            <circle r="6" fill="#1a1a1a" />
+        </g>
+        <g id="die-bg">
+            <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#f5f0e8" filter="url(#shadow)"/>
+        </g>
+        <g id="face1">
+            <use href="#die-bg"/>
+            <use href="#pip" x="0" y="0"/>
+        </g>
+        <g id="face2">
+            <use href="#die-bg"/>
+            <use href="#pip" x="-20" y="-20"/>
+            <use href="#pip" x="20" y="20"/>
+        </g>
+        <g id="face3">
+            <use href="#die-bg"/>
+            <use href="#pip" x="-20" y="-20"/>
+            <use href="#pip" x="0" y="0"/>
+            <use href="#pip" x="20" y="20"/>
+        </g>
+        <g id="face4">
+            <use href="#die-bg"/>
+            <use href="#pip" x="-20" y="-20"/>
+            <use href="#pip" x="20" y="-20"/>
+            <use href="#pip" x="-20" y="20"/>
+            <use href="#pip" x="20" y="20"/>
+        </g>
+        <g id="face5">
+            <use href="#die-bg"/>
+            <use href="#pip" x="-20" y="-20"/>
+            <use href="#pip" x="20" y="-20"/>
+            <use href="#pip" x="0" y="0"/>
+            <use href="#pip" x="-20" y="20"/>
+            <use href="#pip" x="20" y="20"/>
+        </g>
+        <g id="face6">
+            <use href="#die-bg"/>
+            <use href="#pip" x="-20" y="-25"/>
+            <use href="#pip" x="20" y="-25"/>
+            <use href="#pip" x="-20" y="0"/>
+            <use href="#pip" x="20" y="0"/>
+            <use href="#pip" x="-20" y="25"/>
+            <use href="#pip" x="20" y="25"/>
+        </g>
     </defs>
-    <rect width="400" height="400" fill="url(#bgYahtzee)"/>
-    <!-- Dice 1 -->
-    <g transform="translate(150, 150) rotate(-15)" filter="url(#shadow)">
-        <rect width="100" height="100" rx="20" fill="#ffffff"/>
-        <circle cx="30" cy="30" r="10" fill="#1f2937"/>
-        <circle cx="70" cy="70" r="10" fill="#1f2937"/>
-    </g>
-    <!-- Dice 2 -->
-    <g transform="translate(180, 220) rotate(20)" filter="url(#shadow)">
-        <rect width="100" height="100" rx="20" fill="#ffffff"/>
-        <circle cx="50" cy="50" r="10" fill="#ef4444"/>
-    </g>
+    <rect width="400" height="400" fill="url(#feltGrad)"/>
+    
+    <!-- Dice placement -->
+    <use href="#face5" transform="translate(140, 100) rotate(-15)" />
+    <use href="#face2" transform="translate(280, 110) rotate(25)" />
+    <use href="#face6" transform="translate(220, 220) rotate(5)" />
+    <use href="#face4" transform="translate(100, 260) rotate(-35)" />
+    <use href="#face3" transform="translate(300, 300) rotate(45)" />
 </svg>

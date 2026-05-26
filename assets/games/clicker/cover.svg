@@ -1,28 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
     <defs>
-        <linearGradient id="bgClicker" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#3b82f6"/>
-            <stop offset="100%" stop-color="#1e3a8a"/>
-        </linearGradient>
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
-            <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
+        <!-- Rock Soft Drop Shadow (optimized for Goldenrod background) -->
+        <filter id="rockShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="8" dy="12" stdDeviation="8" flood-color="#4f3803" flood-opacity="0.5"/>
         </filter>
     </defs>
-    <rect width="400" height="400" fill="url(#bgClicker)"/>
-    <!-- Sword -->
-    <g transform="translate(200, 200) rotate(45) translate(-200, -200)">
-        <rect x="190" y="80" width="20" height="160" fill="#e2e8f0"/>
-        <polygon points="190,80 200,40 210,80" fill="#cbd5e1"/>
-        <rect x="150" y="240" width="100" height="20" rx="5" fill="#fbbf24"/>
-        <rect x="190" y="260" width="20" height="60" fill="#78350f"/>
-        <circle cx="200" cy="320" r="15" fill="#fbbf24"/>
+
+    <!-- Canvas Background: Flat Goldenrod -->
+    <rect width="400" height="400" fill="goldenrod"/>
+
+    <!-- MAIN ROCK GROUP WITH SHADOW -->
+    <g filter="url(#rockShadow)">
+        <!-- Faceted Rock Polygons (with matching stroke to prevent hairline gaps) -->
+        
+        <!-- Facet 1 (Top-Middle) -->
+        <polygon points="200,90 240,160 160,160" fill="#64748b" stroke="#64748b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 2 (Top-Right) -->
+        <polygon points="200,90 290,120 240,160" fill="#475569" stroke="#475569" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 3 (Right-Upper) -->
+        <polygon points="290,120 310,200 240,160" fill="#334155" stroke="#334155" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 4 (Right-Middle) -->
+        <polygon points="310,200 240,240 240,160" fill="#1e293b" stroke="#1e293b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 5 (Right-Lower) -->
+        <polygon points="310,200 270,290 240,240" fill="#111827" stroke="#111827" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 6 (Bottom-Right) -->
+        <polygon points="270,290 190,310 240,240" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 7 (Bottom-Middle) -->
+        <polygon points="190,310 160,240 240,240" fill="#111827" stroke="#111827" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 8 (Bottom-Left) -->
+        <polygon points="190,310 110,280 160,240" fill="#1e293b" stroke="#1e293b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 9 (Left-Lower) -->
+        <polygon points="110,280 90,190 160,240" fill="#1e293b" stroke="#1e293b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 10 (Left-Middle) -->
+        <polygon points="90,190 160,160 160,240" fill="#334155" stroke="#334155" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 11 (Left-Upper) -->
+        <polygon points="90,190 120,120 160,160" fill="#64748b" stroke="#64748b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 12 (Top-Left) -->
+        <polygon points="120,120 200,90 160,160" fill="#78889b" stroke="#78889b" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 13 (Inner Center 1) -->
+        <polygon points="160,160 240,160 240,240" fill="#475569" stroke="#475569" stroke-width="0.8" stroke-linejoin="round"/>
+        
+        <!-- Facet 14 (Inner Center 2) -->
+        <polygon points="160,160 240,240 160,240" fill="#334155" stroke="#334155" stroke-width="0.8" stroke-linejoin="round"/>
+
+        <!-- Rock Edge Highlight Overlay (Top-Left light source) -->
+        <path d="M 200,90 L 120,120 L 90,190 L 110,280" 
+              stroke="#94a3b8" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+        <path d="M 160,160 L 200,90 M 160,160 L 120,120 M 160,160 L 90,190" 
+              stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+
+        <!-- SMALL ORANGE ORE CHUNKS -->
+        <g stroke-linejoin="round" stroke-linecap="round">
+            <!-- Chunk 1: Embedded Left-Center (flat diamond plate) -->
+            <polygon points="145,175 155,170 148,200" fill="#f97316" stroke="#f97316" stroke-width="0.8"/>
+            <polygon points="155,170 158,195 148,200" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+
+            <!-- Chunk 2: Embedded Right-Center (flat diamond plate) -->
+            <polygon points="255,170 270,165 260,190" fill="#f97316" stroke="#f97316" stroke-width="0.8"/>
+            <polygon points="270,165 275,185 260,190" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+
+            <!-- Chunk 3: Embedded Bottom-Right (flat shadowed plate) -->
+            <polygon points="205,265 220,260 200,285" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+            <polygon points="220,260 215,280 200,285" fill="#9a3412" stroke="#9a3412" stroke-width="0.8"/>
+
+            <!-- Chunk 4: Embedded Top-Left (flat diamond plate) -->
+            <polygon points="170,125 185,120 180,135" fill="#f97316" stroke="#f97316" stroke-width="0.8"/>
+            <polygon points="170,125 180,135 165,140" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+
+            <!-- Chunk 5: Embedded Bottom-Left (flat shadowed plate) -->
+            <polygon points="135,260 148,255 145,275" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+            <polygon points="135,260 145,275 132,280" fill="#9a3412" stroke="#9a3412" stroke-width="0.8"/>
+
+            <!-- Chunk 6: Embedded Top-Right (flat diamond plate) -->
+            <polygon points="225,125 240,115 233,140" fill="#f97316" stroke="#f97316" stroke-width="0.8"/>
+            <polygon points="240,115 248,130 233,140" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+
+            <!-- Chunk 7: Embedded Bottom-Right-Far (flat shadowed plate) -->
+            <polygon points="265,235 280,225 273,250" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+            <polygon points="280,225 288,240 273,250" fill="#9a3412" stroke="#9a3412" stroke-width="0.8"/>
+
+            <!-- Chunk 8: Embedded Center (flat diamond plate) -->
+            <polygon points="190,200 205,190 197,215" fill="#f97316" stroke="#f97316" stroke-width="0.8"/>
+            <polygon points="205,190 212,205 197,215" fill="#c2410c" stroke="#c2410c" stroke-width="0.8"/>
+        </g>
     </g>
-    <!-- Sparkles -->
-    <circle cx="120" cy="120" r="5" fill="#fbbf24" filter="url(#glow)"/>
-    <circle cx="280" cy="100" r="8" fill="#fbbf24" filter="url(#glow)"/>
-    <circle cx="100" cy="280" r="6" fill="#fbbf24" filter="url(#glow)"/>
 </svg>
