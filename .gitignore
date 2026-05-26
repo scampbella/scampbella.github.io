@@ -9,6 +9,7 @@ node_modules/
 .idea/
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -16,6 +17,9 @@ pnpm-debug.log*
 
 # OS
 .DS_Store
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
 Desktop.ini
 
@@ -27,3 +31,4 @@ Desktop.ini
 # Editor & Tooling
 .playwright-mcp/
 .vscode/
+*.swp
