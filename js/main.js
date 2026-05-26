@@ -1,5 +1,6 @@
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header nav');
+    if (!header) return;
     if (window.scrollY > 50) {
         header.classList.add('py-2');
         header.classList.remove('py-4');

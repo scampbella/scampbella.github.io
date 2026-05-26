@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Scott Campbell</title>
+    <meta name="description" content="Scott Campbell's personal website and portfolio.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Material Symbols -->
     <link
@@ -15,8 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="js/tailwind.config.js"></script>
+    <link rel="stylesheet" href="css/tailwind.css">
 </head>
 
 <body class="bg-background text-on-background font-body-md overflow-x-hidden">
@@ -42,9 +42,10 @@
         <section
             class="min-h-screen flex flex-col justify-center items-center max-w-container-max mx-auto px-margin-desktop text-center relative flex-grow">
             <h1
-                class="font-display-lg text-[100px] md:text-[140px] leading-[0.9] mb-0 tracking-[-0.05em] font-extrabold text-on-surface uppercase">
-                &nbsp; &nbsp; &nbsp;Scott&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Campbell</h1>
+                class="font-display-lg text-[100px] md:text-[140px] leading-[0.9] mb-0 tracking-[-0.05em] font-extrabold text-on-surface uppercase flex flex-col items-center w-full">
+                <span class="pr-20 md:pr-[280px]">Scott</span>
+                <span class="pl-20 md:pl-[280px]">Campbell</span>
+            </h1>
             <div
                 class="absolute bottom-10 left-0 right-0 flex flex-col items-center gap-2 text-on-surface-variant animate-bounce">
                 <span class="font-label-sm uppercase tracking-widest text-[10px]">Scroll to explore</span>
@@ -200,7 +201,7 @@
                                     <source srcset="assets/images/zenbook-md.avif" media="(max-width: 1280px)"
                                         type="image/avif">
                                     <source srcset="assets/images/zenbook-lg.avif" type="image/avif">
-                                    <img alt="Zenbook S16" class="w-full h-full object-contain scale-[1.25]"
+                                    <img alt="Zenbook S16" class="w-full h-full object-contain"
                                         src="assets/images/zenbook.png">
                                 </picture>
                             </div>
@@ -234,7 +235,7 @@
                             <h4 class="font-headline-md text-headline-md text-on-surface mb-2">PLSWORK2024</h4>
                             <p class="text-on-surface-variant font-body-md mb-6">This is my low power SFX pc I use every
                                 single day. It draws around 300W while under full load and runs all my demanding tasks
-                                from videogame to local LLMs.</p>
+                                from videogames to local LLMs.</p>
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10">
                                     <span class="block text-primary font-bold mb-1">RTX 4070 Super</span>
