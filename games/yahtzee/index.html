@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yahtzee</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
@@ -31,27 +32,33 @@
         <!-- Scorecard -->
         <section class="scorecard-panel">
             <div class="scorecard">
-                <h2 class="section-title">Upper Section</h2>
-                <div id="upper-scores"></div>
-                <div class="summary-row">
-                    <span>Upper Total</span>
-                    <strong id="upper-total">0</strong>
+                <!-- Upper Column -->
+                <div class="scorecard-col">
+                    <h2 class="section-title">Upper Section</h2>
+                    <div id="upper-scores"></div>
+                    <div class="summary-row">
+                        <span>Upper Total</span>
+                        <strong id="upper-total">0</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Bonus (63+)</span>
+                        <strong id="upper-bonus">0</strong>
+                    </div>
+                    <div id="bonus-tracker" class="bonus-tracker"></div>
                 </div>
-                <div class="summary-row">
-                    <span>Bonus (63+)</span>
-                    <strong id="upper-bonus">0</strong>
-                </div>
-                <div id="bonus-tracker" class="bonus-tracker"></div>
 
-                <h2 class="section-title">Lower Section</h2>
-                <div id="lower-scores"></div>
-                <div class="summary-row">
-                    <span>Lower Total</span>
-                    <strong id="lower-total">0</strong>
-                </div>
-                <div class="summary-row grand">
-                    <span>Grand Total</span>
-                    <strong id="grand-total">0</strong>
+                <!-- Lower Column -->
+                <div class="scorecard-col">
+                    <h2 class="section-title">Lower Section</h2>
+                    <div id="lower-scores"></div>
+                    <div class="summary-row">
+                        <span>Lower Total</span>
+                        <strong id="lower-total">0</strong>
+                    </div>
+                    <div class="summary-row grand">
+                        <span>Grand Total</span>
+                        <strong id="grand-total">0</strong>
+                    </div>
                 </div>
             </div>
         </section>
