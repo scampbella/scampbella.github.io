@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <defs>
+        <linearGradient id="bgCasino" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#064e3b"/>
+        </linearGradient>
+        <filter id="shadow">
+            <feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity="0.4"/>
+        </filter>
+    </defs>
+    <rect width="400" height="400" fill="url(#bgCasino)"/>
+    <!-- Card 1 -->
+    <g transform="translate(140, 120) rotate(-10)" filter="url(#shadow)">
+        <rect width="90" height="140" rx="10" fill="#ffffff"/>
+        <text x="10" y="30" font-family="Arial" font-size="24" font-weight="bold" fill="#000000">A</text>
+        <path d="M45,60 C45,60 30,40 15,60 C0,80 45,110 45,110 C45,110 90,80 75,60 C60,40 45,60 45,60 Z" fill="#000000" transform="scale(0.4) translate(65, 80)"/>
+    </g>
+    <!-- Card 2 -->
+    <g transform="translate(190, 140) rotate(15)" filter="url(#shadow)">
+        <rect width="90" height="140" rx="10" fill="#ffffff"/>
+        <text x="10" y="30" font-family="Arial" font-size="24" font-weight="bold" fill="#ef4444">K</text>
+        <path d="M45,40 L60,65 L80,65 L65,85 L70,110 L45,95 L20,110 L25,85 L10,65 L30,65 Z" fill="#ef4444" transform="scale(0.4) translate(65, 80)"/>
+    </g>
+    <!-- Poker Chip -->
+    <g transform="translate(120, 240)" filter="url(#shadow)">
+        <circle cx="50" cy="50" r="40" fill="#3b82f6" stroke="#ffffff" stroke-width="8" stroke-dasharray="20 10"/>
+        <circle cx="50" cy="50" r="25" fill="none" stroke="#ffffff" stroke-width="2"/>
+        <circle cx="50" cy="50" r="15" fill="#ffffff"/>
+    </g>
+</svg>

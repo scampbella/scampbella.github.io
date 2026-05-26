@@ -38,6 +38,11 @@ html, body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
 }
 
 /* === Texture overlay === */
@@ -325,9 +330,9 @@ body::before {
 
 .score-row.filled {
     cursor: default;
-    background: var(--score-filled-bg);
-    border-color: transparent;
-    opacity: 0.7;
+    background: rgba(180,140,40,0.15);
+    border-color: var(--border-gold);
+    opacity: 1;
 }
 
 .score-row .category-name {
@@ -337,10 +342,9 @@ body::before {
 }
 
 .score-row.filled .category-name {
-    color: var(--text-dim);
-    font-weight: 400;
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
+    color: var(--gold-bright);
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .score-row .category-score {
@@ -358,8 +362,9 @@ body::before {
 }
 
 .score-row.filled .category-score {
-    color: var(--gold);
-    background: rgba(180,140,40,0.1);
+    color: var(--gold-bright);
+    background: rgba(180,140,40,0.2);
+    border: 1px solid var(--border-gold);
 }
 
 .score-row .preview-score {
@@ -413,6 +418,31 @@ body::before {
 
 #upper-bonus {
     color: var(--bonus-green);
+}
+
+/* === Upper Bonus Tracker === */
+.bonus-tracker {
+    text-align: right;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    min-height: 1.5em;
+    font-style: italic;
+}
+
+.bonus-tracker .bonus-progress {
+    color: var(--score-preview);
+}
+
+.bonus-tracker .bonus-secured {
+    color: var(--bonus-green);
+    font-weight: 700;
+    font-style: normal;
+}
+
+.bonus-tracker .bonus-missed {
+    color: #c0392b;
+    text-decoration: line-through;
+    font-style: normal;
 }
 
 /* === Game Over Overlay === */

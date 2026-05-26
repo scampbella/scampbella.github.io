@@ -19,18 +19,17 @@
     --hp-bg: #3a1a1a;
     --xp-blue: #5b9bd5;
     --xp-bg: #1a2a3a;
-    --btn-attack: #c0392b;
-    --btn-attack-hover: #e74c3c;
+    --btn-mine: #8b6914;
+    --btn-mine-hover: #a67c1e;
     --btn-buy: #8b6914;
     --btn-buy-hover: #a67c1e;
     --btn-buy-disabled: #3a3020;
     --btn-reset: #5a1a1a;
     --btn-reset-hover: #7a2020;
-    --btn-alloc: #2a4a2a;
-    --btn-alloc-hover: #3a6a3a;
-    --gem-purple: #b388eb;
-    --fly-damage: #ff4444;
-    --fly-gold: #ffd700;
+    --btn-sell: #2a5a2a;
+    --btn-sell-hover: #3a7a3a;
+    --fly-damage: #ff6666;
+    --fly-loot: #7dd3fc;
 }
 
 html, body {
@@ -42,6 +41,11 @@ html, body {
     font-size: 16px;
     line-height: 1.5;
     overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
 }
 
 /* === Header === */
@@ -77,23 +81,67 @@ html, body {
     color: var(--text-gold);
 }
 
-.currency.gem {
-    color: var(--gem-purple);
-}
-
 .currency .icon {
     margin-right: 2px;
+}
+
+/* === Area Tabs === */
+.area-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 24px;
+    background: var(--bg-stone);
+    border-bottom: 1px solid var(--border-stone);
+    flex-wrap: wrap;
+}
+
+.area-tab {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    font-weight: bold;
+    color: var(--text-dim);
+    background: var(--bg-parchment);
+    border: 1px solid var(--border-stone);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.area-tab:hover:not(.locked):not(.active) {
+    background: var(--bg-panel);
+    color: var(--text-parchment);
+    border-color: #6a5840;
+}
+
+.area-tab.active {
+    background: var(--bg-panel);
+    color: var(--text-gold);
+    border-color: var(--text-gold);
+    box-shadow: 0 0 8px rgba(232, 200, 74, 0.2);
+}
+
+.area-tab.locked {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.area-tab .tab-emoji {
+    font-size: 1rem;
+    line-height: 1;
 }
 
 /* === Main Layout === */
 .game-layout {
     display: grid;
-    grid-template-columns: 260px 1fr 280px;
-    gap: 16px;
-    padding: 16px;
-    max-width: 1200px;
-    margin: 0 auto;
-    min-height: calc(100vh - 70px);
+    grid-template-columns: 280px 1fr 300px;
+    gap: 20px;
+    padding: 20px 32px;
+    height: calc(100vh - 70px);
 }
 
 /* === Panels === */
@@ -115,6 +163,45 @@ html, body {
     padding-bottom: 8px;
 }
 
+/* === Tabbed Shop === */
+.shop-tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 12px;
+}
+
+.shop-tab {
+    flex: 1;
+    padding: 6px 4px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    font-weight: bold;
+    color: var(--text-dim);
+    background: var(--bg-stone);
+    border: 1px solid var(--border-stone);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.shop-tab:hover {
+    background: var(--bg-parchment);
+    color: var(--text-parchment);
+}
+
+.shop-tab.active {
+    background: var(--bg-parchment);
+    color: var(--text-gold);
+    border-color: #6a5840;
+}
+
+.shop-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 /* === Shop Panel === */
 .shopkeeper {
     color: var(--text-dim);
@@ -123,17 +210,12 @@ html, body {
     font-size: 0.9rem;
 }
 
-.shop-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
 .shop-item {
     background: var(--bg-stone);
     border: 1px solid var(--border-stone);
     border-radius: 6px;
     padding: 10px;
+    margin-bottom: 6px;
 }
 
 .shop-item .item-name {
@@ -186,8 +268,19 @@ html, body {
     font-weight: bold;
 }
 
-/* === Combat Panel === */
-.combat-panel {
+.shop-item .locked-tag {
+    color: #8a4a4a;
+    font-size: 0.75rem;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-stone);
+    margin: 12px 0;
+}
+
+/* === Mine Panel === */
+.mine-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -197,37 +290,56 @@ html, body {
     overflow: hidden;
 }
 
-.enemy-zone {
+.area-label {
+    font-size: 1.1rem;
+    color: var(--text-gold);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.ore-zone {
     text-align: center;
 }
 
-.enemy-sprite {
+.ore-sprite {
     font-size: 5rem;
     cursor: pointer;
     user-select: none;
     transition: transform 0.1s;
+    filter: drop-shadow(0 0 12px rgba(232, 200, 74, 0.3));
 }
 
-.enemy-sprite:active {
+.ore-sprite:active {
     transform: scale(0.9);
 }
 
-.enemy-sprite:hover {
-    transform: scale(1.05);
+.ore-sprite:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 20px rgba(232, 200, 74, 0.5));
 }
 
-.enemy-name {
-    font-size: 1.2rem;
-    color: var(--text-parchment);
-    margin: 8px 0;
+.ore-sprite.shake {
+    animation: oreShake 0.3s ease-out;
+}
+
+@keyframes oreShake {
+    0% { transform: translateX(0); }
+    15% { transform: translateX(-8px) rotate(-2deg); }
+    30% { transform: translateX(8px) rotate(2deg); }
+    45% { transform: translateX(-6px) rotate(-1deg); }
+    60% { transform: translateX(6px) rotate(1deg); }
+    75% { transform: translateX(-3px); }
+    90% { transform: translateX(3px); }
+    100% { transform: translateX(0); }
 }
 
 .hp-bar-outer {
-    width: 280px;
-    height: 18px;
+    width: 100%;
+    max-width: 400px;
+    height: 20px;
     background: var(--hp-bg);
     border: 1px solid var(--border-stone);
-    border-radius: 9px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -245,33 +357,26 @@ html, body {
     margin-top: 4px;
 }
 
-.attack-button {
-    padding: 14px 48px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    font-family: inherit;
-    background: var(--btn-attack);
-    color: #fff;
-    border: 2px solid #8b1a1a;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    box-shadow: 0 4px 0 #6b1010;
-    position: relative;
-    user-select: none;
+.click-hint {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-style: italic;
 }
 
-.attack-button:hover {
-    background: var(--btn-attack-hover);
+.auto-miner-info {
+    background: var(--bg-stone);
+    border: 1px solid var(--border-stone);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
 }
 
-.attack-button:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 #6b1010;
+.auto-miner-info strong {
+    color: var(--text-gold);
 }
 
-.damage-fly, .gold-fly {
+.damage-fly, .loot-fly {
     position: absolute;
     font-weight: bold;
     font-size: 1.2rem;
@@ -281,7 +386,7 @@ html, body {
 }
 
 .damage-fly { color: var(--fly-damage); }
-.gold-fly { color: var(--fly-gold); }
+.loot-fly { color: var(--fly-loot); }
 
 @keyframes flyUp {
     0% { opacity: 1; transform: translateY(0); }
@@ -324,86 +429,85 @@ html, body {
     margin-bottom: 8px;
 }
 
-.stat-points-area {
-    margin-top: 8px;
-    background: var(--bg-stone);
-    border: 1px solid #4a6a2a;
-    border-radius: 6px;
-    padding: 10px;
-}
-
-.stat-points-area.hidden {
-    display: none;
-}
-
-.stat-points-label {
-    font-size: 0.85rem;
-    color: var(--text-gold);
-    margin-bottom: 8px;
-}
-
-.alloc-row {
-    display: flex;
-    gap: 6px;
-}
-
-.alloc-btn {
-    flex: 1;
-    padding: 6px 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    font-family: inherit;
-    background: var(--btn-alloc);
-    color: var(--text-parchment);
-    border: 1px solid #3a6a3a;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.alloc-btn:hover {
-    background: var(--btn-alloc-hover);
-}
-
-.divider {
-    border: none;
-    border-top: 1px solid var(--border-stone);
-    margin: 12px 0;
-}
-
-/* === Challenges === */
-.challenges-list {
+/* === Inventory === */
+.inventory-list {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.challenge-item {
+.inv-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.8rem;
-    padding: 6px 8px;
     background: var(--bg-stone);
     border: 1px solid var(--border-stone);
     border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 0.85rem;
 }
 
-.challenge-item.completed {
-    border-color: #4a6a2a;
-    background: #1a2a1a;
-}
-
-.challenge-item .challenge-name {
+.inv-item .inv-ore-name {
     color: var(--text-parchment);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.challenge-item .challenge-progress {
-    color: var(--text-dim);
-}
-
-.challenge-item.completed .challenge-progress {
+.inv-item .inv-ore-count {
     color: var(--text-gold);
+    font-weight: bold;
+    min-width: 30px;
+    text-align: right;
+    margin: 0 8px;
+}
+
+.inv-item .sell-btn {
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    font-weight: bold;
+    background: var(--btn-sell);
+    color: var(--text-parchment);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.inv-item .sell-btn:hover {
+    background: var(--btn-sell-hover);
+}
+
+.inv-item .sell-btn:disabled {
+    background: var(--btn-buy-disabled);
+    color: #5a5040;
+    cursor: not-allowed;
+}
+
+.sell-all-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 6px 0;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: inherit;
+    background: var(--btn-sell);
+    color: var(--text-gold);
+    border: 1px solid #3a7a3a;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.sell-all-btn:hover {
+    background: var(--btn-sell-hover);
+}
+
+.sell-all-btn:disabled {
+    background: var(--btn-buy-disabled);
+    color: #5a5040;
+    cursor: not-allowed;
 }
 
 /* === Reset Button === */
@@ -426,12 +530,91 @@ html, body {
     color: #e8a8a8;
 }
 
+/* === Offline Modal === */
+.offline-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.offline-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.offline-modal {
+    background: var(--bg-panel);
+    border: 2px solid var(--text-gold);
+    border-radius: 12px;
+    padding: 32px 40px;
+    text-align: center;
+    max-width: 440px;
+    width: 90%;
+    box-shadow: 0 0 40px rgba(232, 200, 74, 0.15);
+}
+
+.offline-title {
+    font-size: 1.5rem;
+    color: var(--text-gold);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+}
+
+.offline-time {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+}
+
+.offline-time strong {
+    color: var(--text-parchment);
+}
+
+.offline-ores {
+    font-size: 1.05rem;
+    color: var(--text-parchment);
+    margin-bottom: 8px;
+}
+
+.offline-xp {
+    font-size: 1.1rem;
+    color: #7bb3e8;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+.offline-close-btn {
+    padding: 10px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: inherit;
+    background: var(--btn-buy);
+    color: var(--text-gold);
+    border: 1px solid #a67c1e;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.offline-close-btn:hover {
+    background: var(--btn-buy-hover);
+}
+
 /* === Mobile Responsive === */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .game-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
-        padding: 8px;
+        height: auto;
+        padding: 12px;
     }
 
     .top-bar {
@@ -439,16 +622,11 @@ html, body {
         align-items: flex-start;
     }
 
-    .enemy-sprite {
+    .ore-sprite {
         font-size: 3.5rem;
     }
 
     .hp-bar-outer {
-        width: 220px;
-    }
-
-    .attack-button {
-        padding: 12px 36px;
-        font-size: 1.1rem;
+        max-width: 280px;
     }
 }
