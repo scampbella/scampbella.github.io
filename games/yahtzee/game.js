@@ -414,8 +414,19 @@ class UI {
         }
         // roll button click
         this.el['roll-btn'].onclick = () => {
-            game.roll();
-            this.render(game);
+            if (s.rollsLeft <= 0 || s.gameOver)
+                return;
+            const btn = this.el['roll-btn'];
+            btn.disabled = true; // prevent double clicks during animation
+            const tray = this.el['dice-tray'];
+            const diceElements = tray.querySelectorAll('.die:not(.locked)');
+            diceElements.forEach(die => {
+                die.classList.add('rolling');
+            });
+            setTimeout(() => {
+                game.roll();
+                this.render(game);
+            }, 600); // Wait for the animation to complete
         };
         // scorecard
         const upperSlots = s.scorecard.filter(sl => sl.def.section === Section.Upper);

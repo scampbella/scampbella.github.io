@@ -1,30 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
     <defs>
+        <!-- Background Gradient -->
         <linearGradient id="bgCasino" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#10b981"/>
             <stop offset="100%" stop-color="#064e3b"/>
         </linearGradient>
-        <filter id="shadow">
-            <feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity="0.4"/>
+        
+        <!-- Card Drop Shadow -->
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#022c22" flood-opacity="0.5"/>
         </filter>
+
+        <!-- Spade Suit Symbol -->
+        <g id="spade">
+            <path d="M50,18 C38,32 24,46 24,61 C24,76 35,84 48,84 C49,84 49,84 50,84 C51,84 51,84 52,84 C65,84 76,76 76,61 C76,46 62,32 50,18 Z" />
+            <path d="M50,72 C50,85 43,90 38,90 L62,90 C57,90 50,85 50,72 Z" />
+        </g>
+
+        <!-- Heart Suit Symbol -->
+        <g id="heart">
+            <path d="M50,30 C50,30 38,15 25,27 C12,40 45,78 50,82 C55,78 88,40 75,27 C62,15 50,30 50,30 Z" />
+        </g>
+
+        <!-- Crown for King Card -->
+        <g id="crown">
+            <path d="M -15,5 L -20,-10 L -8,-2 L 0,-15 L 8,-2 L 20,-10 L 15,5 Z" fill="#fbbf24" stroke="#92400e" stroke-width="1.5" stroke-linejoin="round"/>
+            <line x1="-15" y1="2" x2="15" y2="2" stroke="#92400e" stroke-width="1.5"/>
+        </g>
+
+        <!-- Ace of Spades Corner Element -->
+        <g id="spade-corner">
+            <text x="14" y="26" font-family="'DM Sans', Arial, sans-serif" font-size="16" font-weight="900" fill="#1a1a1a" text-anchor="middle">A</text>
+            <use href="#spade" transform="translate(14, 40) scale(0.14) translate(-50, -50)" fill="#1a1a1a"/>
+        </g>
+
+        <!-- King of Hearts Corner Element -->
+        <g id="heart-corner">
+            <text x="14" y="26" font-family="'DM Sans', Arial, sans-serif" font-size="16" font-weight="900" fill="#ef4444" text-anchor="middle">K</text>
+            <use href="#heart" transform="translate(14, 40) scale(0.14) translate(-50, -50)" fill="#ef4444"/>
+        </g>
     </defs>
+
+    <!-- Table Felt Background -->
     <rect width="400" height="400" fill="url(#bgCasino)"/>
-    <!-- Card 1 -->
+
+    <!-- CARD 1 (Ace of Spades) -->
     <g transform="translate(140, 120) rotate(-10)" filter="url(#shadow)">
-        <rect width="90" height="140" rx="10" fill="#ffffff"/>
-        <text x="10" y="30" font-family="Arial" font-size="24" font-weight="bold" fill="#000000">A</text>
-        <path d="M45,60 C45,60 30,40 15,60 C0,80 45,110 45,110 C45,110 90,80 75,60 C60,40 45,60 45,60 Z" fill="#000000" transform="scale(0.4) translate(65, 80)"/>
+        <!-- Card Body -->
+        <rect width="90" height="140" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+        
+        <!-- Top-Left Corner -->
+        <use href="#spade-corner"/>
+        
+        <!-- Bottom-Right Corner (Flipped) -->
+        <use href="#spade-corner" transform="translate(90, 140) rotate(180)"/>
+        
+        <!-- Center Large Spade -->
+        <use href="#spade" transform="translate(45, 72) scale(0.38) translate(-50, -50)" fill="#1a1a1a"/>
     </g>
-    <!-- Card 2 -->
+
+    <!-- CARD 2 (King of Hearts) -->
     <g transform="translate(190, 140) rotate(15)" filter="url(#shadow)">
-        <rect width="90" height="140" rx="10" fill="#ffffff"/>
-        <text x="10" y="30" font-family="Arial" font-size="24" font-weight="bold" fill="#ef4444">K</text>
-        <path d="M45,40 L60,65 L80,65 L65,85 L70,110 L45,95 L20,110 L25,85 L10,65 L30,65 Z" fill="#ef4444" transform="scale(0.4) translate(65, 80)"/>
+        <!-- Card Body -->
+        <rect width="90" height="140" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+        
+        <!-- Top-Left Corner -->
+        <use href="#heart-corner"/>
+        
+        <!-- Bottom-Right Corner (Flipped) -->
+        <use href="#heart-corner" transform="translate(90, 140) rotate(180)"/>
+        
+        <!-- Center Large Heart with Crown -->
+        <use href="#heart" transform="translate(45, 75) scale(0.36) translate(-50, -50)" fill="#ef4444"/>
+        <use href="#crown" transform="translate(45, 46)"/>
     </g>
-    <!-- Poker Chip -->
-    <g transform="translate(120, 240)" filter="url(#shadow)">
-        <circle cx="50" cy="50" r="40" fill="#3b82f6" stroke="#ffffff" stroke-width="8" stroke-dasharray="20 10"/>
-        <circle cx="50" cy="50" r="25" fill="none" stroke="#ffffff" stroke-width="2"/>
-        <circle cx="50" cy="50" r="15" fill="#ffffff"/>
+
+    <!-- Poker Chip Stack / Chip -->
+    <g transform="translate(110, 230)" filter="url(#shadow)">
+        <!-- Outer Rim -->
+        <circle cx="50" cy="50" r="44" fill="#1e3a8a" stroke="#3b82f6" stroke-width="3"/>
+        <!-- Inner dash ring -->
+        <circle cx="50" cy="50" r="36" fill="#3b82f6" stroke="#ffffff" stroke-width="8" stroke-dasharray="14 10"/>
+        <!-- Inner Ring -->
+        <circle cx="50" cy="50" r="26" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="2"/>
+        <!-- Center white inlay -->
+        <circle cx="50" cy="50" r="16" fill="#ffffff"/>
+        <!-- Value or symbol inside center -->
+        <text x="50" y="55" font-family="'DM Sans', Arial, sans-serif" font-size="14" font-weight="900" fill="#1d4ed8" text-anchor="middle">$</text>
     </g>
 </svg>
