@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <defs>
+        <linearGradient id="bgSurvivor" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8b5cf6"/>
+            <stop offset="100%" stop-color="#4c1d95"/>
+        </linearGradient>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <rect width="400" height="400" fill="url(#bgSurvivor)"/>
+    <!-- Central Crystal/Gem -->
+    <path d="M200,80 L260,180 L200,320 L140,180 Z" fill="#c4b5fd" filter="url(#glow)"/>
+    <path d="M200,80 L260,180 L200,320 Z" fill="#8b5cf6" opacity="0.6"/>
+    <!-- Incoming projectiles/enemies -->
+    <circle cx="80" cy="120" r="10" fill="#ef4444"/>
+    <circle cx="320" cy="140" r="12" fill="#ef4444"/>
+    <circle cx="100" cy="280" r="8" fill="#ef4444"/>
+    <circle cx="280" cy="300" r="15" fill="#ef4444"/>
+    <!-- Action lines -->
+    <line x1="100" y1="130" x2="130" y2="150" stroke="#fca5a5" stroke-width="3" stroke-linecap="round"/>
+    <line x1="300" y1="150" x2="260" y2="170" stroke="#fca5a5" stroke-width="3" stroke-linecap="round"/>
+    <line x1="120" y1="270" x2="150" y2="240" stroke="#fca5a5" stroke-width="3" stroke-linecap="round"/>
+</svg>

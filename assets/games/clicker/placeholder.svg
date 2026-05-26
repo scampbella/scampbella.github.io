@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#c0e8ff"/>
+  <g fill="#006686" opacity="0.4">
+    <circle cx="200" cy="200" r="60"/>
+    <circle cx="500" cy="150" r="40"/>
+    <circle cx="650" cy="350" r="80"/>
+    <circle cx="350" cy="400" r="50"/>
+    <circle cx="100" cy="450" r="35"/>
+  </g>
+  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="24" fill="#006686" opacity="0.6">Scott Campbell</text>
+</svg>

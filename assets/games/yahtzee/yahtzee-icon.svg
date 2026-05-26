@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <clipPath id="round">
+      <rect x="10" y="10" width="380" height="380" rx="40"/>
+    </clipPath>
+  </defs>
+  <rect x="10" y="10" width="380" height="380" rx="40" fill="#1B5E20"/>
+
+  <!-- Motion lines -->
+  <g stroke="#ffffff" stroke-width="2" opacity="0.15" stroke-linecap="round">
+    <line x1="25" y1="50" x2="65" y2="50"/>
+    <line x1="335" y1="100" x2="375" y2="100"/>
+    <line x1="30" y1="340" x2="70" y2="340"/>
+    <line x1="330" y1="350" x2="370" y2="350"/>
+    <line x1="20" y1="200" x2="55" y2="200"/>
+  </g>
+
+  <!-- Shadows -->
+  <g fill="#000000" opacity="0.12">
+    <ellipse cx="100" cy="145" rx="38" ry="7"/>
+    <ellipse cx="200" cy="125" rx="38" ry="7"/>
+    <ellipse cx="300" cy="145" rx="38" ry="7"/>
+    <ellipse cx="130" cy="290" rx="38" ry="7"/>
+    <ellipse cx="270" cy="290" rx="38" ry="7"/>
+  </g>
+
+  <!-- Die 1: value 3 -->
+  <g transform="translate(65, 55) rotate(-12)">
+    <rect width="70" height="70" rx="12" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+    <circle cx="35" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="35" cy="35" r="6" fill="#1B5E20"/>
+    <circle cx="35" cy="56" r="6" fill="#1B5E20"/>
+  </g>
+
+  <!-- Die 2: value 5 -->
+  <g transform="translate(165, 35) rotate(8)">
+    <rect width="70" height="70" rx="12" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+    <circle cx="14" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="35" cy="35" r="6" fill="#1B5E20"/>
+    <circle cx="14" cy="56" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="56" r="6" fill="#1B5E20"/>
+  </g>
+
+  <!-- Die 3: value 1 -->
+  <g transform="translate(265, 55) rotate(-5)">
+    <rect width="70" height="70" rx="12" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+    <circle cx="35" cy="35" r="7" fill="#1B5E20"/>
+  </g>
+
+  <!-- Die 4: value 6 -->
+  <g transform="translate(90, 190) rotate(15)">
+    <rect width="70" height="70" rx="12" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+    <circle cx="14" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="14" cy="35" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="35" r="6" fill="#1B5E20"/>
+    <circle cx="14" cy="56" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="56" r="6" fill="#1B5E20"/>
+  </g>
+
+  <!-- Die 5: value 4 -->
+  <g transform="translate(240, 190) rotate(-10)">
+    <rect width="70" height="70" rx="12" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+    <circle cx="14" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="14" r="6" fill="#1B5E20"/>
+    <circle cx="14" cy="56" r="6" fill="#1B5E20"/>
+    <circle cx="56" cy="56" r="6" fill="#1B5E20"/>
+  </g>
+</svg>
