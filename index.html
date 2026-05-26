@@ -52,6 +52,48 @@
                 <span class="material-symbols-outlined text-2xl">expand_more</span>
             </div>
         </section>
+        <!-- OSU Computer Hardware Club -->
+        <section class="bg-surface-container-lowest py-section-gap border-y border-outline-variant/30">
+            <div class="max-w-container-max mx-auto px-margin-desktop">
+                <div class="flex flex-col md:flex-row gap-16 items-center">
+                    <div class="w-full md:w-1/2">
+                        <span class="text-primary font-label-md tracking-[0.2em] mb-6 block uppercase">Campus
+                            Community</span>
+                        <h2 class="text-on-surface font-headline-lg text-headline-lg md:text-[56px] leading-tight mb-8">
+                            Computer Hardware Club at OSU</h2>
+                        <p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-lg">
+                            A laid back community for hardware enthusiasts, engineers, and gamers. We host meetings that
+                            range from informational lessons on things like CUDA and Docker to fun team building games
+                            like
+                            computer themed Jeopardy and prime number script contests.</p>
+                        <div class="flex flex-col gap-4 mb-10">
+                            <div class="flex items-center gap-4 text-on-surface">
+                                <span class="material-symbols-outlined text-primary">precision_manufacturing</span>
+                                <span class="font-body-md">Bi-weekly workshops</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-on-surface">
+                                <span class="material-symbols-outlined text-primary">settings_input_component</span>
+                                <span class="font-body-md">Learning opportunities open to all!</span>
+                            </div>
+                        </div>
+                        <a class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 transition-all inline-flex items-center gap-3"
+                            href="https://computerhardwareclub.org/" target="_blank" rel="noopener noreferrer">
+                            Visit Club Website <span class="material-symbols-outlined">open_in_new</span>
+                        </a>
+                    </div>
+                    <div class="w-full md:w-1/2 relative group">
+                        <div class="w-full aspect-square rounded-3xl overflow-hidden border border-on-surface/20">
+                            <picture class="w-full h-full block">
+                                <source srcset="assets/images/chclogo-sm.avif" type="image/avif">
+                                <img alt="Computer Hardware Enthusiasts"
+                                    class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
+                                    src="assets/images/chclogo.jpg">
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- Album of the Week -->
         <section class="bg-surface-container-lowest py-section-gap border-y border-outline-variant/30">
             <div class="max-w-container-max mx-auto px-margin-desktop">
@@ -96,48 +138,6 @@
                                 href="#">
                                 <span class="material-symbols-outlined text-xl">history</span> Rotation Archive
                             </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- OSU Computer Hardware Club -->
-        <section class="bg-surface-container-lowest py-section-gap border-y border-outline-variant/30">
-            <div class="max-w-container-max mx-auto px-margin-desktop">
-                <div class="flex flex-col md:flex-row gap-16 items-center">
-                    <div class="w-full md:w-1/2">
-                        <span class="text-primary font-label-md tracking-[0.2em] mb-6 block uppercase">Campus
-                            Community</span>
-                        <h2 class="text-on-surface font-headline-lg text-headline-lg md:text-[56px] leading-tight mb-8">
-                            Computer Hardware Club at OSU</h2>
-                        <p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-lg">
-                            A laid back community for hardware enthusiasts, engineers, and gamers. We host meetings that
-                            range from informational lessons on things like CUDA and Docker to fun team building games
-                            like
-                            computer themed Jeopardy and prime number script contests.</p>
-                        <div class="flex flex-col gap-4 mb-10">
-                            <div class="flex items-center gap-4 text-on-surface">
-                                <span class="material-symbols-outlined text-primary">precision_manufacturing</span>
-                                <span class="font-body-md">Bi-weekly workshops</span>
-                            </div>
-                            <div class="flex items-center gap-4 text-on-surface">
-                                <span class="material-symbols-outlined text-primary">settings_input_component</span>
-                                <span class="font-body-md">Learning opportunities open to all!</span>
-                            </div>
-                        </div>
-                        <a class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 transition-all inline-flex items-center gap-3"
-                            href="https://computerhardwareclub.org/" target="_blank" rel="noopener noreferrer">
-                            Visit Club Website <span class="material-symbols-outlined">open_in_new</span>
-                        </a>
-                    </div>
-                    <div class="w-full md:w-1/2 relative group">
-                        <div class="w-full aspect-square rounded-3xl overflow-hidden border border-on-surface/20">
-                            <picture class="w-full h-full block">
-                                <source srcset="assets/images/chclogo-sm.avif" type="image/avif">
-                                <img alt="Computer Hardware Enthusiasts"
-                                    class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
-                                    src="assets/images/chclogo.jpg">
-                            </picture>
                         </div>
                     </div>
                 </div>
@@ -285,7 +285,7 @@
                     href="mailto:mail@scottcampbell.me">Email</a>
             </div>
             <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm">
-                © 2026 Scott Campbell</div>
+                © <span id="year">2026</span> Scott Campbell</div>
         </div>
     </footer>
     <script src="js/main.js"></script>

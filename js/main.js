@@ -9,3 +9,7 @@ window.addEventListener('scroll', () => {
         header.classList.remove('py-2');
     }
 });
+const yearEl = document.getElementById("year");
+if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+}
