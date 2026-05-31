@@ -3,90 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyClicker: Resurrected</title>
-    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-    <link rel="stylesheet" href="game.css">
+    <title>Mining Clicker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Header Bar -->
-    <header class="top-bar">
-        <h1 class="game-title">PyClicker: Resurrected</h1>
-        <div class="currency-bar">
-            <span class="currency gold"><span class="icon">🪙</span> Gold: <strong id="gold-display">0</strong></span>
-        </div>
-    </header>
-
-    <!-- Zone Tabs -->
-    <nav id="area-tabs" class="area-tabs"></nav>
-
-    <!-- Main Layout -->
-    <main class="game-layout">
-
-        <!-- Left: Goblin Shop -->
-        <aside class="panel shop-panel">
-            <h2 class="panel-title">🛒 Goblin Shop</h2>
-            <p class="shopkeeper">"Buy somethin', will ya?"</p>
-            <div class="shop-tabs" id="shop-tabs">
-                <button class="shop-tab active" data-shop-tab="pickaxes">⛏️ Pickaxes</button>
-                <button class="shop-tab" data-shop-tab="miners">🤖 Miners</button>
-                <button class="shop-tab" data-shop-tab="areas">🌍 Areas</button>
+    <div id="game-container">
+        <!-- TOP: Zone Bar -->
+        <header id="zone-bar">
+            <div class="zones-container" id="zones-container">
+                <!-- Zones injected via JS -->
             </div>
-            <div id="shop-content" class="shop-content"></div>
-        </aside>
+        </header>
 
-        <!-- Center: Mining Area -->
-        <section class="panel mine-panel">
-            <div class="area-label" id="area-label">The Surface</div>
-            <div id="ore-container" class="ore-zone">
-                <div id="ore-sprite" class="ore-sprite">🟤</div>
-                <div class="hp-bar-outer">
-                    <div id="hp-bar-fill" class="hp-bar-fill"></div>
+        <!-- RIGHT: Shop -->
+        <aside id="right-panel">
+            <h2>Shop</h2>
+            <div class="shop-item" id="pickaxe-upgrade">
+                <h3>Upgrade Pickaxe</h3>
+                <div class="sprite-display">
+                    <div class="pickaxe-shape"></div>
                 </div>
-                <p id="hp-text" class="hp-text">50 / 50 HP</p>
+                <p>Level: <span id="pickaxe-level-display">1</span></p>
+                <button id="upgrade-pickaxe-btn"><span id="pickaxe-cost-display">Cost: 10 Gold</span></button>
             </div>
-            <p class="click-hint">🖱️ Click the ore to mine it!</p>
-            <p id="damage-fly" class="damage-fly"></p>
-            <p id="loot-fly" class="loot-fly"></p>
-            <div class="auto-miner-info" id="auto-miner-info">
-                <span>🤖 Auto-Miners: <strong id="auto-dps-display">0</strong> DPS</span>
+
+            <div id="miners-shop" style="display: none;">
+                <h3>Miners</h3>
+                
+                <div class="shop-item miner-item" id="buy-goblin-container">
+                    <div class="sprite-title">
+                        <h4>Goblin</h4>
+                        <div class="goblin-shape sprite-icon"></div>
+                    </div>
+                    <p>Yield: 1 Ore / 5s</p>
+                    <p>Owned: <span id="goblin-count">0</span> / <span id="goblin-limit">0</span></p>
+                    <button id="buy-goblin-btn">Cost: <span id="goblin-cost">300</span> Gold</button>
+                </div>
+
+                <div class="shop-item miner-item" id="buy-dwarf-container" style="display: none;">
+                    <div class="sprite-title">
+                        <h4>Dwarf</h4>
+                        <div class="dwarf-shape sprite-icon"></div>
+                    </div>
+                    <p>Yield: 1 Ore / 2.5s</p>
+                    <p>Owned: <span id="dwarf-count">0</span> / <span id="dwarf-limit">0</span></p>
+                    <button id="buy-dwarf-btn">Cost: <span id="dwarf-cost">---</span> Gold</button>
+                </div>
+
+                <div class="shop-item miner-item" id="buy-drill-container" style="display: none;">
+                    <div class="sprite-title">
+                        <h4>Drill</h4>
+                        <div class="drill-shape sprite-icon"></div>
+                    </div>
+                    <p>Yield: 1 Ore / 1s</p>
+                    <p>Owned: <span id="drill-count">0</span> / <span id="drill-limit">0</span></p>
+                    <button id="buy-drill-btn">Cost: <span id="drill-cost">---</span> Gold</button>
+                </div>
             </div>
-        </section>
-
-        <!-- Right: Stats + Inventory -->
-        <aside class="panel stats-panel">
-            <h2 class="panel-title">⚒️ Player</h2>
-            <div class="stat-row"><span>Level</span> <strong id="level-display">1</strong></div>
-            <div class="xp-bar-outer">
-                <div id="xp-bar-fill" class="xp-bar-fill"></div>
-            </div>
-            <p class="xp-text"><span id="xp-current">0</span> / <span id="xp-needed">100</span> XP</p>
-            <div class="stat-row"><span>Pickaxe Power</span> <strong id="pickaxe-display">1</strong></div>
-
-            <hr class="divider">
-
-            <h2 class="panel-title">🎒 Inventory</h2>
-            <div id="inventory-list" class="inventory-list"></div>
-            <button id="sell-all-btn" class="sell-all-btn">💰 Sell All Ores</button>
-
-            <hr class="divider">
-
-            <button id="reset-btn" class="reset-button">🔥 Hard Reset</button>
         </aside>
 
-    </main>
+        <!-- CENTER: The Rock -->
+        <main id="center-panel">
+            <div class="mining-stats">
+                <p>Active: <span id="opc-display">1</span> Ore/Click</p>
+                <p>Passive: <span id="ops-display">0</span> Ore/Minute</p>
+                <div id="active-buffs" class="active-buffs-container"></div>
+            </div>
+            
+            <div id="mother-lode-container">
+                <div id="mother-lode" class="rock-shape"></div>
+            </div>
+            
+            <!-- Background piles for miners -->
+            <div id="miner-piles"></div>
 
-    <!-- Offline Progress Modal -->
-    <div id="offline-overlay" class="offline-overlay">
-        <div class="offline-modal">
-            <h2 class="offline-title">⛏️ Welcome Back!</h2>
-            <p class="offline-time">You were away for <strong id="offline-time">--</strong></p>
-            <p class="offline-ores" id="offline-ores"></p>
-            <p class="offline-xp" id="offline-xp"></p>
-            <button id="offline-close" class="offline-close-btn">🪙 Collect Loot & Continue</button>
-        </div>
+            <!-- Powerup container -->
+            <div id="powerup-container"></div>
+        </main>
+
+        <!-- LEFT: Inventory & Selling -->
+        <aside id="left-panel">
+            <h2>Inventory</h2>
+            <div class="stats-box">
+                <p style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+                    <span>Gold:</span>
+                    <span style="display: flex; align-items: center; gap: 4px;">
+                        <span id="gold-display" style="font-weight: bold;">0</span>
+                        <span class="coin"></span>
+                    </span>
+                </p>
+            </div>
+            
+            <div id="inventory-list">
+                <!-- Ore inventory injected via JS with individual sell buttons -->
+            </div>
+
+            <button id="sell-all-btn" class="sell-all-btn" style="margin-top: 10px; margin-bottom: 10px;">💰 Sell All Ores</button>
+            <button id="reset-game-btn" style="margin-top:auto; font-size: 0.8rem; background: #5c1818; border-color: #3b0e0e;">Hard Reset Game</button>
+        </aside>
     </div>
 
-    <script src="game.js"></script>
+    <!-- Dev Tools -->
+    <div id="dev-tools-toggle">⚙️ Dev Tools</div>
+    <div id="dev-tools-panel" style="display: none;">
+        <h3>Developer Tools</h3>
+        <div>
+            <label>Gold:</label>
+            <input type="number" id="dev-gold" value="0">
+            <button id="dev-set-gold">Set Gold</button>
+        </div>
+        <div>
+            <label>Pickaxe Lvl:</label>
+            <input type="number" id="dev-pickaxe" value="1">
+            <button id="dev-set-pickaxe">Set Pickaxe</button>
+        </div>
+        <div>
+            <label>Current Ore:</label>
+            <input type="number" id="dev-ore" value="0">
+            <button id="dev-set-ore">Set Ore</button>
+        </div>
+        <button id="dev-unlock-all">Unlock All Zones</button>
+        <button id="dev-spawn-powerup" style="margin-top: 5px;">Spawn Power-up</button>
+        <button id="dev-clear-powerups" style="margin-top: 5px;">Clear Power-ups/Buffs</button>
+    </div>
+
+    <script src="balance.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
