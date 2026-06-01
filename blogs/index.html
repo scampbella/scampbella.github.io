@@ -23,7 +23,7 @@
     <!-- TopNavBar -->
     <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
         <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
-            <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1">SC</div>
+            <a href="../" class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1 uppercase hover:text-primary transition-colors">SC</a>
             <div class="flex items-center gap-10">
                 <div class="hidden md:flex items-center gap-10">
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
@@ -48,6 +48,33 @@
         </header>
         <!-- Blog List Container -->
         <section class="flex flex-col gap-10">
+            <!-- Post: The Sound of the Heart -->
+            <article class="flex flex-col md:flex-row p-8 gap-10 blog-post-card border-2 border-on-surface/20 rounded-[32px]">
+                <a href="the-sound-of-the-heart/" class="w-full md:w-[400px] aspect-[16/10] flex-shrink-0 rounded-2xl overflow-hidden bg-primary-container block">
+                    <picture class="w-full h-full block">
+                        <source srcset="../assets/images/blogs/The_Sound_of_the_Heart/cover-md.avif" type="image/avif">
+                        <img alt="The Sound of the Heart"
+                            class="w-full h-full object-cover"
+                            src="../assets/images/blogs/The_Sound_of_the_Heart/cover.jpg">
+                    </picture>
+                </a>
+                <div class="flex flex-col justify-center flex-grow">
+                    <div class="flex items-center gap-3 mb-4">
+                        <time class="font-label-sm text-label-sm text-primary uppercase tracking-widest">June 1, 2026</time>
+                        <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">6 min read</span>
+                    </div>
+                    <a href="the-sound-of-the-heart/">
+                        <h2 class="font-headline-lg text-headline-lg md:text-[36px] text-on-surface mb-6 leading-tight hover:text-primary transition-colors">The Sound of the Heart</h2>
+                    </a>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-3 leading-relaxed">
+                        An essay exploring melancholic folk music through the lenses of Elliott Smith's <i>Either/Or</i> and Phoebe Bridgers' <i>Stranger in the Alps</i>.</p>
+                    <a class="flex items-center gap-2 font-label-md text-primary hover:underline group w-fit" href="the-sound-of-the-heart/">
+                        Read Article
+                        <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </article>
             <!-- Post 1 -->
             <article class="flex flex-col md:flex-row p-8 gap-10 blog-post-card border-2 border-on-surface/20 rounded-[32px]">
                 <a href="blog-building-plswork2024/" class="w-full md:w-[400px] aspect-[16/10] flex-shrink-0 rounded-2xl overflow-hidden bg-primary-container block">
@@ -63,13 +90,13 @@
                         <time class="font-label-sm text-label-sm text-primary uppercase tracking-widest">May 25,
                             2026</time>
                         <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-                        <span class="font-label-sm text-label-sm text-on-surface-variant">12 min read</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">8 min read</span>
                     </div>
                     <a href="blog-building-plswork2024/">
                         <h2 class="font-headline-lg text-headline-lg md:text-[36px] text-on-surface mb-6 leading-tight hover:text-primary transition-colors">
                             Building PLSWORK2024</h2>
                     </a>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-8 line-clamp-3 leading-relaxed">
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-3 leading-relaxed">
                         From the name of this computer, you could probably assume that I had some trouble building it.
                         That would be a serious understatement. This was a genuinely torturous process...</p>
                     <a class="flex items-center gap-2 font-label-md text-primary hover:underline group w-fit" href="blog-building-plswork2024/">
