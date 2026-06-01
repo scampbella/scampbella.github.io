@@ -6,8 +6,8 @@ A structured template for tracking features, bugs, and tasks.
 
 ## ⚡ Current Focus (Active Tasks)
 
-- [ ] Flesh out PyClicker
-  - [ ] Find game assets
+- [x] Flesh out PyClicker
+  - [x] Find game assets
 - [ ] 
 
 ## Game Stuff

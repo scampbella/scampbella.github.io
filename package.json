@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "node --watch --watch-path=server.js --watch-path=index.html --watch-path=js/ --watch-path=css/style.css --watch-path=blogs/ --watch-path=games/ server.js",
     "convert-images": "node scripts/convert-to-avif.mjs",
     "build:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css",
     "dev:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css --watch"
