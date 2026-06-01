@@ -90,6 +90,24 @@
     border-color: var(--ct-primary);
 }
 
+.album-card {
+    background: var(--ct-surface-container-lowest);
+    border-radius: 32px;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.album-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--ct-primary);
+}
+
+.active-sort-field {
+    background: var(--ct-primary-container);
+    color: var(--ct-on-primary-container);
+    border-color: var(--ct-primary);
+}
+
 ::selection {
     background-color: var(--ct-primary-container);
     color: var(--ct-on-primary-container);
