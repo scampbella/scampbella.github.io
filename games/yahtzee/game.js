@@ -64,7 +64,7 @@ function isYahtzee(dice) {
 // ============================================================
 const CATEGORIES = [
     // Upper Section
-    { name: 'Aces', section: Section.Upper, scoreFn: d => sumOf(d, 1) },
+    { name: 'Ones', section: Section.Upper, scoreFn: d => sumOf(d, 1) },
     { name: 'Twos', section: Section.Upper, scoreFn: d => sumOf(d, 2) },
     { name: 'Threes', section: Section.Upper, scoreFn: d => sumOf(d, 3) },
     { name: 'Fours', section: Section.Upper, scoreFn: d => sumOf(d, 4) },
@@ -329,7 +329,7 @@ class UI {
             'upper-scores', 'lower-scores',
             'upper-total', 'upper-bonus', 'lower-total', 'grand-total',
             'game-over-overlay', 'final-score', 'score-breakdown',
-            'play-again-btn', 'held-label', 'high-score-display', 'bonus-tracker',
+            'play-again-btn', 'high-score-display', 'bonus-tracker',
         ];
         for (const id of ids) {
             this.el[id] = document.getElementById(id);
@@ -401,17 +401,6 @@ class UI {
                 this.render(game);
             });
         });
-        // held label
-        const lockedDice = s.dice.filter(d => d.locked);
-        const heldLabel = this.el['held-label'];
-        if (lockedDice.length > 0) {
-            heldLabel.textContent = `Held: ${lockedDice.map(d => d.value).join(' ')}`;
-            heldLabel.className = 'held-label held-visible';
-        }
-        else {
-            heldLabel.textContent = 'Held: None';
-            heldLabel.className = 'held-label held-hidden';
-        }
         // roll button click
         this.el['roll-btn'].onclick = () => {
             if (s.rollsLeft <= 0 || s.gameOver)
@@ -426,6 +415,9 @@ class UI {
             setTimeout(() => {
                 game.roll();
                 this.render(game);
+                if (isYahtzee(game.dice.values())) {
+                    this.triggerYahtzeeAnimation();
+                }
             }, 600); // Wait for the animation to complete
         };
         // scorecard
@@ -537,6 +529,37 @@ class UI {
     }
     saveHighScore(score) {
         localStorage.setItem('yahtzee_high_score', String(score));
+    }
+    triggerYahtzeeAnimation() {
+        const banner = document.getElementById('yahtzee-banner');
+        const container = document.getElementById('confetti-container');
+        if (!banner || !container)
+            return;
+        banner.classList.remove('hidden');
+        container.innerHTML = '';
+        const colors = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#ec4899', '#8b5cf6', '#f43f5e', '#06b6d4'];
+        const pieceCount = 100;
+        for (let i = 0; i < pieceCount; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const delay = Math.random() * 1.5;
+            const duration = Math.random() * 1.5 + 1.5;
+            const width = Math.random() * 6 + 6;
+            const height = Math.random() * 12 + 12;
+            piece.style.backgroundColor = color;
+            piece.style.left = `${left}%`;
+            piece.style.animationDelay = `${delay}s`;
+            piece.style.animationDuration = `${duration}s`;
+            piece.style.width = `${width}px`;
+            piece.style.height = `${height}px`;
+            container.appendChild(piece);
+        }
+        setTimeout(() => {
+            banner.classList.add('hidden');
+            container.innerHTML = '';
+        }, 3000);
     }
 }
 // ============================================================
