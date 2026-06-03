@@ -11,25 +11,14 @@
 
     <header class="top-bar">
         <h1 class="title">YAHTZEE</h1>
-        <span class="round-badge">Round <strong id="round-num">1</strong> / 13</span>
+        <button id="mode-toggle" class="mode-toggle">Challenge Keiri</button>
     </header>
 
-    <main class="game-layout">
+    <main id="game-layout" class="game-layout">
 
-        <!-- Dice Area -->
-        <section class="dice-panel">
-            <div id="dice-tray" class="dice-tray"></div>
-            <div class="roll-area">
-                <span class="rolls-badge">Rolls: <strong id="rolls-left">3</strong></span>
-                <button id="roll-btn" class="roll-button">ROLL DICE</button>
-            </div>
-            <p class="hint">Click dice to lock / unlock</p>
-        </section>
-
-        <!-- Scorecard -->
-        <section class="scorecard-panel">
+        <!-- Player Scorecard (left in vs mode, right in solo) -->
+        <section id="player-scorecard" class="scorecard-panel">
             <div class="scorecard">
-                <!-- Upper Column -->
                 <div class="scorecard-col">
                     <h2 class="section-title">Upper Section</h2>
                     <div id="upper-scores"></div>
@@ -43,8 +32,6 @@
                     </div>
                     <div id="bonus-tracker" class="bonus-tracker"></div>
                 </div>
-
-                <!-- Lower Column -->
                 <div class="scorecard-col">
                     <h2 class="section-title">Lower Section</h2>
                     <div id="lower-scores"></div>
@@ -60,6 +47,53 @@
             </div>
         </section>
 
+        <!-- Dice Area (center in vs mode, left in solo) -->
+        <div class="dice-area-wrapper">
+            <section class="dice-panel">
+                <div id="dice-tray" class="dice-tray"></div>
+                <div class="roll-area">
+                    <span class="rolls-badge">Rolls: <strong id="rolls-left">3</strong></span>
+                    <button id="roll-btn" class="roll-button">ROLL DICE</button>
+                </div>
+                <p class="hint">Click dice to lock / unlock</p>
+                <div class="high-score-block">
+                    <span>High Score: <strong id="high-score-display-header">0</strong></span>
+                </div>
+            </section>
+            <div id="turn-label" class="turn-label hidden">Your Turn</div>
+        </div>
+
+        <!-- Bot Scorecard (right in vs mode, hidden in solo) -->
+        <section id="bot-scorecard" class="scorecard-panel hidden">
+            <div class="scorecard">
+                <div class="scorecard-col">
+                    <h2 class="section-title">Upper Section</h2>
+                    <div id="upper-scores-bot"></div>
+                    <div class="summary-row">
+                        <span>Upper Total</span>
+                        <strong id="upper-total-bot">0</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Bonus (63+)</span>
+                        <strong id="upper-bonus-bot">0</strong>
+                    </div>
+                    <div id="bonus-tracker-bot" class="bonus-tracker"></div>
+                </div>
+                <div class="scorecard-col">
+                    <h2 class="section-title">Lower Section</h2>
+                    <div id="lower-scores-bot"></div>
+                    <div class="summary-row">
+                        <span>Lower Total</span>
+                        <strong id="lower-total-bot">0</strong>
+                    </div>
+                    <div class="summary-row grand">
+                        <span>Grand Total</span>
+                        <strong id="grand-total-bot">0</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Game Over Overlay -->
@@ -70,9 +104,10 @@
             <p id="final-score" class="final-score">0</p>
             <p id="high-score-display" class="high-score-line">High Score: <strong>0</strong></p>
             <div id="score-breakdown" class="score-breakdown"></div>
-            <button id="play-again-btn" class="play-again-btn">🔄 Play Again</button>
+            <button id="play-again-btn" class="play-again-btn">Play Again</button>
         </div>
     </div>
+
     <!-- Yahtzee Alert Banner -->
     <div id="yahtzee-banner" class="yahtzee-banner hidden">
         <div class="yahtzee-banner-content">
@@ -81,6 +116,9 @@
         <div id="confetti-container" class="confetti-container"></div>
     </div>
 
+    <footer class="site-footer">
+        <span>Keiri created by <a href="https://github.com/oliverdougherC/Keiri" target="_blank" rel="noopener">oliverdougherC</a></span>
+    </footer>
 
     <script src="game.js"></script>
 </body>
