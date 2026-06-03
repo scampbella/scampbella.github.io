@@ -19,9 +19,6 @@
         <!-- Dice Area -->
         <section class="dice-panel">
             <div id="dice-tray" class="dice-tray"></div>
-            <div class="held-info">
-                <span id="held-label" class="held-label held-hidden">Held: None</span>
-            </div>
             <div class="roll-area">
                 <span class="rolls-badge">Rolls: <strong id="rolls-left">3</strong></span>
                 <button id="roll-btn" class="roll-button">ROLL DICE</button>
@@ -76,6 +73,14 @@
             <button id="play-again-btn" class="play-again-btn">🔄 Play Again</button>
         </div>
     </div>
+    <!-- Yahtzee Alert Banner -->
+    <div id="yahtzee-banner" class="yahtzee-banner hidden">
+        <div class="yahtzee-banner-content">
+            <h2 class="yahtzee-banner-title">YAHTZEE!</h2>
+        </div>
+        <div id="confetti-container" class="confetti-container"></div>
+    </div>
+
 
     <script src="game.js"></script>
 </body>

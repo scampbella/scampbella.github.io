@@ -43,7 +43,7 @@ body {
     background-color: var(--felt);
     color: var(--text-primary);
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.5;
     scrollbar-width: none;
 }
@@ -73,7 +73,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
+    padding: 20px 32px;
     background: var(--panel-bg);
     border-bottom: 2px solid var(--border-gold);
     flex-wrap: wrap;
@@ -81,7 +81,7 @@ body::before {
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 900;
     letter-spacing: 0.15em;
     color: var(--gold-bright);
@@ -90,7 +90,7 @@ body::before {
 }
 
 .round-badge {
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     background: rgba(0, 0, 0, 0.3);
     padding: 6px 14px;
     border-radius: 6px;
@@ -106,8 +106,8 @@ body::before {
     position: relative;
     z-index: 1;
     display: flex;
-    gap: 24px;
-    padding: 24px;
+    gap: 32px;
+    padding: 32px;
     max-width: 1200px;
     margin: 0 auto;
     align-items: flex-start;
@@ -116,17 +116,17 @@ body::before {
 /* === Dice Panel === */
 .dice-panel {
     position: sticky;
-    top: 24px;
+    top: 28px;
     flex: 1;
-    min-width: 300px;
+    min-width: 380px;
     background: var(--panel-bg);
     border: 1px solid var(--border-gold);
     border-radius: 16px;
-    padding: 24px;
+    padding: 32px 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 24px;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
 }
@@ -140,8 +140,8 @@ body::before {
 
 /* === Pip Die Styling === */
 .die {
-    width: 58px;
-    height: 58px;
+    width: 60px;
+    height: 60px;
     background: var(--die-bg-gradient);
     border: 2px solid #b8b0a0;
     border-radius: 10px;
@@ -182,7 +182,7 @@ body::before {
     position: absolute;
     top: -10px;
     right: -10px;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     z-index: 2;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
@@ -212,8 +212,8 @@ body::before {
 }
 
 .pip-dot {
-    width: 9px;
-    height: 9px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--die-pip);
 }
@@ -222,33 +222,17 @@ body::before {
     visibility: hidden;
 }
 
-/* === Held Info === */
-.held-label {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    transition: opacity 0.3s;
-    min-height: 1.2em;
-}
-
-.held-label.held-hidden {
-    opacity: 0;
-}
-
-.held-label.held-visible {
-    color: var(--gold-bright);
-    font-weight: 600;
-}
 
 /* === Roll Area (rolls-left + button together) === */
 .roll-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
 }
 
 .rolls-badge {
-    font-size: 0.9rem;
+    font-size: 1rem;
     background: rgba(0, 0, 0, 0.3);
     padding: 6px 14px;
     border-radius: 6px;
@@ -257,12 +241,12 @@ body::before {
 
 .rolls-badge strong {
     color: var(--gold-bright);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .roll-button {
-    padding: 12px 40px;
-    font-size: 1.1rem;
+    padding: 16px 48px;
+    font-size: 1.25rem;
     font-weight: 700;
     font-family: inherit;
     background: linear-gradient(180deg, #a82020 0%, #7a1010 100%);
@@ -293,7 +277,7 @@ body::before {
 }
 
 .hint {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-dim);
     text-align: center;
 }
@@ -301,33 +285,33 @@ body::before {
 /* === Scorecard Panel === */
 .scorecard-panel {
     flex: 2;
-    min-width: 320px;
+    min-width: 360px;
 }
 
 .scorecard {
     background: var(--panel-bg);
     border: 1px solid var(--border-gold);
     border-radius: 16px;
-    padding: 20px;
+    padding: 24px;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     display: flex;
-    gap: 32px;
+    gap: 40px;
 }
 
 .scorecard-col {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 260px;
+    min-width: 280px;
 }
 
 .section-title {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--section-gold);
-    margin: 16px 0 10px;
+    margin: 18px 0 10px;
     padding-bottom: 6px;
     border-bottom: 1px solid var(--border-gold);
 }
@@ -341,7 +325,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 9px 14px;
+    padding: 11px 16px;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
@@ -380,7 +364,7 @@ body::before {
 }
 
 .score-row .category-name {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text-primary);
     font-weight: 600;
 }
@@ -392,7 +376,7 @@ body::before {
 }
 
 .score-row .category-score {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     min-width: 48px;
     text-align: right;
@@ -428,7 +412,7 @@ body::before {
     justify-content: space-between;
     align-items: center;
     padding: 6px 14px;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     margin-top: 4px;
 }
@@ -439,12 +423,12 @@ body::before {
 
 .summary-row strong {
     color: var(--text-primary);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
 }
 
 .summary-row.grand {
-    font-size: 1rem;
-    padding: 10px 14px;
+    font-size: 1.1rem;
+    padding: 12px 14px;
     margin-top: 8px;
     border-top: 2px solid var(--border-gold);
 }
@@ -452,12 +436,12 @@ body::before {
 .summary-row.grand span {
     color: var(--gold-bright);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 .summary-row.grand strong {
     color: var(--gold-bright);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
 }
 
 #upper-bonus {
@@ -468,7 +452,7 @@ body::before {
 .bonus-tracker {
     text-align: right;
     padding: 4px 14px;
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     min-height: 1.5em;
     font-style: italic;
 }
@@ -510,15 +494,15 @@ body::before {
     background: var(--felt-dark);
     border: 2px solid var(--border-gold);
     border-radius: 20px;
-    padding: 40px 48px;
+    padding: 48px 56px;
     text-align: center;
-    max-width: 420px;
+    max-width: 460px;
     width: 90%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .overlay-card h2 {
-    font-size: 2rem;
+    font-size: 2.4rem;
     color: var(--gold-bright);
     margin-bottom: 8px;
     text-transform: uppercase;
@@ -526,13 +510,13 @@ body::before {
 }
 
 .final-score-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text-dim);
     margin-bottom: 4px;
 }
 
 .final-score {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     color: var(--gold-bright);
     text-shadow: 0 2px 10px rgba(212, 168, 67, 0.4);
@@ -540,7 +524,7 @@ body::before {
 }
 
 .high-score-line {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     color: var(--text-dim);
     margin-bottom: 12px;
 }
@@ -566,9 +550,9 @@ body::before {
 }
 
 .score-breakdown {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-dim);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -576,8 +560,8 @@ body::before {
 }
 
 .play-again-btn {
-    padding: 12px 36px;
-    font-size: 1.1rem;
+    padding: 16px 44px;
+    font-size: 1.25rem;
     font-weight: 700;
     font-family: inherit;
     background: linear-gradient(180deg, var(--btn-hover) 0%, var(--btn-bg) 100%);
@@ -598,13 +582,13 @@ body::before {
     .game-layout {
         flex-direction: column;
         align-items: center;
-        padding: 16px;
+        padding: 20px;
     }
 
     .dice-panel {
         position: static;
         width: 100%;
-        max-width: 500px;
+        max-width: 560px;
     }
 
     .scorecard-panel {
@@ -616,7 +600,7 @@ body::before {
 @media (max-width: 640px) {
     .scorecard {
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
     }
 
     .scorecard-col {
@@ -624,22 +608,104 @@ body::before {
     }
 
     .die {
-        width: 48px;
-        height: 48px;
-        padding: 6px;
+        width: 56px;
+        height: 56px;
+        padding: 8px;
         border-radius: 8px;
     }
 
     .pip-dot {
-        width: 7px;
-        height: 7px;
+        width: 9px;
+        height: 9px;
     }
 
     .dice-tray {
-        gap: 6px;
+        gap: 8px;
     }
 
     .title {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
+    }
+}
+
+/* === Yahtzee Banner === */
+.yahtzee-banner {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    animation: yahtzeeBannerFade 3s ease-in-out forwards;
+}
+
+.yahtzee-banner.hidden {
+    display: none !important;
+}
+
+.yahtzee-banner-content {
+    background: linear-gradient(135deg, #d4982a 0%, #fbbf24 50%, #d4982a 100%);
+    border: 4px solid var(--gold-bright);
+    border-radius: 24px;
+    padding: 30px 60px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 40px rgba(251, 191, 36, 0.4);
+    transform: scale(0.5);
+    animation: yahtzeeBannerScale 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.yahtzee-banner-title {
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.05em;
+}
+
+@keyframes yahtzeeBannerFade {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes yahtzeeBannerScale {
+    0% { transform: scale(0.3) rotate(-5deg); }
+    12% { transform: scale(1.1) rotate(2deg); }
+    16% { transform: scale(1) rotate(0deg); }
+    88% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(0.5) translateY(100px) opacity: 0; }
+}
+
+/* === Confetti === */
+.confetti-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -50px;
+    width: 10px;
+    height: 20px;
+    opacity: 0.9;
+    animation: confettiFall 3s linear backwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-50px) rotate(0deg) translateX(0);
+    }
+    50% {
+        transform: translateY(50vh) rotate(360deg) translateX(30px);
+    }
+    100% {
+        transform: translateY(110vh) rotate(720deg) translateX(-30px);
     }
 }
