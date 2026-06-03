@@ -32,3 +32,4 @@ Desktop.ini
 .playwright-mcp/
 .vscode/
 *.swp
+games/yahtzee/bbg-migration.md

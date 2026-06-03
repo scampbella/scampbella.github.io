@@ -1,0 +1,9 @@
+# Dependencies
+/node_modules
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store

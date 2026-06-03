@@ -143,22 +143,17 @@ class Scorecard {
         if (!this.canScore(index))
             return 0;
         let score = this.slots[index].def.scoreFn(dice);
-        // Joker rule scoring: subsequent Yahtzee and main Yahtzee box is filled (50 or 0)
+        // Joker rule scoring: subsequent Yahtzee and main Yahtzee box is filled (any score)
         if (isYahtzee(dice) && this.slots[this.yahtzeeCategoryIndex].score !== null) {
-            const val = dice[0];
-            const upperIdx = val - 1;
-            // If the corresponding upper section slot is already filled
-            if (this.slots[upperIdx].score !== null) {
-                const name = this.slots[index].def.name;
-                if (name === 'Full House') {
-                    score = 25;
-                }
-                else if (name === 'Sm Straight') {
-                    score = 30;
-                }
-                else if (name === 'Lg Straight') {
-                    score = 40;
-                }
+            const name = this.slots[index].def.name;
+            if (name === 'Full House') {
+                score = 25;
+            }
+            else if (name === 'Sm Straight') {
+                score = 30;
+            }
+            else if (name === 'Lg Straight') {
+                score = 40;
             }
         }
         // Yahtzee bonus: main Yahtzee box must be filled with 50 (not 0)
@@ -235,18 +230,7 @@ class Game {
         // Must be an empty slot
         if (!this.scorecard.canScore(index))
             return false;
-        // If it's a subsequent Yahtzee (i.e. isYahtzee(dice) and main Yahtzee box is filled)
-        const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
-        const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
-        if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const val = dice[0]; // value of the Yahtzee (1 to 6)
-            const upperIdx = val - 1; // corresponding Upper Section index
-            // If corresponding Upper Section slot is empty
-            if (this.scorecard.slots[upperIdx].score === null) {
-                // Must select corresponding Upper Section slot
-                return index === upperIdx;
-            }
-        }
+        // BBG: all remaining categories are always legal — no forced picks
         return true;
     }
     previewScore(index) {
@@ -261,17 +245,13 @@ class Game {
         const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
         const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
         if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const val = dice[0];
-            const upperIdx = val - 1;
-            if (this.scorecard.slots[upperIdx].score !== null) {
-                const name = this.scorecard.slots[index].def.name;
-                if (name === 'Full House')
-                    return 25;
-                if (name === 'Sm Straight')
-                    return 30;
-                if (name === 'Lg Straight')
-                    return 40;
-            }
+            const name = this.scorecard.slots[index].def.name;
+            if (name === 'Full House')
+                return 25;
+            if (name === 'Sm Straight')
+                return 30;
+            if (name === 'Lg Straight')
+                return 40;
         }
         return this.scorecard.slots[index].def.scoreFn(dice);
     }
