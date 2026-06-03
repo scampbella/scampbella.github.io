@@ -1,0 +1,14 @@
+{
+  "name": "keiri-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Heuristic Yahtzee bot — TypeScript port of the Keiri Rust engine",
+  "scripts": {
+    "test": "node --import tsx --test tests/bot.test.ts",
+    "benchmark": "node --import tsx tools/benchmark-heuristic.mjs"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
