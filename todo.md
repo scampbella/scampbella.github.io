@@ -28,4 +28,4 @@ A structured template for tracking features, bugs, and tasks.
 
 ## Home Page
 
-- [ ] Add previous album of the week section
+- [x] Add previous album of the week section
