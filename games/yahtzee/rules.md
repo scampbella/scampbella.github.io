@@ -1,7 +1,5 @@
 ## Ruleset: BBG (BuddyBoardGames)
 
-*This file describes the BBG ruleset, which differs from the standard Hasbro/Parker Brothers rules. See `bbg-migration.md` for the full diff.*
-
 Last updated: 2026-06-03
 
 ---
@@ -157,8 +155,9 @@ Where:
 
 ## Implementation Notes
 
-- **Language**: TypeScript, compiled to `game.js`
+- **Language**: TypeScript, compiled via `build.mjs` → `game.js`
+- **Source**: Split across `src/` — see `src/tsconfig.json` and `build.mjs`
 - **Dice values**: `1` is the reset/default value shown at turn start
 - **RNG**: `Math.random()` — non-cryptographic, sufficient for a casual game
 - **No undo**: Category selections are final
-- **Zero scores**: A category can be scored as 0 (e.g. 3 of a Kind with no triplet). This is intentional and part of standard Yahtzee rules
+- **Zero scores**: A category can be scored as 0 (e.g. 3 of a Kind with no triplet)

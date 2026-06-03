@@ -32,4 +32,5 @@ Desktop.ini
 .playwright-mcp/
 .vscode/
 *.swp
-games/yahtzee/bbg-migration.md
+games/yahtzee/build/
+games/yahtzee/src/tsconfig.json
