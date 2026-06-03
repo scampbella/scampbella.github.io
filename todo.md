@@ -15,9 +15,14 @@ A structured template for tracking features, bugs, and tasks.
 - [ ] Create casino game
 - [ ] Create survivor game
 - [ ] Update Yahtzee
-   - [ ] Create Yahtzee! animation
-   - [ ] Remove "held" dice display
-   - [ ] Change "Aces" to ones
+   - [x] Create Yahtzee! animation
+   - [x] Remove "held" dice display
+   - [x] Change "Aces" to ones
+   - [ ] fix end game screen (ss in files)
+   - [ ] fix scrolling
+   - [ ] add restart button
+   - [ ] save game when swapping between single and vs
+   - [ ] keiri rolls when they dont have to
 - [ ] Create snake game
 
 
