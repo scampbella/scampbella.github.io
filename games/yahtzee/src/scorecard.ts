@@ -23,14 +23,18 @@ class Scorecard {
         let score = this.slots[index].def.scoreFn(dice);
 
         // Joker rule scoring: subsequent Yahtzee and main Yahtzee box is filled (any score)
+        // AND the corresponding upper box is filled
         if (isYahtzee(dice) && this.slots[this.yahtzeeCategoryIndex].score !== null) {
-            const name = this.slots[index].def.name;
-            if (name === 'Full House') {
-                score = 25;
-            } else if (name === 'Sm Straight') {
-                score = 30;
-            } else if (name === 'Lg Straight') {
-                score = 40;
+            const upperIdx = dice[0] - 1;
+            if (this.slots[upperIdx].score !== null) {
+                const name = this.slots[index].def.name;
+                if (name === 'Full House') {
+                    score = 25;
+                } else if (name === 'Sm Straight') {
+                    score = 30;
+                } else if (name === 'Lg Straight') {
+                    score = 40;
+                }
             }
         }
 
@@ -54,14 +58,14 @@ class Scorecard {
     }
 
     lowerTotal(): number {
-        return this.slots
+        const slotsTotal = this.slots
             .filter(s => s.def.section === Section.Lower && s.score !== null)
             .reduce((sum, s) => sum + s.score!, 0);
+        return slotsTotal + (this.bonusYahtzees * 100);
     }
 
     grandTotal(): number {
-        return this.upperTotal() + this.upperBonus() + this.lowerTotal()
-            + (this.bonusYahtzees * 100);
+        return this.upperTotal() + this.upperBonus() + this.lowerTotal();
     }
 
     isComplete(): boolean {
