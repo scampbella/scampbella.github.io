@@ -102,7 +102,27 @@ class Game {
             finalScore: this.scorecard.grandTotal(),
         };
     }
-
+    serialize(): any {
+        return {
+            rollsLeft: this.rollsLeft,
+            round: this.round,
+            gameOver: this.gameOver,
+            dice: this.dice.dice.map(d => ({ value: d.value, locked: d.locked })),
+            slots: this.scorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            bonusYahtzees: this.scorecard.bonusYahtzees
+        };
+    }
+    deserialize(data: any): void {
+        this.rollsLeft = data.rollsLeft;
+        this.round = data.round;
+        this.gameOver = data.gameOver;
+        this.dice.dice = data.dice.map((d: any) => ({ value: d.value, locked: d.locked }));
+        data.slots.forEach((savedSlot: any) => {
+            const slot = this.scorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot) slot.score = savedSlot.score;
+        });
+        this.scorecard.bonusYahtzees = data.bonusYahtzees;
+    }
     reset(): void {
         this.dice.reset();
         this.scorecard.reset();
