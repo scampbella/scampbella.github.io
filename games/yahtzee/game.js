@@ -1,5 +1,5 @@
 // Yahtzee — built from src/
-// 2026-06-06T22:26:37.725Z
+// 2026-06-06T23:40:00.509Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
 
 "use strict";
@@ -307,6 +307,28 @@ class Game {
             gameOver: this.gameOver,
             finalScore: this.scorecard.grandTotal(),
         };
+    }
+    serialize() {
+        return {
+            rollsLeft: this.rollsLeft,
+            round: this.round,
+            gameOver: this.gameOver,
+            dice: this.dice.dice.map(d => ({ value: d.value, locked: d.locked })),
+            slots: this.scorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            bonusYahtzees: this.scorecard.bonusYahtzees
+        };
+    }
+    deserialize(data) {
+        this.rollsLeft = data.rollsLeft;
+        this.round = data.round;
+        this.gameOver = data.gameOver;
+        this.dice.dice = data.dice.map((d) => ({ value: d.value, locked: d.locked }));
+        data.slots.forEach((savedSlot) => {
+            const slot = this.scorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot)
+                slot.score = savedSlot.score;
+        });
+        this.scorecard.bonusYahtzees = data.bonusYahtzees;
     }
     reset() {
         this.dice.reset();
@@ -1125,6 +1147,40 @@ class VersusGame {
             turnLabel,
         };
     }
+    serialize() {
+        return {
+            rollsLeft: this.rollsLeft,
+            round: this.round,
+            gameOver: this.gameOver,
+            isPlayerTurn: this.isPlayerTurn,
+            isBotThinking: this.isBotThinking,
+            dice: this.dice.dice.map(d => ({ value: d.value, locked: d.locked })),
+            playerSlots: this.playerScorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            playerBonusYahtzees: this.playerScorecard.bonusYahtzees,
+            botSlots: this.botScorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            botBonusYahtzees: this.botScorecard.bonusYahtzees
+        };
+    }
+    deserialize(data) {
+        this.rollsLeft = data.rollsLeft;
+        this.round = data.round;
+        this.gameOver = data.gameOver;
+        this.isPlayerTurn = data.isPlayerTurn;
+        this.isBotThinking = data.isBotThinking;
+        this.dice.dice = data.dice.map((d) => ({ value: d.value, locked: d.locked }));
+        data.playerSlots.forEach((savedSlot) => {
+            const slot = this.playerScorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot)
+                slot.score = savedSlot.score;
+        });
+        this.playerScorecard.bonusYahtzees = data.playerBonusYahtzees;
+        data.botSlots.forEach((savedSlot) => {
+            const slot = this.botScorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot)
+                slot.score = savedSlot.score;
+        });
+        this.botScorecard.bonusYahtzees = data.botBonusYahtzees;
+    }
     reset() {
         this.dice.reset();
         this.playerScorecard.reset();
@@ -1159,7 +1215,7 @@ class VersusUI {
             'upper-total-bot', 'upper-bonus-bot', 'lower-total-bot', 'grand-total-bot',
             'game-over-overlay', 'final-score', 'score-breakdown',
             'play-again-btn', 'high-score-display', 'bonus-tracker',
-            'bonus-tracker-bot',
+            'bonus-tracker-bot', 'mode-toggle', 'restart-btn',
         ];
         for (const id of ids) {
             const el = document.getElementById(id);
@@ -1279,6 +1335,12 @@ class VersusUI {
         }
         const isInteractive = s.isPlayerTurn && !s.isBotThinking && !s.gameOver;
         this.el['roll-btn'].disabled = !isInteractive || s.rollsLeft <= 0;
+        if (this.el['mode-toggle']) {
+            this.el['mode-toggle'].disabled = s.isBotThinking;
+        }
+        if (this.el['restart-btn']) {
+            this.el['restart-btn'].disabled = s.isBotThinking;
+        }
         // Dice
         const tray = this.el['dice-tray'];
         tray.innerHTML = s.dice.map((d, i) => this.createDieHTML(d.value, d.locked, i, s.gameOver, s.rollsLeft === 3)).join('');
@@ -1452,6 +1514,7 @@ function updateHighScoreDisplay() {
 document.addEventListener('DOMContentLoaded', () => {
     const gameLayout = document.getElementById('game-layout');
     const modeToggle = document.getElementById('mode-toggle');
+    const restartBtn = document.getElementById('restart-btn');
     const botScorecard = document.getElementById('bot-scorecard');
     const turnLabel = document.getElementById('turn-label');
     let isVersusMode = false;
@@ -1459,38 +1522,94 @@ document.addEventListener('DOMContentLoaded', () => {
     let soloUI = null;
     let versusGame = null;
     let versusUI = null;
+    function saveGame() {
+        const state = {
+            isVersusMode: isVersusMode
+        };
+        if (soloGame) {
+            state.soloGame = soloGame.serialize();
+        }
+        if (versusGame) {
+            state.versusGame = versusGame.serialize();
+        }
+        try {
+            localStorage.setItem('yahtzee_save_state', JSON.stringify(state));
+        }
+        catch (e) {
+            console.error('Failed to save game state:', e);
+        }
+    }
+    function loadGame() {
+        try {
+            const raw = localStorage.getItem('yahtzee_save_state');
+            if (!raw)
+                return;
+            const state = JSON.parse(raw);
+            isVersusMode = state.isVersusMode;
+            if (state.soloGame) {
+                soloGame = new Game();
+                soloUI = new UI();
+                soloGame.deserialize(state.soloGame);
+            }
+            if (state.versusGame) {
+                versusGame = new VersusGame();
+                versusUI = new VersusUI();
+                versusGame.deserialize(state.versusGame);
+            }
+        }
+        catch (e) {
+            console.error('Failed to load game state:', e);
+        }
+    }
     function enterSoloMode() {
-        versusGame = null;
-        versusUI = null;
         isVersusMode = false;
         gameLayout.classList.remove('vs-mode');
         botScorecard.classList.add('hidden');
         turnLabel.classList.add('hidden');
         modeToggle.textContent = 'Challenge Keiri';
-        soloGame = new Game();
-        soloUI = new UI();
+        // Hide overlay first (it will be reshown in render if game is over)
+        const overlay = document.getElementById('game-over-overlay');
+        if (overlay)
+            overlay.classList.add('hidden');
+        if (!soloGame) {
+            soloGame = new Game();
+            soloUI = new UI();
+        }
+        soloGame.setOnUpdate(() => {
+            soloUI.render(soloGame);
+            saveGame();
+        });
         window.soloGame = soloGame;
         window.soloUI = soloUI;
-        window.versusGame = null;
-        window.versusUI = null;
+        window.versusGame = versusGame;
+        window.versusUI = versusUI;
         soloUI.render(soloGame);
+        saveGame();
     }
     function enterVersusMode() {
-        soloGame = null;
-        soloUI = null;
         isVersusMode = true;
         gameLayout.classList.add('vs-mode');
         botScorecard.classList.remove('hidden');
         turnLabel.classList.remove('hidden');
         modeToggle.textContent = 'Return to Single Player';
-        versusGame = new VersusGame();
-        versusUI = new VersusUI();
+        // Hide overlay first (it will be reshown in render if game is over)
+        const overlay = document.getElementById('game-over-overlay');
+        if (overlay)
+            overlay.classList.add('hidden');
+        if (!versusGame) {
+            versusGame = new VersusGame();
+            versusUI = new VersusUI();
+        }
+        versusGame.setOnUpdate(() => {
+            versusUI.render(versusGame);
+            saveGame();
+        });
         window.versusGame = versusGame;
         window.versusUI = versusUI;
-        window.soloGame = null;
-        window.soloUI = null;
-        versusGame.setOnUpdate(() => versusUI.render(versusGame));
+        window.soloGame = soloGame;
+        window.soloUI = soloUI;
         versusUI.render(versusGame);
+        saveGame();
     }
     modeToggle.addEventListener('click', () => {
         if (isVersusMode) {
@@ -1500,8 +1619,38 @@ document.addEventListener('DOMContentLoaded', () => {
             enterVersusMode();
         }
     });
-    // Start in solo mode
+    restartBtn.addEventListener('click', () => {
+        // Hide game over overlay if visible
+        const overlay = document.getElementById('game-over-overlay');
+        if (overlay)
+            overlay.classList.add('hidden');
+        if (isVersusMode) {
+            versusGame = new VersusGame();
+            versusGame.setOnUpdate(() => {
+                versusUI.render(versusGame);
+                saveGame();
+            });
+            versusUI.render(versusGame);
+            saveGame();
+        }
+        else {
+            soloGame = new Game();
+            soloGame.setOnUpdate(() => {
+                soloUI.render(soloGame);
+                saveGame();
+            });
+            soloUI.render(soloGame);
+            saveGame();
+        }
+    });
+    // Load saved game if it exists
+    loadGame();
     updateHighScoreDisplay();
-    enterSoloMode();
+    if (isVersusMode) {
+        enterVersusMode();
+    }
+    else {
+        enterSoloMode();
+    }
 });
 
