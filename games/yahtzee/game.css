@@ -730,6 +730,43 @@ body::before {
    VERSUS MODE
    ============================================================ */
 
+/* --- Top Bar Actions wrapper --- */
+.top-bar-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* --- Restart Button --- */
+.restart-btn {
+    padding: 8px 20px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.restart-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.restart-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+}
+
 /* --- Mode Toggle Button --- */
 .mode-toggle {
     padding: 8px 20px;
@@ -751,7 +788,13 @@ body::before {
     background: rgba(212, 168, 67, 0.12);
     border-color: var(--gold-bright);
 }
-
+.mode-toggle:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    border-color: rgba(212, 168, 67, 0.2);
+    color: rgba(212, 168, 67, 0.4);
+}
 /* --- Turn Label --- */
 .turn-label {
     font-family: var(--font-heading);

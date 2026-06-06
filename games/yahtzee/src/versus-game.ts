@@ -242,7 +242,38 @@ class VersusGame {
             turnLabel,
         };
     }
-
+    serialize(): any {
+        return {
+            rollsLeft: this.rollsLeft,
+            round: this.round,
+            gameOver: this.gameOver,
+            isPlayerTurn: this.isPlayerTurn,
+            isBotThinking: this.isBotThinking,
+            dice: this.dice.dice.map(d => ({ value: d.value, locked: d.locked })),
+            playerSlots: this.playerScorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            playerBonusYahtzees: this.playerScorecard.bonusYahtzees,
+            botSlots: this.botScorecard.slots.map(s => ({ name: s.def.name, score: s.score })),
+            botBonusYahtzees: this.botScorecard.bonusYahtzees
+        };
+    }
+    deserialize(data: any): void {
+        this.rollsLeft = data.rollsLeft;
+        this.round = data.round;
+        this.gameOver = data.gameOver;
+        this.isPlayerTurn = data.isPlayerTurn;
+        this.isBotThinking = data.isBotThinking;
+        this.dice.dice = data.dice.map((d: any) => ({ value: d.value, locked: d.locked }));
+        data.playerSlots.forEach((savedSlot: any) => {
+            const slot = this.playerScorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot) slot.score = savedSlot.score;
+        });
+        this.playerScorecard.bonusYahtzees = data.playerBonusYahtzees;
+        data.botSlots.forEach((savedSlot: any) => {
+            const slot = this.botScorecard.slots.find(s => s.def.name === savedSlot.name);
+            if (slot) slot.score = savedSlot.score;
+        });
+        this.botScorecard.bonusYahtzees = data.botBonusYahtzees;
+    }
     reset(): void {
         this.dice.reset();
         this.playerScorecard.reset();

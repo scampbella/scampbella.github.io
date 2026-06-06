@@ -22,7 +22,7 @@ class VersusUI {
             'upper-total-bot', 'upper-bonus-bot', 'lower-total-bot', 'grand-total-bot',
             'game-over-overlay', 'final-score', 'score-breakdown',
             'play-again-btn', 'high-score-display', 'bonus-tracker',
-            'bonus-tracker-bot',
+            'bonus-tracker-bot', 'mode-toggle', 'restart-btn',
         ];
         for (const id of ids) {
             const el = document.getElementById(id);
@@ -162,6 +162,12 @@ class VersusUI {
 
         const isInteractive = s.isPlayerTurn && !s.isBotThinking && !s.gameOver;
         (this.el['roll-btn'] as HTMLButtonElement).disabled = !isInteractive || s.rollsLeft <= 0;
+        if (this.el['mode-toggle']) {
+            (this.el['mode-toggle'] as HTMLButtonElement).disabled = s.isBotThinking;
+        }
+        if (this.el['restart-btn']) {
+            (this.el['restart-btn'] as HTMLButtonElement).disabled = s.isBotThinking;
+        }
 
         // Dice
         const tray = this.el['dice-tray'] as HTMLElement;
