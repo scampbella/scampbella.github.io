@@ -58,10 +58,13 @@ class Game {
         const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
 
         if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const name = this.scorecard.slots[index].def.name;
-            if (name === 'Full House') return 25;
-            if (name === 'Sm Straight') return 30;
-            if (name === 'Lg Straight') return 40;
+            const upperIdx = dice[0] - 1;
+            if (this.scorecard.slots[upperIdx].score !== null) {
+                const name = this.scorecard.slots[index].def.name;
+                if (name === 'Full House') return 25;
+                if (name === 'Sm Straight') return 30;
+                if (name === 'Lg Straight') return 40;
+            }
         }
 
         return this.scorecard.slots[index].def.scoreFn(dice);

@@ -31,12 +31,15 @@
     --score-preview: #c0a040;
     --bonus-green: #4caf50;
     --section-gold: #d4a843;
+    --accent-red: #ef4444;
+    --font-heading: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 html,
 body {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     background:
@@ -45,7 +48,7 @@ body {
     background-color: var(--felt);
     color: var(--text-primary);
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 18px;
+    font-size: clamp(15px, 1.8vh, 18px);
     line-height: 1.5;
     scrollbar-width: none;
 }
@@ -83,14 +86,13 @@ body::before {
 }
 
 .title {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
     font-weight: 900;
     letter-spacing: 0.15em;
     color: var(--gold-bright);
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 168, 67, 0.3);
     text-transform: uppercase;
 }
-
 .high-score-block {
     font-size: 0.95rem;
     color: var(--text-dim);
@@ -106,35 +108,36 @@ body::before {
     color: var(--gold-bright);
     font-size: 1.1rem;
 }
-/* === Main Layout === */
 .game-layout {
     position: relative;
     z-index: 1;
     display: flex;
-    gap: 32px;
-    padding: 32px;
-    max-width: 1200px;
+    gap: clamp(16px, 2.5vw, 32px);
+    padding: clamp(16px, 3.5vh, 32px) clamp(16px, 2.5vw, 32px);
+    max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
     align-items: flex-start;
     flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
-
 /* === Dice Panel === */
 .dice-panel {
-    position: sticky;
-    top: 28px;
-    flex: 1;
-    min-width: 380px;
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 420px;
     background: var(--panel-bg);
     border: 1px solid var(--border-gold);
     border-radius: 16px;
-    padding: 32px 18px;
+    padding: clamp(12px, 1.8vh, 24px) clamp(10px, 1.2vw, 16px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: clamp(8px, 1.5vh, 18px);
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
+    overflow-y: auto;
 }
 
 .dice-tray {
@@ -287,29 +290,28 @@ body::before {
     color: var(--text-dim);
     text-align: center;
 }
-
-/* === Scorecard Panel === */
 .scorecard-panel {
     flex: 2;
-    min-width: 360px;
+    min-width: 0;
+    overflow-y: auto;
 }
 
 .scorecard {
     background: var(--panel-bg);
     border: 1px solid var(--border-gold);
     border-radius: 16px;
-    padding: 24px;
+    padding: clamp(10px, 1.2vw, 20px);
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     display: flex;
-    gap: 40px;
+    gap: clamp(16px, 2.5vw, 32px);
 }
 
 .scorecard-col {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 280px;
+    min-width: 0;
 }
 
 .section-title {
@@ -317,8 +319,8 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--section-gold);
-    margin: 18px 0 10px;
-    padding-bottom: 6px;
+    margin: clamp(8px, 1.5vh, 16px) 0 clamp(4px, 0.8vh, 8px);
+    padding-bottom: clamp(4px, 0.6vh, 6px);
     border-bottom: 1px solid var(--border-gold);
 }
 
@@ -331,12 +333,12 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 11px 16px;
+    padding: clamp(6px, 1vh, 11px) 16px;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
     border: 1px solid transparent;
-    margin-bottom: 3px;
+    margin-bottom: clamp(2px, 0.3vh, 3px);
 }
 
 .score-row.empty {
@@ -417,10 +419,10 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 14px;
+    padding: clamp(3px, 0.6vh, 6px) 14px;
     font-size: 0.95rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    margin-top: 4px;
+    margin-top: clamp(2px, 0.4vh, 4px);
 }
 
 .summary-row span {
@@ -434,8 +436,8 @@ body::before {
 
 .summary-row.grand {
     font-size: 1.1rem;
-    padding: 12px 14px;
-    margin-top: 8px;
+    padding: clamp(6px, 1.2vh, 12px) 14px;
+    margin-top: clamp(4px, 0.8vh, 8px);
     border-top: 2px solid var(--border-gold);
 }
 
@@ -457,7 +459,7 @@ body::before {
 /* === Upper Bonus Tracker === */
 .bonus-tracker {
     text-align: right;
-    padding: 4px 14px;
+    padding: clamp(2px, 0.4vh, 4px) 14px;
     font-size: 0.85rem;
     min-height: 1.5em;
     font-style: italic;
@@ -500,9 +502,9 @@ body::before {
     background: var(--felt-dark);
     border: 2px solid var(--border-gold);
     border-radius: 20px;
-    padding: 48px 56px;
+    padding: 40px 36px;
     text-align: center;
-    max-width: 460px;
+    max-width: 640px;
     width: 90%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
@@ -527,6 +529,13 @@ body::before {
     color: var(--gold-bright);
     text-shadow: 0 2px 10px rgba(212, 168, 67, 0.4);
     margin-bottom: 8px;
+}
+
+.score-vs-sep {
+    font-size: 1.8rem;
+    opacity: 0.5;
+    vertical-align: middle;
+    margin: 0 4px;
 }
 
 .high-score-line {
@@ -588,11 +597,11 @@ body::before {
     .game-layout {
         flex-direction: column;
         align-items: center;
-        padding: 20px;
+        padding: 16px;
+        overflow-y: auto;
     }
 
     .dice-panel {
-        position: static;
         width: 100%;
         max-width: 560px;
     }
@@ -600,6 +609,7 @@ body::before {
     .scorecard-panel {
         width: 100%;
         max-width: 800px;
+        overflow-y: visible;
     }
 }
 
@@ -610,7 +620,7 @@ body::before {
     }
 
     .scorecard-col {
-        min-width: unset;
+        min-width: 0;
     }
 
     .die {
@@ -773,11 +783,13 @@ body::before {
 .game-layout.vs-mode {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: clamp(16px, 2.5vw, 32px);
     justify-content: center;
     align-items: flex-start;
     max-width: 100%;
-    padding: 16px;
+    padding: clamp(16px, 3.5vh, 32px) clamp(16px, 2.5vw, 32px);
+    min-height: 0;
+    overflow: hidden;
 }
 
 .dice-area-wrapper {
@@ -786,31 +798,30 @@ body::before {
     flex-direction: column;
     align-items: center;
     flex: 0 0 auto;
+    min-width: 0;
 }
 
 .game-layout.vs-mode .dice-panel {
-    position: sticky;
-    top: 20px;
-    min-width: 340px;
+    min-width: 0;
+    max-width: 400px;
 }
 
 .game-layout.vs-mode #player-scorecard {
     order: 1;
-    flex: 1 1 340px;
+    flex: 1 1 0;
     max-width: 500px;
+    min-width: 0;
+    overflow-y: auto;
 }
 
 .game-layout.vs-mode #bot-scorecard {
     order: 3;
-    flex: 1 1 340px;
+    flex: 1 1 0;
     max-width: 500px;
+    min-width: 0;
+    overflow-y: auto;
 }
 
-/* Stack scorecard columns vertically in vs-mode for space */
-.game-layout.vs-mode .scorecard {
-    flex-direction: column;
-    gap: 16px;
-}
 
 .game-layout.vs-mode .scorecard-col {
     min-width: unset;
@@ -823,7 +834,7 @@ body::before {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 16px 24px;
 }
 
@@ -897,6 +908,7 @@ body::before {
     .game-layout.vs-mode {
         flex-direction: column;
         align-items: center;
+        overflow-y: auto;
     }
 
     .game-layout.vs-mode #player-scorecard,
@@ -905,18 +917,19 @@ body::before {
         flex: unset;
         max-width: 600px;
         width: 100%;
+        overflow-y: visible;
     }
 
     .game-layout.vs-mode .dice-panel {
         order: unset;
-        position: static;
+        max-width: 500px;
     }
 }
 
 @media (max-width: 950px) {
     .game-layout.vs-mode {
-        padding: 16px;
-        gap: 16px;
+        padding: 12px;
+        gap: 12px;
     }
 }
 

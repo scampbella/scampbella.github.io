@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         soloGame = new Game();
         soloUI = new UI();
+        (window as any).soloGame = soloGame;
+        (window as any).soloUI = soloUI;
+        (window as any).versusGame = null;
+        (window as any).versusUI = null;
         soloUI.render(soloGame);
     }
 
@@ -52,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         versusGame = new VersusGame();
         versusUI = new VersusUI();
+        (window as any).versusGame = versusGame;
+        (window as any).versusUI = versusUI;
+        (window as any).soloGame = null;
+        (window as any).soloUI = null;
         versusGame.setOnUpdate(() => versusUI!.render(versusGame!));
         versusUI.render(versusGame);
     }

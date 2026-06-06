@@ -1,5 +1,5 @@
 // Yahtzee — built from src/
-// 2026-06-03T02:54:12.040Z
+// 2026-06-06T22:19:38.914Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
 
 "use strict";
@@ -158,16 +158,20 @@ class Scorecard {
             return 0;
         let score = this.slots[index].def.scoreFn(dice);
         // Joker rule scoring: subsequent Yahtzee and main Yahtzee box is filled (any score)
+        // AND the corresponding upper box is filled
         if (isYahtzee(dice) && this.slots[this.yahtzeeCategoryIndex].score !== null) {
-            const name = this.slots[index].def.name;
-            if (name === 'Full House') {
-                score = 25;
-            }
-            else if (name === 'Sm Straight') {
-                score = 30;
-            }
-            else if (name === 'Lg Straight') {
-                score = 40;
+            const upperIdx = dice[0] - 1;
+            if (this.slots[upperIdx].score !== null) {
+                const name = this.slots[index].def.name;
+                if (name === 'Full House') {
+                    score = 25;
+                }
+                else if (name === 'Sm Straight') {
+                    score = 30;
+                }
+                else if (name === 'Lg Straight') {
+                    score = 40;
+                }
             }
         }
         // Yahtzee bonus: main Yahtzee box must be filled with 50 (not 0)
@@ -186,13 +190,13 @@ class Scorecard {
         return this.upperTotal() >= 63 ? 35 : 0;
     }
     lowerTotal() {
-        return this.slots
+        const slotsTotal = this.slots
             .filter(s => s.def.section === Section.Lower && s.score !== null)
             .reduce((sum, s) => sum + s.score, 0);
+        return slotsTotal + (this.bonusYahtzees * 100);
     }
     grandTotal() {
-        return this.upperTotal() + this.upperBonus() + this.lowerTotal()
-            + (this.bonusYahtzees * 100);
+        return this.upperTotal() + this.upperBonus() + this.lowerTotal();
     }
     isComplete() {
         return this.slots.every(s => s.score !== null);
@@ -260,13 +264,16 @@ class Game {
         const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
         const isMainYahtzeeFilled = this.scorecard.slots[yahtzeeIdx].score !== null;
         if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const name = this.scorecard.slots[index].def.name;
-            if (name === 'Full House')
-                return 25;
-            if (name === 'Sm Straight')
-                return 30;
-            if (name === 'Lg Straight')
-                return 40;
+            const upperIdx = dice[0] - 1;
+            if (this.scorecard.slots[upperIdx].score !== null) {
+                const name = this.scorecard.slots[index].def.name;
+                if (name === 'Full House')
+                    return 25;
+                if (name === 'Sm Straight')
+                    return 30;
+                if (name === 'Lg Straight')
+                    return 40;
+            }
         }
         return this.scorecard.slots[index].def.scoreFn(dice);
     }
@@ -350,7 +357,7 @@ class UI {
             <div class="pip-grid">${dots.join('')}</div>
         </div>`;
     }
-    createScoreRow(slot, index, previewScore, gameOver, selectable) {
+    createScoreRow(slot, index, previewScore, gameOver, selectable, bonusYahtzees = 0) {
         const filled = slot.score !== null;
         const canSelect = selectable && !filled && !gameOver;
         const cls = filled ? 'score-row filled'
@@ -358,7 +365,11 @@ class UI {
         const data = canSelect ? `data-category="${index}"` : '';
         let scoreDisplay;
         if (filled) {
-            scoreDisplay = `<span class="category-score">${slot.score}</span>`;
+            let scoreText = String(slot.score);
+            if (slot.def.name === 'Yahtzee' && bonusYahtzees > 0) {
+                scoreText += ` + ${bonusYahtzees * 100}`;
+            }
+            scoreDisplay = `<span class="category-score">${scoreText}</span>`;
         }
         else if (canSelect && previewScore !== null) {
             scoreDisplay = `<span class="category-score preview-score">${previewScore}</span>`;
@@ -410,13 +421,13 @@ class UI {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
             const preview = slot.score === null ? game.previewScore(globalIdx) : null;
             const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, game.scorecard.bonusYahtzees);
         }).join('');
         this.el['lower-scores'].innerHTML = lowerSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
             const preview = slot.score === null ? game.previewScore(globalIdx) : null;
             const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, game.scorecard.bonusYahtzees);
         }).join('');
         // Upper Section Bonus Tracker
         const tracker = this.el['bonus-tracker'];
@@ -949,13 +960,16 @@ class VersusGame {
         const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
         const isMainYahtzeeFilled = sc.slots[yahtzeeIdx].score !== null;
         if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const name = sc.slots[index].def.name;
-            if (name === 'Full House')
-                return 25;
-            if (name === 'Sm Straight')
-                return 30;
-            if (name === 'Lg Straight')
-                return 40;
+            const upperIdx = dice[0] - 1;
+            if (sc.slots[upperIdx].score !== null) {
+                const name = sc.slots[index].def.name;
+                if (name === 'Full House')
+                    return 25;
+                if (name === 'Sm Straight')
+                    return 30;
+                if (name === 'Lg Straight')
+                    return 40;
+            }
         }
         return sc.slots[index].def.scoreFn(dice);
     }
@@ -1174,7 +1188,7 @@ class VersusUI {
             <div class="pip-grid">${dots.join('')}</div>
         </div>`;
     }
-    createScoreRow(slot, index, previewScore, gameOver, selectable, isPlayerSide) {
+    createScoreRow(slot, index, previewScore, gameOver, selectable, isPlayerSide, bonusYahtzees = 0) {
         const filled = slot.score !== null;
         const canSelect = selectable && !filled && !gameOver && isPlayerSide;
         const cls = filled ? 'score-row filled'
@@ -1182,7 +1196,11 @@ class VersusUI {
         const data = canSelect ? `data-category="${index}"` : '';
         let scoreDisplay;
         if (filled) {
-            scoreDisplay = `<span class="category-score">${slot.score}</span>`;
+            let scoreText = String(slot.score);
+            if (slot.def.name === 'Yahtzee' && bonusYahtzees > 0) {
+                scoreText += ` + ${bonusYahtzees * 100}`;
+            }
+            scoreDisplay = `<span class="category-score">${scoreText}</span>`;
         }
         else if ((canSelect || !isPlayerSide) && previewScore !== null) {
             scoreDisplay = `<span class="category-score preview-score">${previewScore}</span>`;
@@ -1211,7 +1229,7 @@ class VersusUI {
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide, sc.bonusYahtzees);
         }).join('');
         lowerEl.innerHTML = lowerSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
@@ -1220,7 +1238,7 @@ class VersusUI {
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide, sc.bonusYahtzees);
         }).join('');
         // Compute totals from the scorecard slots
         const sc = isPlayerSide ? game.playerScorecard : game.botScorecard;
@@ -1341,7 +1359,7 @@ class VersusUI {
         const botYahtzeeBonus = game.botScorecard.bonusYahtzees * 100;
         const resultText = tie ? "It's a Tie!"
             : playerWon ? 'You Win!' : 'Keiri Wins!';
-        this.el['final-score'].textContent = `${playerTotal} — ${botTotal}`;
+        this.el['final-score'].innerHTML = `${playerTotal} <span class="score-vs-sep">&mdash;</span> ${botTotal}`;
         this.el['score-breakdown'].innerHTML = `
             <div class="breakdown-col">
                 <strong>You</strong>
@@ -1451,6 +1469,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modeToggle.textContent = 'Challenge Keiri';
         soloGame = new Game();
         soloUI = new UI();
+        window.soloGame = soloGame;
+        window.soloUI = soloUI;
+        window.versusGame = null;
+        window.versusUI = null;
         soloUI.render(soloGame);
     }
     function enterVersusMode() {
@@ -1463,6 +1485,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modeToggle.textContent = 'Return to Single Player';
         versusGame = new VersusGame();
         versusUI = new VersusUI();
+        window.versusGame = versusGame;
+        window.versusUI = versusUI;
+        window.soloGame = null;
+        window.soloUI = null;
         versusGame.setOnUpdate(() => versusUI.render(versusGame));
         versusUI.render(versusGame);
     }
