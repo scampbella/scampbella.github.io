@@ -44,7 +44,7 @@ class UI {
 
     private createScoreRow(
         slot: ScoreSlot, index: number, previewScore: number | null,
-        gameOver: boolean, selectable: boolean,
+        gameOver: boolean, selectable: boolean, bonusYahtzees: number = 0,
     ): string {
         const filled = slot.score !== null;
         const canSelect = selectable && !filled && !gameOver;
@@ -53,7 +53,11 @@ class UI {
         const data = canSelect ? `data-category="${index}"` : '';
         let scoreDisplay: string;
         if (filled) {
-            scoreDisplay = `<span class="category-score">${slot.score}</span>`;
+            let scoreText = String(slot.score);
+            if (slot.def.name === 'Yahtzee' && bonusYahtzees > 0) {
+                scoreText += ` + ${bonusYahtzees * 100}`;
+            }
+            scoreDisplay = `<span class="category-score">${scoreText}</span>`;
         } else if (canSelect && previewScore !== null) {
             scoreDisplay = `<span class="category-score preview-score">${previewScore}</span>`;
         } else {
@@ -109,14 +113,14 @@ class UI {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
             const preview = slot.score === null ? game.previewScore(globalIdx) : null;
             const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, game.scorecard.bonusYahtzees);
         }).join('');
 
         this.el['lower-scores'].innerHTML = lowerSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
             const preview = slot.score === null ? game.previewScore(globalIdx) : null;
             const selectable = !s.gameOver && s.rollsLeft < 3 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, game.scorecard.bonusYahtzees);
         }).join('');
 
         // Upper Section Bonus Tracker

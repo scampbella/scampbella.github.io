@@ -64,10 +64,13 @@ class VersusGame {
         const isMainYahtzeeFilled = sc.slots[yahtzeeIdx].score !== null;
 
         if (isYahtzee(dice) && isMainYahtzeeFilled) {
-            const name = sc.slots[index].def.name;
-            if (name === 'Full House') return 25;
-            if (name === 'Sm Straight') return 30;
-            if (name === 'Lg Straight') return 40;
+            const upperIdx = dice[0] - 1;
+            if (sc.slots[upperIdx].score !== null) {
+                const name = sc.slots[index].def.name;
+                if (name === 'Full House') return 25;
+                if (name === 'Sm Straight') return 30;
+                if (name === 'Lg Straight') return 40;
+            }
         }
 
         return sc.slots[index].def.scoreFn(dice);
