@@ -1,5 +1,5 @@
 // Yahtzee — built from src/
-// 2026-06-06T22:19:38.914Z
+// 2026-06-06T22:26:37.725Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
 
 "use strict";
@@ -1214,6 +1214,7 @@ class VersusUI {
         </div>`;
     }
     renderScorecard(scorecard, game, upperContainerId, lowerContainerId, upperTotalId, upperBonusId, lowerTotalId, grandTotalId, bonusTrackerId, isPlayerSide) {
+        const sc = isPlayerSide ? game.playerScorecard : game.botScorecard;
         const upperSlots = scorecard.filter(sl => sl.def.section === Section.Upper);
         const lowerSlots = scorecard.filter(sl => sl.def.section === Section.Lower);
         const diceVals = game.dice.values();
@@ -1241,7 +1242,6 @@ class VersusUI {
             return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide, sc.bonusYahtzees);
         }).join('');
         // Compute totals from the scorecard slots
-        const sc = isPlayerSide ? game.playerScorecard : game.botScorecard;
         this.el[upperTotalId].textContent = String(sc.upperTotal());
         this.el[upperBonusId].textContent = sc.upperBonus() > 0 ? `+${sc.upperBonus()}` : '0';
         this.el[lowerTotalId].textContent = String(sc.lowerTotal());

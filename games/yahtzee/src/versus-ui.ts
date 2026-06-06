@@ -93,6 +93,7 @@ class VersusUI {
         bonusTrackerId: string,
         isPlayerSide: boolean,
     ): void {
+        const sc = isPlayerSide ? game.playerScorecard : game.botScorecard;
         const upperSlots = scorecard.filter(sl => sl.def.section === Section.Upper);
         const lowerSlots = scorecard.filter(sl => sl.def.section === Section.Lower);
         const diceVals = game.dice.values();
@@ -123,7 +124,6 @@ class VersusUI {
         }).join('');
 
         // Compute totals from the scorecard slots
-        const sc = isPlayerSide ? game.playerScorecard : game.botScorecard;
         this.el[upperTotalId].textContent = String(sc.upperTotal());
         this.el[upperBonusId].textContent = sc.upperBonus() > 0 ? `+${sc.upperBonus()}` : '0';
         this.el[lowerTotalId].textContent = String(sc.lowerTotal());
