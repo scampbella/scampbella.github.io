@@ -56,6 +56,7 @@ class VersusUI {
     private createScoreRow(
         slot: ScoreSlot, index: number, previewScore: number | null,
         gameOver: boolean, selectable: boolean, isPlayerSide: boolean,
+        bonusYahtzees: number = 0,
     ): string {
         const filled = slot.score !== null;
         const canSelect = selectable && !filled && !gameOver && isPlayerSide;
@@ -64,7 +65,11 @@ class VersusUI {
         const data = canSelect ? `data-category="${index}"` : '';
         let scoreDisplay: string;
         if (filled) {
-            scoreDisplay = `<span class="category-score">${slot.score}</span>`;
+            let scoreText = String(slot.score);
+            if (slot.def.name === 'Yahtzee' && bonusYahtzees > 0) {
+                scoreText += ` + ${bonusYahtzees * 100}`;
+            }
+            scoreDisplay = `<span class="category-score">${scoreText}</span>`;
         } else if ((canSelect || !isPlayerSide) && previewScore !== null) {
             scoreDisplay = `<span class="category-score preview-score">${previewScore}</span>`;
         } else {
@@ -104,7 +109,7 @@ class VersusUI {
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide, sc.bonusYahtzees);
         }).join('');
 
         lowerEl.innerHTML = lowerSlots.map((slot, i) => {
@@ -114,7 +119,7 @@ class VersusUI {
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
-            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide);
+            return this.createScoreRow(slot, globalIdx, preview, s.gameOver, selectable, isPlayerSide, sc.bonusYahtzees);
         }).join('');
 
         // Compute totals from the scorecard slots
@@ -259,7 +264,7 @@ class VersusUI {
         const resultText = tie ? "It's a Tie!"
             : playerWon ? 'You Win!' : 'Keiri Wins!';
 
-        this.el['final-score'].textContent = `${playerTotal} — ${botTotal}`;
+        this.el['final-score'].innerHTML = `${playerTotal} <span class="score-vs-sep">&mdash;</span> ${botTotal}`;
         this.el['score-breakdown'].innerHTML = `
             <div class="breakdown-col">
                 <strong>You</strong>
