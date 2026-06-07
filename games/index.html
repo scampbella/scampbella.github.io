@@ -6,7 +6,16 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Games | Scott Campbell</title>
     <meta name="description" content="Games created by Scott Campbell.">
+    <meta property="og:title" content="Games | Scott Campbell">
+    <meta property="og:description" content="Games created by Scott Campbell.">
+    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
+    <meta property="og:url" content="https://scampbella.github.io/games/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scampbella.github.io/games/">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Material Symbols -->
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -20,6 +29,7 @@
 </head>
 
 <body class="bg-background text-on-background font-body-md overflow-x-hidden">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded-full">Skip to content</a>
     <!-- TopNavBar -->
     <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
         <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
@@ -31,12 +41,12 @@
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
                         href="../blogs/">Blog</a>
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md active-nav"
-                        href="./">Games</a>
+                        href="./" aria-current="page">Games</a>
                 </div>
             </div>
         </nav>
     </header>
-    <main class="pt-[160px] pb-section-gap max-w-container-max mx-auto px-margin-desktop min-h-screen">
+    <main id="main-content" class="pt-[160px] pb-section-gap max-w-container-max mx-auto px-margin-desktop min-h-screen">
         <!-- Header Section -->
         <header class="mb-section-gap">
             <h1
@@ -54,7 +64,7 @@
                     class="w-32 h-32 flex-shrink-0 rounded-2xl overflow-hidden bg-surface-container-low">
                     <img alt="Yahtzee game cover"
                         class="w-full h-full object-cover"
-                        src="../assets/games/yahtzee/cover.svg">
+                        src="../assets/games/yahtzee/cover.svg" width="320" height="320">
                 </div>
                 <div class="flex flex-col flex-grow">
                     <div class="flex items-center justify-between gap-4 mb-2">
@@ -78,7 +88,7 @@
                     class="w-32 h-32 flex-shrink-0 rounded-2xl overflow-hidden bg-surface-container-low">
                     <img alt="PyClicker game cover"
                         class="w-full h-full object-cover"
-                        src="../assets/games/clicker/cover.svg">
+                        src="../assets/games/clicker/cover.svg" width="320" height="320">
                 </div>
                 <div class="flex flex-col flex-grow">
                     <div class="flex items-center justify-between gap-4 mb-2">
@@ -96,12 +106,12 @@
             </article>
             </a>
             <!-- Casino -->
-            <article class="flex flex-col md:flex-row p-8 gap-8 game-card items-center border-2 border-on-surface/20 rounded-[32px]">
+            <article class="flex flex-col md:flex-row p-8 gap-8 items-center border-2 border-on-surface/20 rounded-[32px]" style="background: var(--ct-surface-container-lowest); overflow: hidden;">
                 <div
                     class="w-32 h-32 flex-shrink-0 rounded-2xl overflow-hidden bg-surface-container-low">
                     <img alt="Casino game cover"
                         class="w-full h-full object-cover"
-                        src="../assets/games/casino/cover.svg">
+                        src="../assets/games/casino/cover.svg" width="320" height="320">
                 </div>
                 <div class="flex flex-col flex-grow">
                     <div class="flex items-center justify-between gap-4 mb-2">
@@ -113,18 +123,14 @@
                     <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
                         A collection of classic casino games including poker, blackjack, hearts, and slots!</p>
                 </div>
-                <div class="hidden md:block">
-                    <span
-                        class="material-symbols-outlined text-primary opacity-30 group-hover:opacity-100 transition-opacity text-[32px]">arrow_forward</span>
-                </div>
             </article>
             <!-- Survivor -->
-            <article class="flex flex-col md:flex-row p-8 gap-8 game-card items-center border-2 border-on-surface/20 rounded-[32px]">
+            <article class="flex flex-col md:flex-row p-8 gap-8 items-center border-2 border-on-surface/20 rounded-[32px]" style="background: var(--ct-surface-container-lowest); overflow: hidden;">
                 <div
                     class="w-32 h-32 flex-shrink-0 rounded-2xl overflow-hidden bg-surface-container-low">
                     <img alt="Survivor game cover"
                         class="w-full h-full object-cover"
-                        src="../assets/games/survivor/cover.svg">
+                        src="../assets/games/survivor/cover.svg" width="320" height="320">
                 </div>
                 <div class="flex flex-col flex-grow">
                     <div class="flex items-center justify-between gap-4 mb-2">
@@ -135,10 +141,6 @@
                     </div>
                     <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
                         A Vampire Survivors esque game. Avoid taking damage and last as long as you can!</p>
-                </div>
-                <div class="hidden md:block">
-                    <span
-                        class="material-symbols-outlined text-primary opacity-30 group-hover:opacity-100 transition-opacity text-[32px]">arrow_forward</span>
                 </div>
             </article>
         </section>
@@ -159,7 +161,7 @@
             </div>
             <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm text-center">
                 © <span id="year">2026</span> SCOTT CAMPBELL
-                <div class="italic" style="text-transform: none; margin-top: 4px; color: var(--ct-on-surface-variant); opacity: 0.8;">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></div>
+                <span class="italic block mt-1 opacity-80" style="text-transform: none; color: var(--ct-on-surface-variant);">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></span>
             </div>
         </div>
     </footer>

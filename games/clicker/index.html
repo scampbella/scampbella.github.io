@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mining Clicker</title>
+    <meta name="description" content="A mining clicker game. Break ores, sell loot, buy upgrades, explore new areas!">
+    <meta property="og:title" content="Mining Clicker | Scott Campbell">
+    <meta property="og:description" content="A mining clicker game. Break ores, sell loot, buy upgrades, explore new areas!">
+    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
+    <meta property="og:url" content="https://scampbella.github.io/games/clicker/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scampbella.github.io/games/clicker/">
+    <title>Mining Clicker | Scott Campbell</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 </head>
 <body>
+    <a href="#center-panel" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded-full">Skip to content</a>
     <div id="game-container">
         <!-- TOP: Zone Bar -->
         <header id="zone-bar">
@@ -108,17 +117,17 @@
     <div id="dev-tools-panel" style="display: none;">
         <h3>Developer Tools</h3>
         <div>
-            <label>Gold:</label>
+            <label for="dev-gold">Gold:</label>
             <input type="number" id="dev-gold" value="0">
             <button id="dev-set-gold">Set Gold</button>
         </div>
         <div>
-            <label>Pickaxe Lvl:</label>
+            <label for="dev-pickaxe">Pickaxe Lvl:</label>
             <input type="number" id="dev-pickaxe" value="1">
             <button id="dev-set-pickaxe">Set Pickaxe</button>
         </div>
         <div>
-            <label>Current Ore:</label>
+            <label for="dev-ore">Current Ore:</label>
             <input type="number" id="dev-ore" value="0">
             <button id="dev-set-ore">Set Ore</button>
         </div>

@@ -529,8 +529,8 @@ document.getElementById('mother-lode-container').addEventListener('click', (e) =
     const floatText = document.createElement('div');
     floatText.className = 'particle';
     floatText.innerText = `+${formatNumber(opc)}`;
-    floatText.style.left = `${e.clientX - 10}px`;
-    floatText.style.top = `${e.clientY - 20}px`;
+    floatText.style.left = `${e.pageX - 10}px`;
+    floatText.style.top = `${e.pageY - 20}px`;
     document.body.appendChild(floatText);
     setTimeout(() => floatText.remove(), 1000);
 
