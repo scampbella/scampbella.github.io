@@ -37,3 +37,4 @@ A structured template for tracking features, bugs, and tasks.
 - [ ] Consolidate duplicate card CSS styles (.blog-post-card, .game-card, .album-card)
 - [ ] Add @tailwindcss/typography plugin for blog prose styling
 - [ ] Namespace clicker global functions (window.sellOre, window.toggleAutoSell, etc.)
+- [x] Add previous album of the week section
