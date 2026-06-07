@@ -5,8 +5,17 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Scott Campbell</title>
+    <meta property="og:title" content="Scott Campbell">
+    <meta property="og:description" content="Scott Campbell's personal website and portfolio.">
+    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
+    <meta property="og:url" content="https://scampbella.github.io/">
+    <meta name="twitter:card" content="summary">
     <meta name="description" content="Scott Campbell's personal website and portfolio.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://scampbella.github.io/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Material Symbols -->
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -20,13 +29,14 @@
 </head>
 
 <body class="bg-background text-on-background font-body-md overflow-x-hidden">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded-full">Skip to content</a>
     <!-- TopNavBar -->
     <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
         <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
             <a href="./" class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1 uppercase hover:text-primary transition-colors">SC</a>
             <div class="flex items-center gap-10">
                 <div class="hidden md:flex items-center gap-10">
-                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md active-nav"
+                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md active-nav" aria-current="page"
                         href="./">Home</a>
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
                         href="blogs/">Blog</a>
@@ -36,7 +46,7 @@
             </div>
         </nav>
     </header>
-    <main>
+    <main id="main-content">
         <!-- Hero Section - Full Height -->
         <section
             class="min-h-screen flex flex-col justify-center items-center max-w-container-max mx-auto px-margin-desktop text-center relative flex-grow">
@@ -86,7 +96,7 @@
                                 <source srcset="assets/images/chclogo-sm.avif" type="image/avif">
                                 <img alt="Computer Hardware Enthusiasts"
                                     class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
-                                    src="assets/images/chclogo.jpg">
+                                    src="assets/images/chclogo.jpg" width="320" height="320">
                             </picture>
                         </div>
                     </div>
@@ -107,7 +117,7 @@
                             <source srcset="assets/images/albums/blue-banisters-md.avif" type="image/avif">
                             <img alt="Album Cover"
                                 class="w-full h-full object-cover rounded-3xl border-2 border-on-surface/20"
-                                src="assets/images/albums/blue-banisters.jpg">
+                                src="assets/images/albums/blue-banisters.jpg" width="320" height="320">
                         </picture>
 
                     </div>
@@ -162,7 +172,7 @@
                                 <picture class="w-full h-full block">
                                     <source srcset="assets/images/macbook-sm.avif" type="image/avif">
                                     <img alt="MacBook Air M3" class="w-full h-full object-contain"
-                                        src="assets/images/macbook.jpg">
+                                        src="assets/images/macbook.jpg" width="800" height="600">
                                 </picture>
                             </div>
                             <span
@@ -198,7 +208,7 @@
                                         type="image/avif">
                                     <source srcset="assets/images/zenbook-lg.avif" type="image/avif">
                                     <img alt="Zenbook S16" class="w-full h-full object-contain"
-                                        src="assets/images/zenbook.png">
+                                        src="assets/images/zenbook.png" width="800" height="600">
                                 </picture>
                             </div>
                             <span
@@ -257,7 +267,7 @@
                                         type="image/avif">
                                     <source srcset="assets/images/blogs/How_I_Built_PLSWORK2024/pc-lg.avif" type="image/avif">
                                     <img alt="PLSWORK2024 PC" class="w-full h-full object-cover"
-                                        src="assets/images/blogs/How_I_Built_PLSWORK2024/pc.jpg">
+                                        src="assets/images/blogs/How_I_Built_PLSWORK2024/pc.jpg" width="800" height="600">
                                 </picture>
                             </div>
                         </div>
@@ -282,7 +292,7 @@
             </div>
             <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm text-center">
                 © <span id="year">2026</span> Scott Campbell
-                <div class="italic" style="text-transform: none; margin-top: 4px; color: var(--ct-on-surface-variant); opacity: 0.8;">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></div>
+                <span class="italic block mt-1 opacity-80" style="text-transform: none; color: var(--ct-on-surface-variant);">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></span>
             </div>
         </div>
     </footer>

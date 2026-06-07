@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["./*.html", "./blogs/**/*.html", "./games/**/*.html", "./albums/**/*.html", "./js/**/*.js"],
+    // NOTE: dynamic classes in JS (e.g. classList.add/remove) are either custom CSS
+    // classes (not Tailwind utils) or also present in HTML templates — no safelist needed.
     theme: {
         extend: {
             "colors": {

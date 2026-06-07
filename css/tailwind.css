@@ -588,6 +588,18 @@ video {
   }
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .fixed {
   position: fixed;
 }
@@ -1424,6 +1436,10 @@ video {
   opacity: 0.3;
 }
 
+.opacity-80 {
+  opacity: 0.8;
+}
+
 .blur-3xl {
   --tw-blur: blur(64px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1633,6 +1649,55 @@ video {
 
 .hover\:opacity-90:hover {
   opacity: 0.9;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.focus\:absolute:focus {
+  position: absolute;
+}
+
+.focus\:left-4:focus {
+  left: 1rem;
+}
+
+.focus\:top-4:focus {
+  top: 1rem;
+}
+
+.focus\:z-\[60\]:focus {
+  z-index: 60;
+}
+
+.focus\:rounded-full:focus {
+  border-radius: 9999px;
+}
+
+.focus\:bg-primary:focus {
+  background-color: var(--ct-primary);
+}
+
+.focus\:px-4:focus {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.focus\:py-2:focus {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.focus\:text-on-primary:focus {
+  color: var(--ct-on-primary);
 }
 
 .group:hover .group-hover\:translate-x-1 {
