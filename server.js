@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3001;
+const WEBROOT = path.resolve(__dirname);
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -22,11 +23,26 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf',
   '.eot': 'application/vnd.ms-fontobject',
   '.otf': 'font/otf',
-  '.wasm': 'application/wasm'
+  '.wasm': 'application/wasm',
 };
 
+const BLOCKED_SEGMENTS = new Set(['.git', 'node_modules', 'package-lock.json']);
+
+function isPathSafe(resolved) {
+  if (!resolved.startsWith(WEBROOT + path.sep) && resolved !== WEBROOT) return false;
+  const relative = path.relative(WEBROOT, resolved);
+  if (relative.startsWith('..')) return false;
+  const segments = relative.split(path.sep);
+  for (const seg of segments) {
+    if (seg.startsWith('.') || BLOCKED_SEGMENTS.has(seg)) return false;
+  }
+  return true;
+}
+
 const server = http.createServer((req, res) => {
-  // Safe decoding of URL to handle spaces/special characters
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Cache-Control', 'no-cache');
+
   let safeUrl;
   try {
     safeUrl = decodeURIComponent(req.url);
@@ -37,22 +53,27 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Resolve file path (removing query parameters/hashes)
-  const parsedUrl = safeUrl.split('?')[0].split('#')[0];
-  let filePath = path.join(__dirname, parsedUrl);
+  const parsedUrl = safeUrl.split('?')[0];
+  let filePath = path.join(WEBROOT, parsedUrl);
+  let resolved = path.resolve(filePath);
 
-  // If path is a directory, look for index.html inside it
+  if (!isPathSafe(resolved)) {
+    res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Forbidden');
+    return;
+  }
+  filePath = resolved;
+
   fs.stat(filePath, (err, stats) => {
     if (!err && stats.isDirectory()) {
       filePath = path.join(filePath, 'index.html');
     }
 
-    // Read and serve the file
     fs.readFile(filePath, (err, data) => {
       if (err) {
         if (err.code === 'ENOENT') {
-          // Serve 404 page if it exists, otherwise plain HTML
-          const path404 = path.join(__dirname, '404.html');
+          const path404 = path.join(WEBROOT, '404.html');
           fs.readFile(path404, (err404, data404) => {
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/html');
@@ -63,16 +84,17 @@ const server = http.createServer((req, res) => {
             }
           });
         } else {
+          console.error('Server error:', err);
           res.statusCode = 500;
           res.setHeader('Content-Type', 'text/plain');
-          res.end(`Server Error: ${err.code}`);
+          res.end('Internal Server Error');
         }
         return;
       }
 
       const ext = path.extname(filePath).toLowerCase();
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-      
+
       res.statusCode = 200;
       res.setHeader('Content-Type', contentType);
       res.end(data);
@@ -80,7 +102,10 @@ const server = http.createServer((req, res) => {
   });
 });
 
+server.timeout = 30000;
+server.maxConnections = 100;
+
 server.listen(PORT, () => {
   console.log(`\n🚀 Server is running at http://localhost:${PORT}`);
-  console.log(`Watching for changes... Server will restart automatically on save.\n`);
+  console.log('Watching for changes... Server will restart automatically on save.\n');
 });
