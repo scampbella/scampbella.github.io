@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>404 - Page Not Found | Scott Campbell</title>
+    <meta name="description" content="Page not found — Scott Campbell's personal website.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet">
@@ -13,15 +16,15 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="js/tailwind.config.js"></script>
+    <link rel="stylesheet" href="css/tailwind.css">
 </head>
 
 <body class="bg-background text-on-background font-body-md overflow-x-hidden antialiased flex flex-col min-h-screen">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded-full">Skip to content</a>
     <!-- TopNavBar -->
     <header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30">
         <nav class="items-center max-w-container-max mx-auto px-margin-desktop py-4 transition-all duration-300 flex">
-            <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1">SC</div>
+            <a href="./" class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface flex-1 uppercase hover:text-primary transition-colors">SC</a>
             <div class="flex items-center gap-10">
                 <div class="hidden md:flex items-center gap-10">
                     <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md"
@@ -36,17 +39,17 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center pt-[160px] pb-16">
+    <main id="main-content" class="flex-grow flex items-center justify-center pt-[160px] pb-16">
         <div class="max-w-xl w-full mx-auto px-margin-mobile md:px-margin-desktop">
             <div class="border-2 border-on-surface/20 p-10 md:p-14 rounded-[32px] bg-surface-container text-center flex flex-col items-center group transition-all duration-300 hover:border-primary">
-                <span class="material-symbols-outlined text-[100px] text-primary mb-8 animate-pulse">error</span>
+                <span class="material-symbols-outlined text-[100px] text-primary mb-8 animate-pulse" aria-hidden="true">error</span>
                 <h1 class="font-display-lg text-[80px] md:text-[100px] leading-[0.9] mb-4 tracking-[-0.05em] font-extrabold text-on-surface uppercase">404</h1>
                 <h2 class="font-headline-md text-headline-md text-on-surface mb-6 font-bold uppercase tracking-wide">Page Not Found</h2>
                 <p class="font-body-md text-body-md text-on-surface-variant mb-10 max-w-sm leading-relaxed">
                     The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
                 <a class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 hover:-translate-y-0.5 transition-all inline-flex items-center gap-3"
                     href="./">
-                    <span class="material-symbols-outlined text-[20px]">arrow_back</span> Back to Home
+                    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_back</span> Back to Home
                 </a>
             </div>
         </div>
@@ -68,7 +71,7 @@
             </div>
             <div class="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-label-sm text-center">
                 © <span id="year">2026</span> Scott Campbell
-                <div class="italic" style="text-transform: none; margin-top: 4px; color: var(--ct-on-surface-variant); opacity: 0.8;">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></div>
+                <span class="italic block mt-1 opacity-80" style="text-transform: none; color: var(--ct-on-surface-variant);">Optimized for <span style="letter-spacing: 0.25em; font-weight: bold; margin-right: -0.25em;">OLED</span></span>
             </div>
         </div>
     </footer>

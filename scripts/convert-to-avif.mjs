@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import { readdir, stat as fsStat } from "node:fs/promises";
-import { join, extname, dirname, basename } from "node:path";
+import { join, extname, dirname, basename, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -13,6 +13,8 @@ const SIZES = [
   { width: 1280, suffix: "-md" },
   { width: 1920, suffix: "-lg" },
 ];
+
+const CONCURRENCY = 4;
 
 async function collectFiles(dir) {
   const results = [];
@@ -27,6 +29,31 @@ async function collectFiles(dir) {
     }
   }
   return results;
+}
+
+async function needsConversion(filePath) {
+  const dir = dirname(filePath);
+  const name = basename(filePath, extname(filePath));
+  try {
+    const srcStat = await fsStat(filePath);
+    for (const size of SIZES) {
+      const outputPath = join(dir, `${name}${size.suffix}.avif`);
+      try {
+        const dstStat = await fsStat(outputPath);
+        if (dstStat.mtimeMs >= srcStat.mtimeMs) continue;
+      } catch {
+        // output doesn't exist — needs conversion
+        return true;
+      }
+      // all outputs exist and are newer than source — skip this size only
+    }
+    // check if all outputs exist
+    const smExists = await fsStat(join(dir, `${name}-sm.avif`)).then(() => true, () => false);
+    if (!smExists) return true;
+    return false;
+  } catch {
+    return true;
+  }
 }
 
 async function convertImage(filePath) {
@@ -44,11 +71,22 @@ async function convertImage(filePath) {
     if (originalWidth < size.width && size.suffix !== "-sm") continue;
 
     const outputPath = join(dir, `${name}${size.suffix}.avif`);
+
+    // Skip if output is newer than source
+    try {
+      const srcStat = await fsStat(filePath);
+      const dstStat = await fsStat(outputPath);
+      if (dstStat.mtimeMs >= srcStat.mtimeMs) continue;
+    } catch {
+      // output doesn't exist — proceed
+    }
+
     await sharp(filePath)
       .resize({ width: size.width, withoutEnlargement: true, fit: "inside" })
       .avif({ quality: 65, effort: 4 })
       .toFile(outputPath);
-    console.log(`   ${name}${size.suffix}.avif`);
+    const rel = relative(assetsDir, outputPath);
+    console.log(`   ${rel}`);
     converted++;
   }
   return converted > 0 ? "converted" : "skipped";
@@ -62,19 +100,55 @@ async function main() {
 
   console.log(`Found ${imageFiles.length} source image(s):`);
   for (const f of imageFiles) {
-    const rel = f.replace(assetsDir, "assets/images");
-    console.log(`  ${rel}`);
+    const rel = relative(assetsDir, f);
+    console.log(`  assets/images/${rel}`);
   }
   console.log("");
 
   let converted = 0;
+  let failures = 0;
+  const toConvert = [];
   for (const filePath of imageFiles) {
-    console.log(`Converting: ${filePath.replace(assetsDir, "assets/images")}`);
-    try {
-      const result = await convertImage(filePath);
-      if (result === "converted") converted++;
-    } catch (err) {
-      console.error(`  Error: ${err.message}`);
+    if (await needsConversion(filePath)) {
+      toConvert.push(filePath);
+    }
+  }
+
+  if (toConvert.length === 0) {
+    console.log("All images are up-to-date. Nothing to convert.\n");
+  } else {
+    console.log(`Converting ${toConvert.length} image(s) in parallel (concurrency: ${CONCURRENCY})...\n`);
+
+    // Process with concurrency limit
+    const queue = [...toConvert];
+    const running = [];
+
+    async function runNext() {
+      while (queue.length > 0 && running.length < CONCURRENCY) {
+        const filePath = queue.shift();
+        const rel = relative(assetsDir, filePath);
+        const display = `assets/images/${rel}`;
+        console.log(`Converting: ${display}`);
+        const task = convertImage(filePath).then((result) => {
+          if (result === "converted") converted++;
+        }).catch((err) => {
+          console.error(`  Error: ${err.message}`);
+          failures++;
+        });
+        running.push(task);
+        task.finally(() => {
+          const idx = running.indexOf(task);
+          if (idx >= 0) running.splice(idx, 1);
+        });
+      }
+    }
+
+    // Simple concurrency loop
+    while (queue.length > 0 || running.length > 0) {
+      await runNext();
+      if (running.length >= CONCURRENCY || (queue.length === 0 && running.length > 0)) {
+        await Promise.race(running);
+      }
     }
   }
 
@@ -83,10 +157,15 @@ async function main() {
   console.log("\nAll AVIF files:");
   const allAfter = await collectFiles(assetsDir);
   for (const f of allAfter.filter((x) => x.endsWith(".avif"))) {
-    const rel = f.replace(assetsDir, "assets/images");
+    const rel = relative(assetsDir, f);
     const s = await fsStat(f);
     const kb = (s.size / 1024).toFixed(1);
-    console.log(`  ${rel} (${kb} KB)`);
+    console.log(`  assets/images/${rel} (${kb} KB)`);
+  }
+
+  if (failures > 0) {
+    console.error(`\n${failures} conversion(s) failed.`);
+    process.exit(1);
   }
 }
 
