@@ -214,7 +214,17 @@ async function main() {
   const escapedSpotify = opts.spotifyUrl.replace(/"/g, "&quot;");
   const safeName = safeFilename(meta.name);
 
-  console.log(`\n── Add to albums/index.html ──`);
+  // Format release date for homepage display
+  let releaseDateDisplay = "";
+  if (meta.releaseDate) {
+    try {
+      releaseDateDisplay = new Date(meta.releaseDate + "T00:00:00").toLocaleDateString("en-US", {
+        year: "numeric", month: "long", day: "numeric"
+      });
+    } catch { releaseDateDisplay = meta.releaseDate; }
+  }
+
+  console.log(`\n── Add to js/albums.js ──`);
   console.log(`{
     name: "${escapedName}",
     artist: "${escapedArtist}",
@@ -227,6 +237,37 @@ async function main() {
     spotify: "${escapedSpotify}",
     blurb: "${escapedBlurb}"
 },`);
+
+  // Output the homepage HTML snippet
+  const escapedBlurbHtml = (opts.fallbackBlurb || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&rsquo;");
+  const escapedArtistHtml = (meta.artist || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&rsquo;");
+  const escapedNameHtml = meta.name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&rsquo;");
+
+  console.log(`\n── Update index.html (Album of the Week section) ──`);
+  console.log(`<!-- Cover images: replace in <picture> -->`);
+  console.log(`<source srcset="assets/images/albums/${safeName}-sm.avif" media="(max-width: 640px)" type="image/avif">`);
+  console.log(`<source srcset="assets/images/albums/${safeName}-md.avif" type="image/avif">`);
+  console.log(`<img … src="assets/images/albums/${safeName}.jpg" …>`);
+  console.log(``);
+  console.log(`<!-- Album info: replace in <div class="mb-8"> -->`);
+  console.log(`<h3 class="text-on-surface font-headline-md text-2xl">${escapedNameHtml}</h3>`);
+  console.log(`<p class="text-on-surface-variant font-body-md italic text-lg">by ${escapedArtistHtml}</p>`);
+  if (meta.releaseDate && meta.durationMs) {
+    console.log(`<p class="font-label-sm text-on-surface-variant/50 mt-1">Released ${releaseDateDisplay} · ${formatDuration(meta.durationMs)}</p>`);
+  } else if (meta.releaseDate) {
+    console.log(`<p class="font-label-sm text-on-surface-variant/50 mt-1">Released ${releaseDateDisplay}</p>`);
+  } else if (meta.durationMs) {
+    console.log(`<p class="font-label-sm text-on-surface-variant/50 mt-1">${formatDuration(meta.durationMs)}</p>`);
+  }
+  console.log(``);
+  console.log(`<!-- Blurb: replace the <p> after the album info -->`);
+  console.log(`<p class="font-body-lg …">${escapedBlurbHtml}</p>`);
+  console.log(``);
+  console.log(`<!-- Spotify link -->`);
+  console.log(`<a … href="${escapedSpotify}" …>`);
 }
 
 main().catch((err) => {
