@@ -1,5 +1,17 @@
 const albums = [
     {
+        name: "Nothing Happens",
+        artist: "Wallows",
+        date: "2026-06-11",
+        releaseDate: "2019-03-22",
+        durationMs: 2327000,
+        coverJpg: "../assets/images/albums/nothing-happens.jpg",
+        coverAvifMd: "../assets/images/albums/nothing-happens-sm.avif",
+        coverAvifSm: "../assets/images/albums/nothing-happens-sm.avif",
+        spotify: "https://open.spotify.com/album/7eed9MBclFPjjjvotfR2e9",
+        blurb: "Nothing Happens is the Wallows' debut album and man is it good. I honestly had not listened to the full thing until last week while studying for finals but I'm really glad I did. I have always loved their funky little boyband aesthetic, they kinda remind me of a more pop-ish boygenius but with actual boys. I don't really have any nuanced takes on this one or anything profound to say since I haven't listened to it very many times, but the whole album of the week thing is just for me to share my favorite music at the current time. My personal favorite song here is Do Not Wait. The topic to me seems kinda vague which is a plus for me because I like to imagine myself in all sorts of different scenarios when I listen to music. I also really love the melody in the back and the slow creeping up of the vocals."
+    },
+    {
         name: "Blue Banisters",
         artist: "Lana Del Rey",
         date: "2026-06-01",
