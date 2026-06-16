@@ -1,5 +1,17 @@
 const albums = [
     {
+        name: "My Dear Melancholy,",
+        artist: "The Weeknd",
+        date: "2026-06-16",
+        releaseDate: "2018-03-30",
+        durationMs: 1536000,
+        coverJpg: "../assets/images/albums/my-dear-melancholy.jpg",
+        coverAvifMd: "../assets/images/albums/my-dear-melancholy-sm.avif",
+        coverAvifSm: "../assets/images/albums/my-dear-melancholy-sm.avif",
+        spotify: "https://open.spotify.com/album/4qZBW3f2Q8y0k1A84d4iAO?si=YQCIzAuVRGGLI60anQUztg",
+        blurb: "My Dear Melancholy, is not only my favorite album by The Weeknd, but it\u2019s his favorite album of his as stated in an interview on a press tour for his recent movie (I do not recommend watching it, it\u2019s straight garbage). This album is just 25 minutes of straight heat. The production is also magnificent and it genuinely feels like a treat every time I get to listen to it on good speakers. My personal favorite songs on this album are Try Me and Privilege."
+    },
+    {
         name: "Nothing Happens",
         artist: "Wallows",
         date: "2026-06-11",
