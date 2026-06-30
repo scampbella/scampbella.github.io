@@ -1,5 +1,17 @@
 const albums = [
     {
+        name: "Discovery",
+        artist: "Daft Punk",
+        date: "2026-06-30",
+        releaseDate: "2001-03-12",
+        durationMs: 3650000,
+        coverJpg: "../assets/images/albums/discovery.jpg",
+        coverAvifMd: "../assets/images/albums/discovery-md.avif",
+        coverAvifSm: "../assets/images/albums/discovery-sm.avif",
+        spotify: "https://open.spotify.com/album/2noRn2Aes5aoNVsU6iWThc",
+        blurb: "I only recently discovered this album but every single song is masterfully produced. I am not really one for electro-pop or anything like that, but these songs are genre defining and simply interesting to listen to. My personal favorites are Veridis Quo and Face to Face."
+    },
+    {
         name: "My Dear Melancholy,",
         artist: "The Weeknd",
         date: "2026-06-16",
