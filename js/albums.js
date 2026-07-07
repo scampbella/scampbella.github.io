@@ -1,5 +1,17 @@
 const albums = [
     {
+        name: "Ctrl",
+        artist: "SZA",
+        date: "2026-07-07",
+        releaseDate: "2017-06-09",
+        durationMs: 2941000,
+        coverJpg: "../assets/images/albums/ctrl.jpg",
+        coverAvifMd: "../assets/images/albums/ctrl-md.avif",
+        coverAvifSm: "../assets/images/albums/ctrl-sm.avif",
+        spotify: "https://open.spotify.com/album/76290XdXVF9rPzGdNRWdCh",
+        blurb: "Ctrl is without a doubt one of the best R\&B albums of the last decade. SZA's vocals are angelic and a force to be reckoned with. This is genuinely a no-skip album in my opinion. My personal favorite songs are Prom and 20 Something."
+    },
+    {
         name: "Discovery",
         artist: "Daft Punk",
         date: "2026-06-30",
