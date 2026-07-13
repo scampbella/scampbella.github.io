@@ -9,7 +9,7 @@ const albums = [
         coverAvifMd: "../assets/images/albums/chip-chrome-the-mono-tones-md.avif",
         coverAvifSm: "../assets/images/albums/chip-chrome-the-mono-tones-sm.avif",
         spotify: "https://open.spotify.com/album/4uNgt1uQs6wZRm4giB3shX",
-        blurb: "This is one of those albums where I didn't realize I loved it until I noticed I had every single song liked and in one of my playlists. I never would've considered myself a fan of The Neighbourhood until listening to this album in full. Genuinely some great stuff. My personal favorites on this album are Devil's Advocate and Tobacco Sunburst"
+        blurb: "This is one of those albums where I didn't realize I loved it until I noticed I had every single song liked and in one of my playlists. I never would've considered myself a fan of The Neighbourhood until listening to this album in full. Genuinely some great stuff. My personal favorites on this album are Devil's Advocate and Tobacco Sunburst."
     },
     {
         name: "Ctrl",
