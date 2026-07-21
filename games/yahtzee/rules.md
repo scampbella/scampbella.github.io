@@ -86,21 +86,25 @@ Seven categories with fixed or conditional scoring.
 
 ### Joker Activation
 
-Joker rules activate when the Yahtzee box is **filled with any score** — including 0. Unlike Hasbro rules, a zeroed Yahtzee still triggers Joker.
+Joker rules activate when the Yahtzee box is **filled with any score** — including 0. A zeroed Yahtzee still triggers Joker (but never earns the +100 bonus).
 
 ### Subsequent Yahtzees (Joker Rules)
 
 When a Yahtzee is rolled **and** the main Yahtzee box is already filled (any score, including 0):
 
+**Forced upper placement (BBG rule).** If the **matching upper box** (the box for the rolled face — e.g. five 4s → Fours) is still **open**, the Yahtzee **must** be scored there. That is the only legal category until the matching upper is filled. It scores normally (sum of the matching dice, e.g. five 4s → Fours = 20).
+
+**Free choice (matching upper already filled).** Once the matching upper box is filled, the Yahtzee may be scored in **any** open category as a wild card:
+
 | Category Type | Joker Scoring |
 |---------------|---------------|
-| Upper Section (Ones–Sixes) | Scores normally: sum of dice matching that number (e.g. five 4s → Fours = 20) |
+| Upper Section (Ones–Sixes) | Scores normally: sum of dice matching that number |
 | 3 of a Kind, 4 of a Kind, Chance | Score normally: sum of all 5 dice |
 | Full House | **Always 25** (regardless of dice faces) |
 | Sm Straight | **Always 30** (regardless of dice faces) |
 | Lg Straight | **Always 40** (regardless of dice faces) |
 
-**All remaining categories are always legal during Joker.** There is no forced matching-upper restriction. The player may freely choose any open category.
+The +100 Yahtzee bonus (see below) is awarded independently of where the Yahtzee is scored, forced or free.
 
 ### Yahtzee Bonus
 
@@ -128,8 +132,8 @@ Each **additional** Yahtzee rolled after the main Yahtzee box is filled with **5
 
 - Must have rolled at least once (rollsLeft < 3) before selecting a category
 - Once a category is filled, it cannot be changed
-- All unfilled categories are always selectable — there are no forced picks (BBG ruleset)
-- Only filled categories are visually disabled (`.score-row.filled`)
+- All unfilled categories are normally selectable — **except** under the BBG Joker forced-upper rule: when a Yahtzee is rolled and the Yahtzee box is already filled, if the matching upper box is still open it becomes the only selectable category
+- Filled categories, and categories made illegal by the forced-upper rule, are visually disabled
 
 ## Scoring Summary
 

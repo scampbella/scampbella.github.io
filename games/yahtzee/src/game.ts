@@ -42,7 +42,10 @@ class Game {
 
     isValidCategorySelection(index: number, dice: number[]): boolean {
         if (!this.scorecard.canScore(index)) return false;
-        // BBG: all remaining categories are always legal — no forced picks
+        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
+        // scored in the matching upper box while that box is still open.
+        const forced = this.scorecard.forcedCategoryIndex(dice);
+        if (forced !== null) return index === forced;
         return true;
     }
 
