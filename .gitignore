@@ -33,3 +33,13 @@ Desktop.ini
 .vscode/
 *.swp
 games/yahtzee/build/
+
+# Image originals: only the converted -md.avif is committed (see scripts/convert-to-avif.mjs)
+assets/images/**/*.jpg
+assets/images/**/*.jpeg
+assets/images/**/*.JPEG
+assets/images/**/*.png
+assets/images/**/*.webp
+assets/images/**/*.gif
+assets/images/**/*.tiff
+assets/images/**/*.tif
