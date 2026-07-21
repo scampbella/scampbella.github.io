@@ -113,7 +113,21 @@ const KeiriBot = (() => {
     }
 
     // ── Legal score categories (BBG only) ──
-    function legalScoreCategories(_ruleset: Ruleset, _dice: number[], filledScores: Record<number, number>): Category[] {
+    // BBG Joker forced placement: a Yahtzee rolled after the Yahtzee box is
+    // filled must be scored in the matching upper box while that box is open.
+    function forcedScoreCategory(dice: number[], filledScores: Record<number, number>): Category | null {
+        if (!isBotYahtzee(dice)) return null;
+        if (!isFilled(filledScores, CATEGORY.Yahtzee)) return null;
+        const face = yahtzeeFace(dice);
+        if (face === null) return null;
+        const matching = upperForFace(face);
+        if (matching === null) return null;
+        if (isFilled(filledScores, matching)) return null;
+        return matching;
+    }
+    function legalScoreCategories(_ruleset: Ruleset, dice: number[], filledScores: Record<number, number>): Category[] {
+        const forced = forcedScoreCategory(dice, filledScores);
+        if (forced !== null) return [forced];
         return remainingCategories(filledScores);
     }
 

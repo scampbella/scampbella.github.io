@@ -17,6 +17,19 @@ class Scorecard {
         return index >= 0 && index < this.slots.length && this.slots[index].score === null;
     }
 
+    // BBG Joker forced placement: when a Yahtzee is rolled after the Yahtzee box
+    // is already filled (any score, including 0), and the matching upper box is
+    // still open, it MUST be scored in that upper box. Returns that upper index,
+    // or null when the player has a free choice.
+    forcedCategoryIndex(dice: number[]): number | null {
+        if (!isYahtzee(dice)) return null;
+        if (this.slots[this.yahtzeeCategoryIndex].score === null) return null;
+        const upperIdx = dice[0] - 1;
+        if (upperIdx < 0 || upperIdx > 5) return null;
+        if (this.slots[upperIdx].score !== null) return null;
+        return upperIdx;
+    }
+
     scoreCategory(index: number, dice: number[]): number {
         if (!this.canScore(index)) return 0;
 

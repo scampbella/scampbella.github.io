@@ -110,6 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
         (window as any).soloUI = soloUI;
         versusUI!.render(versusGame);
         saveGame();
+        // If a bot turn was interrupted (e.g. reload mid-turn), resume it so the
+        // game doesn't stay soft-locked with every control disabled.
+        versusGame.resumeBotTurnIfNeeded();
     }
 
     modeToggle.addEventListener('click', () => {

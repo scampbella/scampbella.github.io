@@ -1,6 +1,7 @@
 // Yahtzee — built from src/
-// 2026-06-06T23:40:00.509Z
+// 2026-07-21T06:48:33.315Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
+
 
 "use strict";
 // ============================================================
@@ -153,6 +154,22 @@ class Scorecard {
     canScore(index) {
         return index >= 0 && index < this.slots.length && this.slots[index].score === null;
     }
+    // BBG Joker forced placement: when a Yahtzee is rolled after the Yahtzee box
+    // is already filled (any score, including 0), and the matching upper box is
+    // still open, it MUST be scored in that upper box. Returns that upper index,
+    // or null when the player has a free choice.
+    forcedCategoryIndex(dice) {
+        if (!isYahtzee(dice))
+            return null;
+        if (this.slots[this.yahtzeeCategoryIndex].score === null)
+            return null;
+        const upperIdx = dice[0] - 1;
+        if (upperIdx < 0 || upperIdx > 5)
+            return null;
+        if (this.slots[upperIdx].score !== null)
+            return null;
+        return upperIdx;
+    }
     scoreCategory(index, dice) {
         if (!this.canScore(index))
             return 0;
@@ -249,7 +266,11 @@ class Game {
     isValidCategorySelection(index, dice) {
         if (!this.scorecard.canScore(index))
             return false;
-        // BBG: all remaining categories are always legal — no forced picks
+        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
+        // scored in the matching upper box while that box is still open.
+        const forced = this.scorecard.forcedCategoryIndex(dice);
+        if (forced !== null)
+            return index === forced;
         return true;
     }
     previewScore(index) {
@@ -673,7 +694,27 @@ const KeiriBot = (() => {
         return { baseScore: bs, yahtzeeBonus: yBonus, upperBonus: uBonus, totalDelta: bs + yBonus + uBonus };
     }
     // ── Legal score categories (BBG only) ──
-    function legalScoreCategories(_ruleset, _dice, filledScores) {
+    // BBG Joker forced placement: a Yahtzee rolled after the Yahtzee box is
+    // filled must be scored in the matching upper box while that box is open.
+    function forcedScoreCategory(dice, filledScores) {
+        if (!isBotYahtzee(dice))
+            return null;
+        if (!isFilled(filledScores, CATEGORY.Yahtzee))
+            return null;
+        const face = yahtzeeFace(dice);
+        if (face === null)
+            return null;
+        const matching = upperForFace(face);
+        if (matching === null)
+            return null;
+        if (isFilled(filledScores, matching))
+            return null;
+        return matching;
+    }
+    function legalScoreCategories(_ruleset, dice, filledScores) {
+        const forced = forcedScoreCategory(dice, filledScores);
+        if (forced !== null)
+            return [forced];
         return remainingCategories(filledScores);
     }
     function factorial(n) { let r = 1; for (let i = 2; i <= n; i++)
@@ -968,6 +1009,11 @@ class VersusGame {
         const sc = this.isPlayerTurn ? this.playerScorecard : this.botScorecard;
         if (!sc.canScore(index))
             return false;
+        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
+        // scored in the matching upper box while that box is still open.
+        const forced = sc.forcedCategoryIndex(dice);
+        if (forced !== null)
+            return index === forced;
         return true;
     }
     previewScore(index, forPlayer = true) {
@@ -1107,6 +1153,19 @@ class VersusGame {
                 this.botScorecard.scoreCategory(emptyIdx, this.dice.values());
             this.advanceTurn();
         }
+    }
+    // Recover from an interrupted bot turn (e.g. the page was reloaded while
+    // Keiri was thinking). The bot only writes to its scorecard at the very end
+    // of its turn, so if isBotThinking is still set the bot had not scored yet —
+    // restart its turn cleanly from a fresh roll instead of soft-locking.
+    resumeBotTurnIfNeeded() {
+        if (this.gameOver || !this.isBotThinking)
+            return;
+        this.rollsLeft = 3;
+        this.dice.unlockAll();
+        this.dice.resetValues();
+        this.notify();
+        this.executeBotTurn();
     }
     advanceTurn() {
         if (this.playerScorecard.isComplete() && this.botScorecard.isComplete()) {
@@ -1610,6 +1669,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.soloUI = soloUI;
         versusUI.render(versusGame);
         saveGame();
+        // If a bot turn was interrupted (e.g. reload mid-turn), resume it so the
+        // game doesn't stay soft-locked with every control disabled.
+        versusGame.resumeBotTurnIfNeeded();
     }
     modeToggle.addEventListener('click', () => {
         if (isVersusMode) {

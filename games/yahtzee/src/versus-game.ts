@@ -49,6 +49,10 @@ class VersusGame {
     isValidCategorySelection(index: number, dice: number[]): boolean {
         const sc = this.isPlayerTurn ? this.playerScorecard : this.botScorecard;
         if (!sc.canScore(index)) return false;
+        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
+        // scored in the matching upper box while that box is still open.
+        const forced = sc.forcedCategoryIndex(dice);
+        if (forced !== null) return index === forced;
         return true;
     }
 
@@ -200,6 +204,19 @@ class VersusGame {
             if (emptyIdx >= 0) this.botScorecard.scoreCategory(emptyIdx, this.dice.values());
             this.advanceTurn();
         }
+    }
+
+    // Recover from an interrupted bot turn (e.g. the page was reloaded while
+    // Keiri was thinking). The bot only writes to its scorecard at the very end
+    // of its turn, so if isBotThinking is still set the bot had not scored yet —
+    // restart its turn cleanly from a fresh roll instead of soft-locking.
+    resumeBotTurnIfNeeded(): void {
+        if (this.gameOver || !this.isBotThinking) return;
+        this.rollsLeft = 3;
+        this.dice.unlockAll();
+        this.dice.resetValues();
+        this.notify();
+        this.executeBotTurn();
     }
 
     private advanceTurn(): void {
