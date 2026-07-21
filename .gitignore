@@ -33,4 +33,3 @@ Desktop.ini
 .vscode/
 *.swp
 games/yahtzee/build/
-games/yahtzee/src/tsconfig.json
