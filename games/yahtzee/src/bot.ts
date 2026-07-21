@@ -13,6 +13,7 @@ const KeiriBot = (() => {
 
     const ALL_CATEGORIES: Category[] = [0,1,2,3,4,5,6,7,8,9,10,11,12];
     const UPPER_CATEGORIES: Category[] = [0,1,2,3,4,5];
+    const LOWER_CATEGORIES: Category[] = [6,7,8,9,10,11,12];
 
     function upperFace(cat: Category): number | null { return cat <= 5 ? cat + 1 : null; }
     function upperForFace(face: number): Category | null { return face >= 1 && face <= 6 ? (face - 1) as Category : null; }
@@ -112,22 +113,27 @@ const KeiriBot = (() => {
         return { baseScore: bs, yahtzeeBonus: yBonus, upperBonus: uBonus, totalDelta: bs + yBonus + uBonus };
     }
 
-    // ── Legal score categories (BBG only) ──
-    // BBG Joker forced placement: a Yahtzee rolled after the Yahtzee box is
-    // filled must be scored in the matching upper box while that box is open.
-    function forcedScoreCategory(dice: number[], filledScores: Record<number, number>): Category | null {
+    // ── Legal score categories (BBG forced Joker) ──
+    // Mirrors Scorecard.jokerForcedCategories: a wild-card Yahtzee must be scored
+    // in the matching upper box if open, else an open Lower box, else an open
+    // Upper box.
+    function jokerForcedCategories(dice: number[], filledScores: Record<number, number>): Category[] | null {
         if (!isBotYahtzee(dice)) return null;
         if (!isFilled(filledScores, CATEGORY.Yahtzee)) return null;
         const face = yahtzeeFace(dice);
         if (face === null) return null;
         const matching = upperForFace(face);
         if (matching === null) return null;
-        if (isFilled(filledScores, matching)) return null;
-        return matching;
+        if (!isFilled(filledScores, matching)) return [matching];
+        const lowerOpen = LOWER_CATEGORIES.filter(c => !isFilled(filledScores, c));
+        if (lowerOpen.length > 0) return lowerOpen;
+        const upperOpen = UPPER_CATEGORIES.filter(c => !isFilled(filledScores, c));
+        if (upperOpen.length > 0) return upperOpen;
+        return null;
     }
     function legalScoreCategories(_ruleset: Ruleset, dice: number[], filledScores: Record<number, number>): Category[] {
-        const forced = forcedScoreCategory(dice, filledScores);
-        if (forced !== null) return [forced];
+        const forced = jokerForcedCategories(dice, filledScores);
+        if (forced !== null) return forced;
         return remainingCategories(filledScores);
     }
 
