@@ -1,5 +1,5 @@
 // Yahtzee — built from src/
-// 2026-07-21T06:48:33.315Z
+// 2026-07-21T07:07:39.053Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
 
 
@@ -154,11 +154,16 @@ class Scorecard {
     canScore(index) {
         return index >= 0 && index < this.slots.length && this.slots[index].score === null;
     }
-    // BBG Joker forced placement: when a Yahtzee is rolled after the Yahtzee box
-    // is already filled (any score, including 0), and the matching upper box is
-    // still open, it MUST be scored in that upper box. Returns that upper index,
-    // or null when the player has a free choice.
-    forcedCategoryIndex(dice) {
+    // BBG Joker forced placement. A Yahtzee rolled after the Yahtzee box is
+    // already filled (any score, including 0) is a wild card, and BBG restricts
+    // where it may be scored:
+    //   1. If the matching upper box is still open, it MUST be scored there.
+    //   2. Otherwise it must be scored in an open Lower box (the Joker value).
+    //   3. If every Lower box is already filled, it is scored (as 0) in an open
+    //      Upper box.
+    // Returns the list of currently-legal category indices, or null when there
+    // is no restriction (free choice among all open boxes).
+    jokerForcedCategories(dice) {
         if (!isYahtzee(dice))
             return null;
         if (this.slots[this.yahtzeeCategoryIndex].score === null)
@@ -166,9 +171,19 @@ class Scorecard {
         const upperIdx = dice[0] - 1;
         if (upperIdx < 0 || upperIdx > 5)
             return null;
-        if (this.slots[upperIdx].score !== null)
-            return null;
-        return upperIdx;
+        if (this.slots[upperIdx].score === null)
+            return [upperIdx];
+        const openIn = (section) => this.slots
+            .map((s, i) => ({ s, i }))
+            .filter(({ s }) => s.def.section === section && s.score === null)
+            .map(({ i }) => i);
+        const lowerOpen = openIn(Section.Lower);
+        if (lowerOpen.length > 0)
+            return lowerOpen;
+        const upperOpen = openIn(Section.Upper);
+        if (upperOpen.length > 0)
+            return upperOpen;
+        return null;
     }
     scoreCategory(index, dice) {
         if (!this.canScore(index))
@@ -266,11 +281,10 @@ class Game {
     isValidCategorySelection(index, dice) {
         if (!this.scorecard.canScore(index))
             return false;
-        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
-        // scored in the matching upper box while that box is still open.
-        const forced = this.scorecard.forcedCategoryIndex(dice);
+        // BBG Joker forced placement (matching upper → open lower → open upper).
+        const forced = this.scorecard.jokerForcedCategories(dice);
         if (forced !== null)
-            return index === forced;
+            return forced.includes(index);
         return true;
     }
     previewScore(index) {
@@ -601,6 +615,7 @@ const KeiriBot = (() => {
     };
     const ALL_CATEGORIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const UPPER_CATEGORIES = [0, 1, 2, 3, 4, 5];
+    const LOWER_CATEGORIES = [6, 7, 8, 9, 10, 11, 12];
     function upperFace(cat) { return cat <= 5 ? cat + 1 : null; }
     function upperForFace(face) { return face >= 1 && face <= 6 ? (face - 1) : null; }
     function maxBaseScore(cat) {
@@ -693,10 +708,11 @@ const KeiriBot = (() => {
         const uBonus = (isUpper(cat) && upperBefore < UPPER_BONUS_THRESHOLD && upperBefore + bs >= UPPER_BONUS_THRESHOLD) ? UPPER_BONUS : 0;
         return { baseScore: bs, yahtzeeBonus: yBonus, upperBonus: uBonus, totalDelta: bs + yBonus + uBonus };
     }
-    // ── Legal score categories (BBG only) ──
-    // BBG Joker forced placement: a Yahtzee rolled after the Yahtzee box is
-    // filled must be scored in the matching upper box while that box is open.
-    function forcedScoreCategory(dice, filledScores) {
+    // ── Legal score categories (BBG forced Joker) ──
+    // Mirrors Scorecard.jokerForcedCategories: a wild-card Yahtzee must be scored
+    // in the matching upper box if open, else an open Lower box, else an open
+    // Upper box.
+    function jokerForcedCategories(dice, filledScores) {
         if (!isBotYahtzee(dice))
             return null;
         if (!isFilled(filledScores, CATEGORY.Yahtzee))
@@ -707,14 +723,20 @@ const KeiriBot = (() => {
         const matching = upperForFace(face);
         if (matching === null)
             return null;
-        if (isFilled(filledScores, matching))
-            return null;
-        return matching;
+        if (!isFilled(filledScores, matching))
+            return [matching];
+        const lowerOpen = LOWER_CATEGORIES.filter(c => !isFilled(filledScores, c));
+        if (lowerOpen.length > 0)
+            return lowerOpen;
+        const upperOpen = UPPER_CATEGORIES.filter(c => !isFilled(filledScores, c));
+        if (upperOpen.length > 0)
+            return upperOpen;
+        return null;
     }
     function legalScoreCategories(_ruleset, dice, filledScores) {
-        const forced = forcedScoreCategory(dice, filledScores);
+        const forced = jokerForcedCategories(dice, filledScores);
         if (forced !== null)
-            return [forced];
+            return forced;
         return remainingCategories(filledScores);
     }
     function factorial(n) { let r = 1; for (let i = 2; i <= n; i++)
@@ -1009,11 +1031,10 @@ class VersusGame {
         const sc = this.isPlayerTurn ? this.playerScorecard : this.botScorecard;
         if (!sc.canScore(index))
             return false;
-        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
-        // scored in the matching upper box while that box is still open.
-        const forced = sc.forcedCategoryIndex(dice);
+        // BBG Joker forced placement (matching upper → open lower → open upper).
+        const forced = sc.jokerForcedCategories(dice);
         if (forced !== null)
-            return index === forced;
+            return forced.includes(index);
         return true;
     }
     previewScore(index, forPlayer = true) {

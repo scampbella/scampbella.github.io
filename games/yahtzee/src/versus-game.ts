@@ -49,10 +49,9 @@ class VersusGame {
     isValidCategorySelection(index: number, dice: number[]): boolean {
         const sc = this.isPlayerTurn ? this.playerScorecard : this.botScorecard;
         if (!sc.canScore(index)) return false;
-        // BBG Joker: a Yahtzee rolled after the Yahtzee box is filled must be
-        // scored in the matching upper box while that box is still open.
-        const forced = sc.forcedCategoryIndex(dice);
-        if (forced !== null) return index === forced;
+        // BBG Joker forced placement (matching upper → open lower → open upper).
+        const forced = sc.jokerForcedCategories(dice);
+        if (forced !== null) return forced.includes(index);
         return true;
     }
 

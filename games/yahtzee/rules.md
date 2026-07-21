@@ -92,19 +92,24 @@ Joker rules activate when the Yahtzee box is **filled with any score** — inclu
 
 When a Yahtzee is rolled **and** the main Yahtzee box is already filled (any score, including 0):
 
-**Forced upper placement (BBG rule).** If the **matching upper box** (the box for the rolled face — e.g. five 4s → Fours) is still **open**, the Yahtzee **must** be scored there. That is the only legal category until the matching upper is filled. It scores normally (sum of the matching dice, e.g. five 4s → Fours = 20).
+**Forced placement (BBG wild-card rule).** A wild-card Yahtzee must be scored in a restricted set of categories, checked in order:
 
-**Free choice (matching upper already filled).** Once the matching upper box is filled, the Yahtzee may be scored in **any** open category as a wild card:
+1. **Matching upper open** → it **must** go in the matching upper box (e.g. five 4s → Fours = 20). That is the only legal category.
+2. **Matching upper filled, some Lower open** → it **must** go in an open **Lower** box, scored as the Joker value below. It may *not* be dumped into another open upper box.
+3. **Matching upper filled, all Lower filled** → it is scored (as 0) in any open **Upper** box.
 
-| Category Type | Joker Scoring |
-|---------------|---------------|
-| Upper Section (Ones–Sixes) | Scores normally: sum of dice matching that number |
-| 3 of a Kind, 4 of a Kind, Chance | Score normally: sum of all 5 dice |
+**Joker values (tier 2 — open Lower box).** When a wild-card Yahtzee is scored in a Lower box:
+
+| Lower Category | Joker Scoring |
+|----------------|---------------|
+| 3 of a Kind, 4 of a Kind, Chance | Sum of all 5 dice |
 | Full House | **Always 25** (regardless of dice faces) |
 | Sm Straight | **Always 30** (regardless of dice faces) |
 | Lg Straight | **Always 40** (regardless of dice faces) |
 
-The +100 Yahtzee bonus (see below) is awarded independently of where the Yahtzee is scored, forced or free.
+In tiers 1 and 3 the Yahtzee is scored in an Upper box and scores normally (sum of the matching face — e.g. five 4s in Fours = 20, or five 4s dumped in an open Twos = 0).
+
+The +100 Yahtzee bonus (see below) is awarded independently of where the Yahtzee is scored.
 
 ### Yahtzee Bonus
 

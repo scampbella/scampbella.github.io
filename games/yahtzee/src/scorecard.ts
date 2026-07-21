@@ -17,17 +17,30 @@ class Scorecard {
         return index >= 0 && index < this.slots.length && this.slots[index].score === null;
     }
 
-    // BBG Joker forced placement: when a Yahtzee is rolled after the Yahtzee box
-    // is already filled (any score, including 0), and the matching upper box is
-    // still open, it MUST be scored in that upper box. Returns that upper index,
-    // or null when the player has a free choice.
-    forcedCategoryIndex(dice: number[]): number | null {
+    // BBG Joker forced placement. A Yahtzee rolled after the Yahtzee box is
+    // already filled (any score, including 0) is a wild card, and BBG restricts
+    // where it may be scored:
+    //   1. If the matching upper box is still open, it MUST be scored there.
+    //   2. Otherwise it must be scored in an open Lower box (the Joker value).
+    //   3. If every Lower box is already filled, it is scored (as 0) in an open
+    //      Upper box.
+    // Returns the list of currently-legal category indices, or null when there
+    // is no restriction (free choice among all open boxes).
+    jokerForcedCategories(dice: number[]): number[] | null {
         if (!isYahtzee(dice)) return null;
         if (this.slots[this.yahtzeeCategoryIndex].score === null) return null;
         const upperIdx = dice[0] - 1;
         if (upperIdx < 0 || upperIdx > 5) return null;
-        if (this.slots[upperIdx].score !== null) return null;
-        return upperIdx;
+        if (this.slots[upperIdx].score === null) return [upperIdx];
+        const openIn = (section: Section): number[] => this.slots
+            .map((s, i) => ({ s, i }))
+            .filter(({ s }) => s.def.section === section && s.score === null)
+            .map(({ i }) => i);
+        const lowerOpen = openIn(Section.Lower);
+        if (lowerOpen.length > 0) return lowerOpen;
+        const upperOpen = openIn(Section.Upper);
+        if (upperOpen.length > 0) return upperOpen;
+        return null;
     }
 
     scoreCategory(index: number, dice: number[]): number {
