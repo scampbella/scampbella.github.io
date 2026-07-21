@@ -5,9 +5,7 @@ const albums = [
         date: "2026-07-21",
         releaseDate: "2026-07-17",
         durationMs: 2394000,
-        coverJpg: "../assets/images/albums/oh-yeah.jpg",
-        coverAvifMd: "../assets/images/albums/oh-yeah-md.avif",
-        coverAvifSm: "../assets/images/albums/oh-yeah-sm.avif",
+        coverAvif: "../assets/images/albums/oh-yeah-md.avif",
         spotify: "https://open.spotify.com/album/289GZwycrFReuNB706obBx",
         blurb: "Oh yeah? released last friday and it did not dissapoint in my opinion. Steve Lacy is starting to become one of the goats and this is a great next step. Favorite songs are is it cool? and show you me."
     },
@@ -17,9 +15,7 @@ const albums = [
         date: "2026-07-13",
         releaseDate: "2020-09-25",
         durationMs: 1901000,
-        coverJpg: "../assets/images/albums/chip-chrome-the-mono-tones.jpg",
-        coverAvifMd: "../assets/images/albums/chip-chrome-the-mono-tones-md.avif",
-        coverAvifSm: "../assets/images/albums/chip-chrome-the-mono-tones-sm.avif",
+        coverAvif: "../assets/images/albums/chip-chrome-the-mono-tones-md.avif",
         spotify: "https://open.spotify.com/album/4uNgt1uQs6wZRm4giB3shX",
         blurb: "This is one of those albums where I didn't realize I loved it until I noticed I had every single song liked and in one of my playlists. I never would've considered myself a fan of The Neighbourhood until listening to this album in full. Genuinely some great stuff. My personal favorites on this album are Devil's Advocate and Tobacco Sunburst."
     },
@@ -29,9 +25,7 @@ const albums = [
         date: "2026-07-07",
         releaseDate: "2017-06-09",
         durationMs: 2941000,
-        coverJpg: "../assets/images/albums/ctrl.jpg",
-        coverAvifMd: "../assets/images/albums/ctrl-md.avif",
-        coverAvifSm: "../assets/images/albums/ctrl-sm.avif",
+        coverAvif: "../assets/images/albums/ctrl-md.avif",
         spotify: "https://open.spotify.com/album/76290XdXVF9rPzGdNRWdCh",
         blurb: "Ctrl is without a doubt one of the best R\&B albums of the last decade. SZA's vocals are angelic and a force to be reckoned with. This is genuinely a no-skip album in my opinion. My personal favorite songs are Prom and 20 Something."
     },
@@ -41,9 +35,7 @@ const albums = [
         date: "2026-06-30",
         releaseDate: "2001-03-12",
         durationMs: 3650000,
-        coverJpg: "../assets/images/albums/discovery.jpg",
-        coverAvifMd: "../assets/images/albums/discovery-md.avif",
-        coverAvifSm: "../assets/images/albums/discovery-sm.avif",
+        coverAvif: "../assets/images/albums/discovery-md.avif",
         spotify: "https://open.spotify.com/album/2noRn2Aes5aoNVsU6iWThc",
         blurb: "I only recently discovered this album but every single song is masterfully produced. I am not really one for electro-pop or anything like that, but these songs are genre defining and simply interesting to listen to. My personal favorites are Veridis Quo and Face to Face."
     },
@@ -53,9 +45,7 @@ const albums = [
         date: "2026-06-16",
         releaseDate: "2018-03-30",
         durationMs: 1536000,
-        coverJpg: "../assets/images/albums/my-dear-melancholy.jpg",
-        coverAvifMd: "../assets/images/albums/my-dear-melancholy-sm.avif",
-        coverAvifSm: "../assets/images/albums/my-dear-melancholy-sm.avif",
+        coverAvif: "../assets/images/albums/my-dear-melancholy-md.avif",
         spotify: "https://open.spotify.com/album/4qZBW3f2Q8y0k1A84d4iAO?si=YQCIzAuVRGGLI60anQUztg",
         blurb: "My Dear Melancholy, is not only my favorite album by The Weeknd, but it\u2019s his favorite album of his as stated in an interview on a press tour for his recent movie (I do not recommend watching it, it\u2019s straight garbage). This album is just 25 minutes of straight heat. The production is also magnificent and it genuinely feels like a treat every time I get to listen to it on good speakers. My personal favorite songs on this album are Try Me and Privilege."
     },
@@ -65,9 +55,7 @@ const albums = [
         date: "2026-06-11",
         releaseDate: "2019-03-22",
         durationMs: 2327000,
-        coverJpg: "../assets/images/albums/nothing-happens.jpg",
-        coverAvifMd: "../assets/images/albums/nothing-happens-sm.avif",
-        coverAvifSm: "../assets/images/albums/nothing-happens-sm.avif",
+        coverAvif: "../assets/images/albums/nothing-happens-md.avif",
         spotify: "https://open.spotify.com/album/7eed9MBclFPjjjvotfR2e9",
         blurb: "Nothing Happens is the Wallows' debut album and man is it good. I honestly had not listened to the full thing until last week while studying for finals but I'm really glad I did. I have always loved their funky little boyband aesthetic, they kinda remind me of a more pop-ish boygenius but with actual boys. I don't really have any nuanced takes on this one or anything profound to say since I haven't listened to it very many times, but the whole album of the week thing is just for me to share my favorite music at the current time. My personal favorite song here is Do Not Wait. The topic to me seems kinda vague which is a plus for me because I like to imagine myself in all sorts of different scenarios when I listen to music. I also really love the melody in the back and the slow creeping up of the vocals."
     },
@@ -77,9 +65,7 @@ const albums = [
         date: "2026-06-01",
         releaseDate: "2021-10-22",
         durationMs: 3699000,
-        coverJpg: "../assets/images/albums/blue-banisters.jpg",
-        coverAvifMd: "../assets/images/albums/blue-banisters-md.avif",
-        coverAvifSm: "../assets/images/albums/blue-banisters-sm.avif",
+        coverAvif: "../assets/images/albums/blue-banisters-md.avif",
         spotify: "https://open.spotify.com/album/2wwCc6fcyhp1tfY3J6Javr",
         blurb: "This week I decided to go with an album that is pretty special to me. I listened to a lot of different music in high school, but this album specifically stuck with me. I am really fond of music with strong vocals, and what this album lacks in lyricism and interesting storytelling, it definitely makes up for in the voice department. While some may call me performative, I really connected with Lana\u2019s music growing up, and this album is probably my favorite out of all of hers. From <i>Arcadia</i> to <i>Cherry Blossom</i>, this whole project has so many different comforting songs that are genuinely just <i>Beautiful</i> to me."
     },
@@ -89,9 +75,7 @@ const albums = [
         date: "2026-05-25",
         releaseDate: "2025-01-31",
         durationMs: 5064000,
-        coverJpg: "../assets/images/albums/hurryuptomorrow.jpg",
-        coverAvifMd: "../assets/images/albums/hurryuptomorrow-md.avif",
-        coverAvifSm: "../assets/images/albums/hurryuptomorrow-sm.avif",
+        coverAvif: "../assets/images/albums/hurryuptomorrow-md.avif",
         spotify: "https://open.spotify.com/album/3OxfaVgvTxUTy7276t7SPU",
         blurb: "This week's pick is an album that suffers from some serious recency bias. It is no question one of The Weeknd's best (and longest) albums to date. While this album has some seriously amazing songs like Big Sleep and Hurry Up Tomorrow, it definitely has some stinkers too. I'd say this is definitely worth a listen, especially for those who still think The Weeknd is \"co-worker music.\""
     }
@@ -124,9 +108,7 @@ function buildAlbumCard(album) {
     article.innerHTML =
         '<div class="w-full md:w-[320px] aspect-square flex-shrink-0 rounded-2xl overflow-hidden bg-primary-container">' +
             '<picture class="w-full h-full block">' +
-                '<source srcset="' + esc(album.coverAvifSm) + '" media="(max-width: 640px)" type="image/avif">' +
-                '<source srcset="' + esc(album.coverAvifMd) + '" type="image/avif">' +
-                '<img alt="' + esc(album.name) + ' album cover" class="w-full h-full object-cover" src="' + esc(album.coverJpg) + '" width="320" height="320">' +
+                '<img alt="' + esc(album.name) + ' album cover" class="w-full h-full object-cover" src="' + esc(album.coverAvif) + '" width="320" height="320">' +
             '</picture>' +
         '</div>' +
         '<div class="flex flex-col justify-center flex-grow min-w-0">' +

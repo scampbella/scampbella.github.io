@@ -8,11 +8,7 @@ const assetsDir = join(__dirname, "..", "assets", "images");
 
 const SUPPORTED_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif", ".gif"]);
 
-const SIZES = [
-  { width: 640, suffix: "-sm" },
-  { width: 1280, suffix: "-md" },
-  { width: 1920, suffix: "-lg" },
-];
+const MEDIUM = { width: 1280, suffix: "-md" };
 
 const CONCURRENCY = 4;
 
@@ -36,22 +32,11 @@ async function needsConversion(filePath) {
   const name = basename(filePath, extname(filePath));
   try {
     const srcStat = await fsStat(filePath);
-    for (const size of SIZES) {
-      const outputPath = join(dir, `${name}${size.suffix}.avif`);
-      try {
-        const dstStat = await fsStat(outputPath);
-        if (dstStat.mtimeMs >= srcStat.mtimeMs) continue;
-      } catch {
-        // output doesn't exist — needs conversion
-        return true;
-      }
-      // all outputs exist and are newer than source — skip this size only
-    }
-    // check if all outputs exist
-    const smExists = await fsStat(join(dir, `${name}-sm.avif`)).then(() => true, () => false);
-    if (!smExists) return true;
-    return false;
+    const outputPath = join(dir, `${name}${MEDIUM.suffix}.avif`);
+    const dstStat = await fsStat(outputPath);
+    return dstStat.mtimeMs < srcStat.mtimeMs;
   } catch {
+    // output doesn't exist — needs conversion
     return true;
   }
 }
@@ -62,34 +47,24 @@ async function convertImage(filePath) {
 
   const dir = dirname(filePath);
   const name = basename(filePath, ext);
+  const outputPath = join(dir, `${name}${MEDIUM.suffix}.avif`);
 
-  const metadata = await sharp(filePath).metadata();
-  const originalWidth = metadata.width || 0;
-
-  let converted = 0;
-  for (const size of SIZES) {
-    if (originalWidth < size.width && size.suffix !== "-sm") continue;
-
-    const outputPath = join(dir, `${name}${size.suffix}.avif`);
-
-    // Skip if output is newer than source
-    try {
-      const srcStat = await fsStat(filePath);
-      const dstStat = await fsStat(outputPath);
-      if (dstStat.mtimeMs >= srcStat.mtimeMs) continue;
-    } catch {
-      // output doesn't exist — proceed
-    }
-
-    await sharp(filePath)
-      .resize({ width: size.width, withoutEnlargement: true, fit: "inside" })
-      .avif({ quality: 65, effort: 4 })
-      .toFile(outputPath);
-    const rel = relative(assetsDir, outputPath);
-    console.log(`   ${rel}`);
-    converted++;
+  // Skip if output is newer than source
+  try {
+    const srcStat = await fsStat(filePath);
+    const dstStat = await fsStat(outputPath);
+    if (dstStat.mtimeMs >= srcStat.mtimeMs) return "skipped";
+  } catch {
+    // output doesn't exist — proceed
   }
-  return converted > 0 ? "converted" : "skipped";
+
+  await sharp(filePath)
+    .resize({ width: MEDIUM.width, withoutEnlargement: true, fit: "inside" })
+    .avif({ quality: 65, effort: 4 })
+    .toFile(outputPath);
+  const rel = relative(assetsDir, outputPath);
+  console.log(`   ${rel}`);
+  return "converted";
 }
 
 async function main() {

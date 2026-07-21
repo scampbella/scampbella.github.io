@@ -8,12 +8,15 @@ Static personal site hosted on GitHub Pages. Plain HTML/CSS/JS with Tailwind for
 .                    — root pages (index.html, 404.html, albums, blogs)
 css/                 — Tailwind (style.css → tailwind.css) + game styles
 js/                  — site-wide JS
-games/               — standalone games, each self-contained
+games/               — standalone games, each with its own assets/
   yahtzee/           —   Yahtzee with Keiri bot (TypeScript → game.js)
   clicker/           —   incremental clicker
+  _upcoming/         —   placeholder cover art for not-yet-built games
 scripts/             — build helpers (image conversion)
-assets/              — images, PDFs
+assets/              — images (medium AVIF only, see below), PDFs
 ```
+
+Images are committed as a single `-md.avif` per source image (`scripts/convert-to-avif.mjs` / `npm run convert-images`) — no full-size originals or extra size tiers are checked into git. See `CLAUDE.md` for details.
 
 ## Build steps
 
