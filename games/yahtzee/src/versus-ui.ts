@@ -105,8 +105,11 @@ class VersusUI {
 
         upperEl.innerHTML = upperSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
-            const preview = (slot.score === null && !s.gameOver && s.rollsLeft < 3)
-                ? game.previewScore(globalIdx, isPlayerSide) : null;
+            // Only preview a side's scores during that side's own turn — don't
+            // show the player's dice scored against the bot's card, or vice versa.
+            const showPreview = slot.score === null && !s.gameOver && s.rollsLeft < 3
+                && (isPlayerSide ? (s.isPlayerTurn && !s.isBotThinking) : s.isBotThinking);
+            const preview = showPreview ? game.previewScore(globalIdx, isPlayerSide) : null;
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
@@ -115,8 +118,11 @@ class VersusUI {
 
         lowerEl.innerHTML = lowerSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
-            const preview = (slot.score === null && !s.gameOver && s.rollsLeft < 3)
-                ? game.previewScore(globalIdx, isPlayerSide) : null;
+            // Only preview a side's scores during that side's own turn — don't
+            // show the player's dice scored against the bot's card, or vice versa.
+            const showPreview = slot.score === null && !s.gameOver && s.rollsLeft < 3
+                && (isPlayerSide ? (s.isPlayerTurn && !s.isBotThinking) : s.isBotThinking);
+            const preview = showPreview ? game.previewScore(globalIdx, isPlayerSide) : null;
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
@@ -187,8 +193,8 @@ class VersusUI {
                 die.addEventListener('click', () => {
                     if (!game.isPlayerTurn || game.isBotThinking) return;
                     const idx = parseInt((die as HTMLElement).dataset.index!);
+                    // toggleLock notifies → onUpdate re-renders.
                     game.toggleLock(idx);
-                    this.render(game);
                 });
             });
         }
@@ -202,8 +208,7 @@ class VersusUI {
             const diceElements = trayEl.querySelectorAll('.die:not(.locked)');
             diceElements.forEach(die => { die.classList.add('rolling'); });
             setTimeout(() => {
-                game.roll();
-                this.render(game);
+                game.roll(); // notifies → onUpdate re-renders
                 if (isYahtzee(game.dice.values())) {
                     this.triggerYahtzeeAnimation();
                 }
@@ -233,8 +238,8 @@ class VersusUI {
             row.addEventListener('click', () => {
                 if (!game.isPlayerTurn || game.isBotThinking || game.gameOver) return;
                 const idx = parseInt((row as HTMLElement).dataset.category!);
+                // selectCategory notifies → onUpdate re-renders (and kicks the bot turn).
                 game.selectCategory(idx);
-                this.render(game);
             });
         });
 
@@ -245,8 +250,7 @@ class VersusUI {
 
         // Play again
         this.el['play-again-btn'].onclick = () => {
-            game.reset();
-            this.render(game);
+            game.reset(); // notifies → onUpdate re-renders
             this.el['game-over-overlay'].classList.add('hidden');
         };
     }
@@ -309,13 +313,14 @@ class VersusUI {
 
     private loadHighScore(): number {
         try {
-            const raw = localStorage.getItem('yahtzee_high_score');
+            // Versus high score is tracked separately from solo (see main.ts).
+            const raw = localStorage.getItem('yahtzee_high_score_versus');
             return raw ? parseInt(raw, 10) || 0 : 0;
         } catch { return 0; }
     }
 
     private saveHighScore(score: number): void {
-        localStorage.setItem('yahtzee_high_score', String(score));
+        localStorage.setItem('yahtzee_high_score_versus', String(score));
     }
 
     triggerYahtzeeAnimation(): void {

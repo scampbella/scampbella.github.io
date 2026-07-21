@@ -2,11 +2,22 @@
 //  Yahtzee — Boot & Mode Switching
 // ============================================================
 
+// High scores are tracked separately per mode. Solo keeps the original key so
+// existing records are preserved; versus uses its own. (UI classes read/write
+// these same keys — keep them in sync: see ui.ts and versus-ui.ts.)
+const SOLO_HIGH_SCORE_KEY = 'yahtzee_high_score';
+const VERSUS_HIGH_SCORE_KEY = 'yahtzee_high_score_versus';
+
+// Current mode. Hoisted to module scope so updateHighScoreDisplay() can pick the
+// matching high-score key; the boot closure below reads and writes it.
+let isVersusMode = false;
+
 function updateHighScoreDisplay(): void {
     const el = document.getElementById('high-score-display-header');
     if (!el) return;
     try {
-        const raw = localStorage.getItem('yahtzee_high_score');
+        const key = isVersusMode ? VERSUS_HIGH_SCORE_KEY : SOLO_HIGH_SCORE_KEY;
+        const raw = localStorage.getItem(key);
         el.textContent = raw ? String(parseInt(raw, 10) || 0) : '0';
     } catch {
         el.textContent = '0';
@@ -20,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const botScorecard = document.getElementById('bot-scorecard')!;
     const turnLabel = document.getElementById('turn-label')!;
 
-    let isVersusMode = false;
     let soloGame: Game | null = null;
     let soloUI: UI | null = null;
     let versusGame: VersusGame | null = null;
@@ -83,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (window as any).soloUI = soloUI;
         (window as any).versusGame = versusGame;
         (window as any).versusUI = versusUI;
+        updateHighScoreDisplay();
         soloUI!.render(soloGame);
         saveGame();
     }
@@ -108,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (window as any).versusUI = versusUI;
         (window as any).soloGame = soloGame;
         (window as any).soloUI = soloUI;
+        updateHighScoreDisplay();
         versusUI!.render(versusGame);
         saveGame();
         // If a bot turn was interrupted (e.g. reload mid-turn), resume it so the

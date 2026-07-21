@@ -61,7 +61,10 @@ class VersusGame {
         if (!sc.canScore(index)) return null;
 
         const dice = this.dice.values();
-        if (!this.isValidCategorySelection(index, dice)) return null;
+        // Validate against THIS scorecard's own forced-Joker placement, not the
+        // current turn's — previewScore may be asked about either side.
+        const forced = sc.jokerForcedCategories(dice);
+        if (forced !== null && !forced.includes(index)) return null;
 
         const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
         const isMainYahtzeeFilled = sc.slots[yahtzeeIdx].score !== null;

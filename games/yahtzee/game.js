@@ -1,5 +1,5 @@
 // Yahtzee — built from src/
-// 2026-07-21T07:07:39.053Z
+// 2026-07-21T07:21:26.978Z
 // File order: types.js, scoring.js, categories.js, dice.js, scorecard.js, game.js, ui.js, bot.js, versus-game.js, versus-ui.js, main.js
 
 
@@ -451,8 +451,8 @@ class UI {
                 if (s.gameOver)
                     return;
                 const idx = parseInt(die.dataset.index);
+                // toggleLock notifies → onUpdate re-renders; no explicit render needed.
                 game.toggleLock(idx);
-                this.render(game);
             });
         });
         this.el['roll-btn'].onclick = () => {
@@ -464,8 +464,7 @@ class UI {
             const diceElements = trayEl.querySelectorAll('.die:not(.locked)');
             diceElements.forEach(die => { die.classList.add('rolling'); });
             setTimeout(() => {
-                game.roll();
-                this.render(game);
+                game.roll(); // notifies → onUpdate re-renders
                 if (isYahtzee(game.dice.values())) {
                     this.triggerYahtzeeAnimation();
                 }
@@ -516,17 +515,15 @@ class UI {
         document.querySelectorAll('.score-row.empty[data-category]').forEach(row => {
             row.addEventListener('click', () => {
                 const idx = parseInt(row.dataset.category);
+                // selectCategory notifies → onUpdate re-renders, and render()
+                // shows the game-over overlay itself when the game ends.
                 game.selectCategory(idx);
-                this.render(game);
-                if (game.gameOver)
-                    this.showGameOver(game);
             });
         });
         if (s.gameOver)
             this.showGameOver(game);
         this.el['play-again-btn'].onclick = () => {
-            game.reset();
-            this.render(game);
+            game.reset(); // notifies → onUpdate re-renders
             this.el['game-over-overlay'].classList.add('hidden');
         };
     }
@@ -1044,7 +1041,10 @@ class VersusGame {
         if (!sc.canScore(index))
             return null;
         const dice = this.dice.values();
-        if (!this.isValidCategorySelection(index, dice))
+        // Validate against THIS scorecard's own forced-Joker placement, not the
+        // current turn's — previewScore may be asked about either side.
+        const forced = sc.jokerForcedCategories(dice);
+        if (forced !== null && !forced.includes(index))
             return null;
         const yahtzeeIdx = CATEGORIES.findIndex(c => c.name === 'Yahtzee');
         const isMainYahtzeeFilled = sc.slots[yahtzeeIdx].score !== null;
@@ -1361,8 +1361,11 @@ class VersusUI {
             return;
         upperEl.innerHTML = upperSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
-            const preview = (slot.score === null && !s.gameOver && s.rollsLeft < 3)
-                ? game.previewScore(globalIdx, isPlayerSide) : null;
+            // Only preview a side's scores during that side's own turn — don't
+            // show the player's dice scored against the bot's card, or vice versa.
+            const showPreview = slot.score === null && !s.gameOver && s.rollsLeft < 3
+                && (isPlayerSide ? (s.isPlayerTurn && !s.isBotThinking) : s.isBotThinking);
+            const preview = showPreview ? game.previewScore(globalIdx, isPlayerSide) : null;
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
@@ -1370,8 +1373,11 @@ class VersusUI {
         }).join('');
         lowerEl.innerHTML = lowerSlots.map((slot, i) => {
             const globalIdx = CATEGORIES.findIndex(c => c.name === slot.def.name);
-            const preview = (slot.score === null && !s.gameOver && s.rollsLeft < 3)
-                ? game.previewScore(globalIdx, isPlayerSide) : null;
+            // Only preview a side's scores during that side's own turn — don't
+            // show the player's dice scored against the bot's card, or vice versa.
+            const showPreview = slot.score === null && !s.gameOver && s.rollsLeft < 3
+                && (isPlayerSide ? (s.isPlayerTurn && !s.isBotThinking) : s.isBotThinking);
+            const preview = showPreview ? game.previewScore(globalIdx, isPlayerSide) : null;
             const selectable = isPlayerSide && s.isPlayerTurn && !s.isBotThinking
                 && !s.gameOver && s.rollsLeft < 3
                 && game.isValidCategorySelection(globalIdx, diceVals);
@@ -1437,8 +1443,8 @@ class VersusUI {
                     if (!game.isPlayerTurn || game.isBotThinking)
                         return;
                     const idx = parseInt(die.dataset.index);
+                    // toggleLock notifies → onUpdate re-renders.
                     game.toggleLock(idx);
-                    this.render(game);
                 });
             });
         }
@@ -1452,8 +1458,7 @@ class VersusUI {
             const diceElements = trayEl.querySelectorAll('.die:not(.locked)');
             diceElements.forEach(die => { die.classList.add('rolling'); });
             setTimeout(() => {
-                game.roll();
-                this.render(game);
+                game.roll(); // notifies → onUpdate re-renders
                 if (isYahtzee(game.dice.values())) {
                     this.triggerYahtzeeAnimation();
                 }
@@ -1471,8 +1476,8 @@ class VersusUI {
                 if (!game.isPlayerTurn || game.isBotThinking || game.gameOver)
                     return;
                 const idx = parseInt(row.dataset.category);
+                // selectCategory notifies → onUpdate re-renders (and kicks the bot turn).
                 game.selectCategory(idx);
-                this.render(game);
             });
         });
         // Game over
@@ -1481,8 +1486,7 @@ class VersusUI {
         }
         // Play again
         this.el['play-again-btn'].onclick = () => {
-            game.reset();
-            this.render(game);
+            game.reset(); // notifies → onUpdate re-renders
             this.el['game-over-overlay'].classList.add('hidden');
         };
     }
@@ -1537,7 +1541,8 @@ class VersusUI {
     }
     loadHighScore() {
         try {
-            const raw = localStorage.getItem('yahtzee_high_score');
+            // Versus high score is tracked separately from solo (see main.ts).
+            const raw = localStorage.getItem('yahtzee_high_score_versus');
             return raw ? parseInt(raw, 10) || 0 : 0;
         }
         catch {
@@ -1545,7 +1550,7 @@ class VersusUI {
         }
     }
     saveHighScore(score) {
-        localStorage.setItem('yahtzee_high_score', String(score));
+        localStorage.setItem('yahtzee_high_score_versus', String(score));
     }
     triggerYahtzeeAnimation() {
         const banner = document.getElementById('yahtzee-banner');
@@ -1579,12 +1584,21 @@ class VersusUI {
 // ============================================================
 //  Yahtzee — Boot & Mode Switching
 // ============================================================
+// High scores are tracked separately per mode. Solo keeps the original key so
+// existing records are preserved; versus uses its own. (UI classes read/write
+// these same keys — keep them in sync: see ui.ts and versus-ui.ts.)
+const SOLO_HIGH_SCORE_KEY = 'yahtzee_high_score';
+const VERSUS_HIGH_SCORE_KEY = 'yahtzee_high_score_versus';
+// Current mode. Hoisted to module scope so updateHighScoreDisplay() can pick the
+// matching high-score key; the boot closure below reads and writes it.
+let isVersusMode = false;
 function updateHighScoreDisplay() {
     const el = document.getElementById('high-score-display-header');
     if (!el)
         return;
     try {
-        const raw = localStorage.getItem('yahtzee_high_score');
+        const key = isVersusMode ? VERSUS_HIGH_SCORE_KEY : SOLO_HIGH_SCORE_KEY;
+        const raw = localStorage.getItem(key);
         el.textContent = raw ? String(parseInt(raw, 10) || 0) : '0';
     }
     catch {
@@ -1597,7 +1611,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartBtn = document.getElementById('restart-btn');
     const botScorecard = document.getElementById('bot-scorecard');
     const turnLabel = document.getElementById('turn-label');
-    let isVersusMode = false;
     let soloGame = null;
     let soloUI = null;
     let versusGame = null;
@@ -1663,6 +1676,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.soloUI = soloUI;
         window.versusGame = versusGame;
         window.versusUI = versusUI;
+        updateHighScoreDisplay();
         soloUI.render(soloGame);
         saveGame();
     }
@@ -1688,6 +1702,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.versusUI = versusUI;
         window.soloGame = soloGame;
         window.soloUI = soloUI;
+        updateHighScoreDisplay();
         versusUI.render(versusGame);
         saveGame();
         // If a bot turn was interrupted (e.g. reload mid-turn), resume it so the

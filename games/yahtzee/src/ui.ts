@@ -84,8 +84,8 @@ class UI {
             die.addEventListener('click', () => {
                 if (s.gameOver) return;
                 const idx = parseInt((die as HTMLElement).dataset.index!);
+                // toggleLock notifies → onUpdate re-renders; no explicit render needed.
                 game.toggleLock(idx);
-                this.render(game);
             });
         });
 
@@ -97,8 +97,7 @@ class UI {
             const diceElements = trayEl.querySelectorAll('.die:not(.locked)');
             diceElements.forEach(die => { die.classList.add('rolling'); });
             setTimeout(() => {
-                game.roll();
-                this.render(game);
+                game.roll(); // notifies → onUpdate re-renders
                 if (isYahtzee(game.dice.values())) {
                     this.triggerYahtzeeAnimation();
                 }
@@ -152,17 +151,16 @@ class UI {
         document.querySelectorAll('.score-row.empty[data-category]').forEach(row => {
             row.addEventListener('click', () => {
                 const idx = parseInt((row as HTMLElement).dataset.category!);
+                // selectCategory notifies → onUpdate re-renders, and render()
+                // shows the game-over overlay itself when the game ends.
                 game.selectCategory(idx);
-                this.render(game);
-                if (game.gameOver) this.showGameOver(game);
             });
         });
 
         if (s.gameOver) this.showGameOver(game);
 
         this.el['play-again-btn'].onclick = () => {
-            game.reset();
-            this.render(game);
+            game.reset(); // notifies → onUpdate re-renders
             this.el['game-over-overlay'].classList.add('hidden');
         };
     }
