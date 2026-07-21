@@ -1,5 +1,17 @@
 const albums = [
     {
+        name: "Oh yeah?",
+        artist: "Steve Lacy",
+        date: "2026-07-21",
+        releaseDate: "2026-07-17",
+        durationMs: 2394000,
+        coverJpg: "../assets/images/albums/oh-yeah.jpg",
+        coverAvifMd: "../assets/images/albums/oh-yeah-md.avif",
+        coverAvifSm: "../assets/images/albums/oh-yeah-sm.avif",
+        spotify: "https://open.spotify.com/album/289GZwycrFReuNB706obBx",
+        blurb: "Oh yeah? released last friday and it did not dissapoint in my opinion. Steve Lacy is starting to become one of the goats and this is a great next step. Favorite songs are is it cool? and show you me."
+    },
+    {
         name: "Chip Chrome & The Mono-Tones",
         artist: "The Neighbourhood",
         date: "2026-07-13",
