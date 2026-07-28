@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Sprained Ankle",
+        artist: "Julien Baker",
+        date: "2026-07-28",
+        releaseDate: "2015-10-23",
+        durationMs: 2013000,
+        coverAvif: "../assets/images/albums/sprained-ankle-md.avif",
+        spotify: "https://open.spotify.com/album/3DvUGOMZgAr6PaToI7Vwwl?si=b8c0qRXNSCKiBNDzg3aueg",
+        blurb: "This is one of those albums I put on any time I really need to cry. Sprained Ankle is full of songs about religious trauma which really speak to me for some reason. I've never been religious myself but I find that this kinda music just sounds heavenly and I love that vibe. The little one will always be my favorite boygenius member (I'm not a larper guys, my sister is gay). Favorite songs here are Blacktop and Rejoice."
+    },
+    {
         name: "Oh yeah?",
         artist: "Steve Lacy",
         date: "2026-07-21",
