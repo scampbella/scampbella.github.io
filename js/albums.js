@@ -4,7 +4,7 @@ const albums = [
         artist: "Frank Ocean",
         date: "2026-08-04",
         releaseDate: "2016-08-20",
-        durationMs: 3608000,
+        durationMs: 3600000,
         coverAvif: "../assets/images/albums/blonde-md.avif",
         spotify: "https://open.spotify.com/album/3mH6qwIy9crq0I9YQbOuDf?si=qNjKN6miQSKC8mWuzOlCrw",
         blurb: "Blonde is my favorite album of all time. Just listen to it, I have nothing else to say. Favorite song is Self Control."
