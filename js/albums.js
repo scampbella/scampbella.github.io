@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Kiss Land",
+        artist: "The Weeknd",
+        date: "2026-08-10",
+        releaseDate: "2013-09-10",
+        durationMs: 3339000,
+        coverAvif: "../assets/images/albums/kiss-land-md.avif",
+        spotify: "https://open.spotify.com/album/2FgMWuwMeTgJArP2RF3upF?si=35L-ptxnQ02y2qSkw3dEyQ",
+        blurb: "While it is The Weeknd's least streamed album, Kissland is in my top 3 for sure. This album has such a unique ambience that cannot be matched. I will admit there is a lot of weird lyrics and experimental bullshit going on here. Belong To The World is a complete mess but that's the kinda thing that gives this album its charm. Put on some good headphones and disappear for a while. Favorites here are Professional and The Town."
+    },
+    {
         name: "Blonde",
         artist: "Frank Ocean",
         date: "2026-08-04",
