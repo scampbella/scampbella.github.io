@@ -67,6 +67,19 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (!err && stats.isDirectory()) {
+      // Redirect /dir -> /dir/ rather than quietly serving the index at the
+      // slashless URL. Without the trailing slash the browser resolves relative
+      // URLs against the PARENT directory, so a page whose assets sit in a
+      // sibling folder (e.g. games/casino/poker/ importing ../js/…) silently
+      // 404s with no obvious cause. GitHub Pages 301s here, so matching it
+      // locally keeps dev honest.
+      if (!parsedUrl.endsWith('/')) {
+        const query = safeUrl.slice(parsedUrl.length);
+        res.statusCode = 301;
+        res.setHeader('Location', encodeURI(parsedUrl) + '/' + query);
+        res.end();
+        return;
+      }
       filePath = path.join(filePath, 'index.html');
     }
 

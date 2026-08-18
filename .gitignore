@@ -34,6 +34,10 @@ Desktop.ini
 *.swp
 games/yahtzee/build/
 
+# Source asset packs: only the extracted sprites are committed
+# (see scripts/build-casino-sprites.mjs)
+*.zip
+
 # Image originals: only the converted -md.avif is committed (see scripts/convert-to-avif.mjs)
 assets/images/**/*.jpg
 assets/images/**/*.jpeg

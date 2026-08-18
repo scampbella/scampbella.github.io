@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Poker | Scott Campbell</title>
+    <meta name="description" content="Play Video Poker online — Jacks or Better, 9/6 paytable, with a bankroll shared across the casino.">
+    <meta property="og:title" content="Video Poker | Scott Campbell">
+    <meta property="og:description" content="Play Video Poker online — Jacks or Better, 9/6 paytable, with a bankroll shared across the casino.">
+    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
+    <meta property="og:url" content="https://scampbella.github.io/games/casino/poker/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scampbella.github.io/games/casino/poker/">
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="preload" as="image" href="../assets/cards.png">
+    <link rel="stylesheet" href="../casino.css">
+    <link rel="stylesheet" href="poker.css">
+</head>
+
+<body>
+    <main class="poker-table">
+
+        <div class="poker-top">
+            <a class="back-link" href="../">&larr; Casino</a>
+            <h1 class="poker-title">Video Poker</h1>
+            <div class="bank">
+                <span class="chip" aria-hidden="true"></span>
+                <span>
+                    <span class="bank-label">Bank</span><br>
+                    <strong class="bank-amount" id="balance">0</strong>
+                </span>
+            </div>
+        </div>
+
+        <p class="storage-warning" id="storage-warning" hidden>
+            Your browser is blocking local storage, so this session&rsquo;s chips
+            and stats won&rsquo;t be saved.
+        </p>
+
+        <div class="panel">
+            <table class="paytable" id="paytable">
+                <caption>Paytable &mdash; Jacks or Better (9/6), pays &times; your bet</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="sr-only">Winning</span></th>
+                        <th scope="col">Hand</th>
+                        <th scope="col">Pays</th>
+                    </tr>
+                </thead>
+                <tbody id="paytable-body"></tbody>
+            </table>
+        </div>
+
+        <section class="hand-area" aria-labelledby="hand-heading">
+            <h2 class="sr-only" id="hand-heading">Your hand</h2>
+
+            <div class="hand-scroll">
+                <ul class="hand-row" id="hand"></ul>
+            </div>
+
+            <div class="result" id="result" role="status" aria-live="polite" tabindex="-1">
+                <p class="result-hint">Place your bet and deal.</p>
+            </div>
+        </section>
+
+        <div class="controls">
+            <div class="wager-row">
+                <label class="wager-label" for="wager">Bet</label>
+                <input class="wager-input" id="wager" type="text" inputmode="numeric" autocomplete="off"
+                    value="25" aria-describedby="wager-help">
+                <button class="wager-quick" id="wager-half" type="button">&frac12;</button>
+                <button class="wager-quick" id="wager-double" type="button">&times;2</button>
+                <button class="wager-quick" id="wager-max" type="button">All in</button>
+                <span class="sr-only" id="wager-help">
+                    Whole numbers only, up to your balance.
+                </span>
+            </div>
+
+            <div class="action-row">
+                <button class="btn btn-deal" id="deal" type="button">Deal</button>
+            </div>
+
+            <p class="rebuy-note" id="rebuy-note" hidden>
+                You&rsquo;re out of chips.
+                <button class="btn btn-quiet" id="rebuy" type="button">Take 1,000 chips</button>
+            </p>
+
+            <p class="result-hint">
+                Click a card or press <kbd>1</kbd>&ndash;<kbd>5</kbd> to hold. <kbd>Enter</kbd> deals and draws.
+            </p>
+        </div>
+    </main>
+
+    <script type="module" src="../js/poker/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,453 @@
+/* Casino — shared tokens, sprite rendering, and hub layout.
+ *
+ * These pages are self-contained: they load neither css/style.css nor
+ * css/tailwind.css. Class names here are deliberately bespoke (.hand-row,
+ * .chip-count) rather than Tailwind utility names, so that Tailwind's
+ * ./games/**\/*.html content glob scanning these files produces no new
+ * utilities and leaves css/tailwind.css byte-identical.
+ *
+ * Palette picks up games/casino/cover.svg (#10b981 -> #064e3b) so the pages
+ * match the card that links to them from games/index.html.
+ */
+
+/* === Reset === */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* === Tokens === */
+:root {
+    --felt-deep: #032118;
+    --felt: #064e3b;
+    --felt-mid: #075e45;
+    --felt-bright: #10b981;
+
+    --gold: #fbbf24;
+    --gold-dim: #b8860b;
+    --gold-deep: #92400e;
+
+    --ink: #ecfdf5;
+    --ink-dim: #86b3a0;
+    --ink-faint: #4b7c68;
+
+    --panel: rgba(0, 0, 0, 0.32);
+    --panel-edge: rgba(251, 191, 36, 0.28);
+    --panel-solid: #05382a;
+
+    --win: #34d399;
+    --danger: #f87171;
+
+    --font: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+    /* Pixel-art scale. MUST stay an integer or the sprites blur. */
+    --scale: 4;
+    --chip-scale: 1;
+}
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    min-height: 100dvh;
+    background:
+        radial-gradient(ellipse at 50% -10%, var(--felt-mid) 0%, transparent 65%),
+        linear-gradient(180deg, var(--felt-deep) 0%, var(--felt) 45%, var(--felt-deep) 100%);
+    background-color: var(--felt);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* === Card sprites ===
+ *
+ * assets/cards.png is a 15x5 grid of 50x66 cells, each holding a 48x64 card
+ * inset 1px. The gutter matters: the source art packs cards edge to edge, and
+ * at a fractional devicePixelRatio an integer CSS scale still rasterizes
+ * fractionally and would sample a sliver of the neighbouring card.
+ *
+ * background-size is stated explicitly — cover/contain would destroy the pixel
+ * alignment this whole approach depends on.
+ */
+.card-face {
+    --col: 0;
+    --row: 0;
+    display: block;
+    flex: none;
+    width: calc(48px * var(--scale));
+    height: calc(64px * var(--scale));
+    background-image: url('assets/cards.png');
+    background-repeat: no-repeat;
+    background-size: calc(750px * var(--scale)) calc(330px * var(--scale));
+    background-position:
+        calc(-1 * (var(--col) * 50px + 1px) * var(--scale))
+        calc(-1 * (var(--row) * 66px + 1px) * var(--scale));
+    image-rendering: pixelated;
+}
+
+/* === Chip sprites ===
+ * assets/chips.png is 368x192: 8 columns at a 48px pitch (sprites are 32 wide),
+ * 4 rows at a 48px pitch (sprites are 44 tall, inset 4px from the cell top).
+ */
+.chip {
+    --chip-col: 4;
+    --chip-row: 3;
+    display: inline-block;
+    flex: none;
+    width: calc(32px * var(--chip-scale));
+    height: calc(44px * var(--chip-scale));
+    background-image: url('assets/chips.png');
+    background-repeat: no-repeat;
+    background-size: calc(368px * var(--chip-scale)) calc(192px * var(--chip-scale));
+    background-position:
+        calc(-1 * var(--chip-col) * 48px * var(--chip-scale))
+        calc(-1 * (var(--chip-row) * 48px + 4px) * var(--chip-scale));
+    image-rendering: pixelated;
+    vertical-align: middle;
+}
+
+/* === Shared chrome === */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.4em 0.2em;
+    transition: color 0.15s ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+    color: var(--gold);
+}
+
+.panel {
+    background: var(--panel);
+    border: 2px solid var(--panel-edge);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+}
+
+.btn {
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--felt-deep);
+    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dim) 100%);
+    border: 2px solid var(--gold-deep);
+    border-radius: 10px;
+    padding: 0.7em 1.4em;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.08s ease;
+}
+
+.btn:hover:not(:disabled) {
+    filter: brightness(1.12);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-quiet {
+    color: var(--ink);
+    background: transparent;
+    border-color: var(--ink-faint);
+}
+
+.btn-quiet:hover:not(:disabled) {
+    border-color: var(--gold);
+    color: var(--gold);
+    filter: none;
+}
+
+.btn-danger {
+    color: var(--danger);
+    background: transparent;
+    border-color: rgba(248, 113, 113, 0.4);
+}
+
+.btn-danger:hover:not(:disabled) {
+    border-color: var(--danger);
+    filter: none;
+}
+
+/* Storage-unavailable warning. Shown only when persistence actually failed. */
+.storage-warning {
+    background: rgba(248, 113, 113, 0.14);
+    border: 1px solid rgba(248, 113, 113, 0.45);
+    color: #fecaca;
+    border-radius: 10px;
+    padding: 0.6em 1em;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.storage-warning[hidden] {
+    display: none;
+}
+
+/* === Bank readout (hub + table) === */
+.bank {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.bank-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+.bank-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+}
+
+/* ==========================================================================
+   Hub
+   ========================================================================== */
+
+.hub {
+    width: min(1000px, 100%);
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+}
+
+.hub-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hub-title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.hub-title h1 {
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-shadow: 0 2px 0 var(--gold-deep), 0 0 28px rgba(251, 191, 36, 0.28);
+    line-height: 1.1;
+}
+
+.hub-title p {
+    color: var(--ink-dim);
+    font-size: 1rem;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--panel-edge);
+    border: 2px solid var(--panel-edge);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.stat {
+    background: var(--panel-solid);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.stat-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-value.is-positive {
+    color: var(--win);
+}
+
+.stat-value.is-negative {
+    color: var(--danger);
+}
+
+.bank-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Game tiles */
+/* Explicit column counts rather than auto-fit: with exactly four tiles,
+   auto-fit lands on three-plus-an-orphan across a wide band of widths. */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.game-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    background: var(--panel);
+    border: 2px solid var(--panel-edge);
+    border-radius: 18px;
+    padding: 1.5rem 1.25rem;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+a.game-tile:hover,
+a.game-tile:focus-visible {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.game-tile.is-soon {
+    opacity: 0.55;
+}
+
+.tile-art {
+    --scale: 2;
+    height: calc(64px * var(--scale));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Fanned mini-hand for the poker tile. */
+.tile-art .card-face + .card-face {
+    margin-left: calc(-30px * var(--scale));
+}
+
+.tile-art .card-face {
+    transform: rotate(var(--tilt, 0deg));
+    transform-origin: bottom center;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+}
+
+.tile-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.tile-desc {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    min-height: 2.4em;
+}
+
+.tile-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.35em 0.9em;
+    background: rgba(251, 191, 36, 0.16);
+    color: var(--gold);
+    border: 1px solid var(--panel-edge);
+}
+
+.game-tile.is-soon .tile-badge {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink-dim);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.hub-foot {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 560px) {
+    .tile-art {
+        --scale: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    a.game-tile:hover,
+    a.game-tile:focus-visible {
+        transform: none;
+    }
+}

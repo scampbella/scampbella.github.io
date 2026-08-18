@@ -1,0 +1,50 @@
+{
+  // Emits native ES modules straight into js/ — no bundler, no concatenation,
+  // no hand-maintained file-order list. See games/casino/CLAUDE.md.
+  //
+  // Three settings here prevent SILENT failures. Do not "simplify" them away:
+  //
+  //  - verbatimModuleSyntax: Node's type stripping is not type-directed, so
+  //    `import { Card }` (an interface) compiles fine but throws at runtime in
+  //    `node --test`. This forces `import type` and catches it at compile time.
+  //  - module/moduleResolution nodenext: paired with the "type": "module" in
+  //    games/casino/package.json. Without that file nodenext silently emits
+  //    CommonJS and the page dies with `exports is not defined`, tsc exit 0.
+  //    nodenext resolution also turns an extensionless import into a compile
+  //    error instead of a 404 in the browser.
+  //  - exclude *.test.ts: @types/node isn't installed so tests error under tsc,
+  //    and noEmitOnError defaults false — they'd still be emitted into the
+  //    shipped js/. Tests run via Node's type stripping, which doesn't typecheck.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    "rootDir": "src",
+    "outDir": "js",
+    "sourceMap": false,
+    "types": [],
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+
+    // Source writes `./deck.ts` (so Node can run it directly); tsc emits `./deck.js`.
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
+}

@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./*.html", "./blogs/**/*.html", "./games/**/*.html", "./albums/**/*.html", "./js/**/*.js"],
+    content: ["./*.html", "./blogs/**/*.html", "./games/*.html", "./albums/**/*.html", "./js/**/*.js"],
     // NOTE: dynamic classes in JS (e.g. classList.add/remove) are either custom CSS
     // classes (not Tailwind utils) or also present in HTML templates — no safelist needed.
+    // NOTE: `./games/*.html` is deliberately NOT `./games/**/*.html`. Individual
+    // games (yahtzee, casino) are self-contained and load neither css/style.css
+    // nor css/tailwind.css, so scanning them only invents utilities nothing can
+    // use — a plain <table> in the casino markup was emitting a `.table` rule.
+    // games/index.html is the only page under games/ that uses Tailwind.
     theme: {
         extend: {
             "colors": {

@@ -1,0 +1,372 @@
+/* Video Poker table. Loads on top of ../casino.css. */
+
+.poker-table {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 1rem 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.poker-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.poker-title {
+    font-size: clamp(1.4rem, 4vw, 2.1rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-shadow: 0 2px 0 var(--gold-deep);
+    line-height: 1;
+}
+
+/* === Paytable === */
+.paytable {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+}
+
+.paytable caption {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    text-align: left;
+    padding-bottom: 0.6rem;
+}
+
+.paytable th,
+.paytable td {
+    padding: 0.32em 0.7em;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.paytable thead th {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    font-weight: 600;
+}
+
+.paytable td:last-child,
+.paytable th:last-child {
+    text-align: right;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+/* The winning row is marked with aria-current plus this text cue, never colour
+   alone — see the WIN marker cell in the markup. */
+.paytable tbody tr.is-winner {
+    background: rgba(251, 191, 36, 0.16);
+    outline: 2px solid var(--gold);
+}
+
+.paytable .win-marker {
+    width: 1px;
+    padding-left: 0;
+    padding-right: 0.35em;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+}
+
+/* === The hand === */
+.hand-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.hand-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25rem 0.5rem 0.5rem;
+    scrollbar-width: thin;
+}
+
+.hand-row {
+    display: flex;
+    gap: calc(3px * var(--scale));
+    justify-content: center;
+    margin: 0 auto;
+    width: max-content;
+    list-style: none;
+}
+
+.card-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.card-slot:disabled {
+    cursor: default;
+}
+
+.hold-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--felt-deep);
+    background: var(--gold);
+    border-radius: 4px;
+    padding: 0.15em 0.6em;
+    /* Reserve the row so the cards don't jump when a tag appears. */
+    visibility: hidden;
+}
+
+.card-slot[aria-pressed='true'] .hold-tag {
+    visibility: visible;
+}
+
+.card-frame {
+    position: relative;
+    border-radius: 5px;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.45);
+}
+
+.card-slot[aria-pressed='true'] .card-frame {
+    transform: translateY(calc(-3px * var(--scale)));
+    box-shadow:
+        0 calc(6px * var(--scale)) calc(6px * var(--scale)) rgba(0, 0, 0, 0.5),
+        0 0 0 3px var(--gold);
+}
+
+.card-slot:not(:disabled):hover .card-frame {
+    transform: translateY(calc(-1px * var(--scale)));
+}
+
+/* Cards that made the winning hand. Needs to outrank the held outline above —
+   once the hand is resolved, "this card scored" is the more useful signal than
+   "you held it", and every scoring card is usually held too. Matching that
+   rule's specificity and coming later is what makes it win. */
+.card-slot .card-frame.is-scoring {
+    box-shadow: 0 0 0 3px var(--win), 0 0 24px rgba(52, 211, 153, 0.6);
+}
+
+.card-hotkey {
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Deal / draw animation. */
+@keyframes card-in {
+    from {
+        opacity: 0;
+        transform: translateY(-14px) rotateX(45deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.card-frame.is-entering {
+    animation: card-in 0.22s ease-out both;
+}
+
+/* === Result === */
+.result {
+    min-height: 2.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    text-align: center;
+}
+
+.result-hand {
+    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.result-amount {
+    font-size: 1.05rem;
+    color: var(--win);
+    font-variant-numeric: tabular-nums;
+}
+
+.result.is-loss .result-hand {
+    color: var(--ink-dim);
+}
+
+.result-hint {
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+}
+
+/* === Controls === */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.wager-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.wager-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+.wager-input {
+    font: inherit;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    width: 8ch;
+    text-align: right;
+    color: var(--gold);
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--panel-edge);
+    border-radius: 8px;
+    padding: 0.45em 0.6em;
+}
+
+.wager-input:disabled {
+    opacity: 0.5;
+}
+
+.wager-input.is-invalid {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.wager-quick {
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: transparent;
+    border: 2px solid var(--ink-faint);
+    border-radius: 8px;
+    padding: 0.45em 0.75em;
+    cursor: pointer;
+}
+
+.wager-quick:hover:not(:disabled),
+.wager-quick:focus-visible {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.wager-quick:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.action-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-deal {
+    font-size: 1.15rem;
+    padding: 0.75em 2.4em;
+}
+
+.rebuy-note {
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.rebuy-note[hidden] {
+    display: none;
+}
+
+/* === Responsive =========================================================
+   Scale steps stay integers so the pixel art never resamples.
+
+   The hand row is 5 * 48px * scale plus 4 gaps of 3px * scale = 252px * scale,
+   and .table adds 32px of padding. Each breakpoint therefore engages just
+   BEFORE the previous scale would overflow:
+       scale 4 -> 1040px    scale 3 -> 788px
+       scale 2 ->  536px    scale 1 -> 284px
+   Being able to see all five cards at once is the whole game — a scrolling
+   hand would mean choosing holds blind — so the last step goes down to 1x
+   (native art size) rather than letting the row scroll. .hand-scroll stays as
+   a safety net for anything narrower still, and keeps the sideways scroll
+   inside the row so the page itself never scrolls horizontally. */
+@media (max-width: 1060px) {
+    :root {
+        --scale: 3;
+    }
+}
+
+@media (max-width: 800px) {
+    :root {
+        --scale: 2;
+    }
+
+    .poker-table {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 540px) {
+    :root {
+        --scale: 1;
+    }
+
+    /* At native size the cards are small, so give the tap targets some room. */
+    .hand-row {
+        gap: 8px;
+    }
+
+    .hold-tag {
+        font-size: 0.6rem;
+        padding: 0.1em 0.4em;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .card-frame,
+    .card-frame.is-entering {
+        animation: none;
+        transition: none;
+    }
+}

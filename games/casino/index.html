@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino | Scott Campbell</title>
+    <meta name="description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
+    <meta property="og:title" content="Casino | Scott Campbell">
+    <meta property="og:description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
+    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
+    <meta property="og:url" content="https://scampbella.github.io/games/casino/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scampbella.github.io/games/casino/">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <link rel="preload" as="image" href="assets/cards.png">
+    <link rel="stylesheet" href="casino.css">
+</head>
+
+<body>
+    <main class="hub">
+
+        <div class="hub-top">
+            <a class="back-link" href="../">&larr; Games</a>
+            <div class="bank">
+                <span class="chip" aria-hidden="true"></span>
+                <span>
+                    <span class="bank-label">Bank</span><br>
+                    <strong class="bank-amount" id="balance">0</strong>
+                </span>
+            </div>
+        </div>
+
+        <header class="hub-title">
+            <h1>Welcome to the Casino</h1>
+            <p>One chip balance, every game. The house is only slightly ahead.</p>
+        </header>
+
+        <p class="storage-warning" id="storage-warning" hidden>
+            Your browser is blocking local storage, so your chips and stats
+            won&rsquo;t be saved between visits.
+        </p>
+
+        <section aria-labelledby="stats-heading">
+            <h2 class="sr-only" id="stats-heading">Your record</h2>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Hands played</span>
+                    <span class="stat-value" id="stat-hands">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Total wagered</span>
+                    <span class="stat-value" id="stat-wagered">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Net profit</span>
+                    <span class="stat-value" id="stat-net">+0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Biggest win</span>
+                    <span class="stat-value" id="stat-biggest">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best hand</span>
+                    <span class="stat-value" id="stat-best">&mdash;</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="bank-actions">
+            <button class="btn btn-quiet" id="rebuy" type="button">Take 1,000 chips</button>
+            <button class="btn btn-danger" id="hard-reset" type="button">Reset everything</button>
+        </div>
+
+        <section aria-labelledby="games-heading">
+            <h2 class="sr-only" id="games-heading">Games</h2>
+            <div class="game-grid">
+
+                <a class="game-tile" href="poker/">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="card-face" style="--col: 0; --row: 2; --tilt: -12deg;"></span>
+                        <span class="card-face" style="--col: 12; --row: 0; --tilt: 0deg;"></span>
+                        <span class="card-face" style="--col: 11; --row: 3; --tilt: 12deg;"></span>
+                    </span>
+                    <span class="tile-name">Video Poker</span>
+                    <span class="tile-desc">Jacks or Better, 9/6. Deal, hold, draw, get paid.</span>
+                    <span class="tile-badge">Play now</span>
+                </a>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="card-face" style="--col: 4; --row: 4; --tilt: -8deg;"></span>
+                        <span class="card-face" style="--col: 0; --row: 2; --tilt: 8deg;"></span>
+                    </span>
+                    <span class="tile-name">Blackjack</span>
+                    <span class="tile-desc">Get to twenty-one before the dealer does.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="card-face" style="--col: 0; --row: 0;"></span>
+                    </span>
+                    <span class="tile-name">Hearts</span>
+                    <span class="tile-desc">Duck every heart, or take the lot.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="chip" style="--chip-scale: 2; --chip-col: 0; --chip-row: 0;"></span>
+                        <span class="chip" style="--chip-scale: 2; --chip-col: 5; --chip-row: 2;"></span>
+                    </span>
+                    <span class="tile-name">Slots</span>
+                    <span class="tile-desc">Pull the lever. Regret nothing.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+            </div>
+        </section>
+
+        <p class="hub-foot">Chips are imaginary. Card art from the Poker Cards pack on itch.io.</p>
+    </main>
+
+    <script type="module" src="js/hub/main.js"></script>
+</body>
+
+</html>
