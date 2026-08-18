@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Lost Weekend",
+        artist: "Phoebe Bridgers",
+        date: "2026-08-17",
+        releaseDate: "2026-08-14",
+        durationMs: 3162000,
+        coverAvif: "../assets/images/albums/lost-weekend-md.avif",
+        spotify: "https://open.spotify.com/album/2NSzwyYvQvdOQAoEjrlw9c?si=4daW4S1EQOqNw8sh9KMQGw",
+        blurb: "Lost Weekend released this past Friday and after giving it a listen a couple times, I feel confident that we got another banger from Phoebe Bridgers. It kinda feels to me like Punisher with a new coat of paint. I really like the vibe, I don't have any definite favorites yet I don't think, but the songs I've been enjoying the most recently are Lost Boys and Kill Me."
+    },
+    {
         name: "Kiss Land",
         artist: "The Weeknd",
         date: "2026-08-10",
