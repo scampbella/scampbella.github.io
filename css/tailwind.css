@@ -864,6 +864,10 @@ video {
   flex-grow: 1;
 }
 
+.grow {
+  flex-grow: 1;
+}
+
 .translate-y-0 {
   --tw-translate-y: 0px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -898,6 +902,10 @@ video {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.resize {
+  resize: both;
 }
 
 .list-disc {
@@ -1027,6 +1035,11 @@ video {
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-\[\#1DB954\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(29 185 84 / var(--tw-border-opacity, 1));
 }
 
 .border-outline-variant {
@@ -1325,11 +1338,6 @@ video {
   line-height: 1.25rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -1385,6 +1393,11 @@ video {
 
 .tracking-widest {
   letter-spacing: 0.1em;
+}
+
+.text-\[\#1DB954\] {
+  --tw-text-opacity: 1;
+  color: rgb(29 185 84 / var(--tw-text-opacity, 1));
 }
 
 .text-on-background {
@@ -1633,6 +1646,10 @@ video {
 
 .hover\:border-primary:hover {
   border-color: var(--ct-primary);
+}
+
+.hover\:bg-\[\#1DB954\]\/10:hover {
+  background-color: rgb(29 185 84 / 0.1);
 }
 
 .hover\:bg-surface-container:hover {
