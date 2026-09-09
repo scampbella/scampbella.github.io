@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "7",
+        artist: "Beach House",
+        date: "2026-09-09",
+        releaseDate: "2018-05-11",
+        durationMs: 2824000,
+        coverAvif: "../assets/images/albums/7-md.avif",
+        spotify: "https://open.spotify.com/album/1zN85Ep8w2JORfCe0RHLDP?si=jpjjtId7TRSlESsN3mYTtg",
+        blurb: "I've been listening to Beach House for a long time now but I never really looked into their music that much, mainly just listened to popular songs like Myth and Master of None, but only recently did I actually take the time to sit down and listen to one of their albums and boy I'm glad I did. The first time I heard Drunk in LA I immediately wanted to listen to the rest of the album and I was not disappointed. 7 Is genuinely a great album and I really like that it's able to hold the same vibe all the way through. Favorites here are Drunk in LA and Lemon Glow"
+    },
+    {
         name: "Thursday",
         artist: "The Weeknd",
         date: "2026-08-31",
