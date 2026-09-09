@@ -20,15 +20,20 @@ if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
 }
 
-// Album of the Week: never let the text column grow taller than the cover art.
-// Crops the blurb to whatever line count fits and reveals a "Read more" link
-// (to the rotation archive) instead of letting the section stretch below it.
+// Album of the Week: keep the text column from growing taller than the cover
+// art. Crops the blurb to whatever line count fits and reveals a "Read more"
+// link (to the rotation archive) instead of letting the section stretch below
+// it. At narrow desktop widths the heading wraps and the static content alone
+// can fill the cover height, so a minimum line count keeps the blurb readable
+// there even though the column then runs slightly past the cover.
 (function () {
     const coverCol = document.getElementById("aotw-cover-col");
     const contentCol = document.getElementById("aotw-content-col");
     const blurb = document.getElementById("aotw-blurb");
     const readMore = document.getElementById("aotw-readmore");
     if (!coverCol || !contentCol || !blurb || !readMore) return;
+
+    const MIN_LINES = 4;
 
     function fit() {
         blurb.style.removeProperty("display");
@@ -51,7 +56,7 @@ if (yearEl) {
         const availableForBlurb = coverHeight - otherHeight;
         const lineHeight = parseFloat(getComputedStyle(blurb).lineHeight) ||
             parseFloat(getComputedStyle(blurb).fontSize) * 1.6;
-        const maxLines = Math.max(1, Math.floor(availableForBlurb / lineHeight));
+        const maxLines = Math.max(MIN_LINES, Math.floor(availableForBlurb / lineHeight));
 
         blurb.style.display = "-webkit-box";
         blurb.style.webkitBoxOrient = "vertical";
