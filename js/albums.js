@@ -1,5 +1,45 @@
 const albums = [
     {
+        name: "Stranger in the Alps",
+        artist: "Phoebe Bridgers",
+        date: "2026-09-14",
+        releaseDate: "2017-09-22",
+        durationMs: 2655000,
+        coverAvif: "../assets/images/albums/stranger-in-the-alps-md.avif",
+        spotify: "https://open.spotify.com/album/0qWcLfCZ8wtcoOdX14oGNI?si=D5B3O4y5SkGH_-Jx6STWbQ",
+        blurb: "I have had a terribly shitty week and I just want to curl up in a ball and cry. That is the exact sentiment that led me to chosing Stranger in the Alps as the album this week. This is the first album I really listened to over and over in high school and while its not a very happy album, it is near and dear to my heart. My oldest sister introduced me to Phoebe Bridgers around early high school and she ended up being one of my top artists throughout that time. Melancholic Folk music is the perfect music to cry in the shower to and this would probably be my top choice to recommend to anyone looking for something like that. My favorite songs on this album are Funeral and You Missed My Heart."
+    },
+    {
+        name: "7",
+        artist: "Beach House",
+        date: "2026-09-09",
+        releaseDate: "2018-05-11",
+        durationMs: 2824000,
+        coverAvif: "../assets/images/albums/7-md.avif",
+        spotify: "https://open.spotify.com/album/1zN85Ep8w2JORfCe0RHLDP?si=jpjjtId7TRSlESsN3mYTtg",
+        blurb: "I've been listening to Beach House for a long time now but I never really looked into their music that much, mainly just listened to popular songs like Myth and Master of None, but only recently did I actually take the time to sit down and listen to one of their albums and boy I'm glad I did. The first time I heard Drunk in LA I immediately wanted to listen to the rest of the album and I was not disappointed. 7 Is genuinely a great album and I really like that it's able to hold the same vibe all the way through. Favorites here are Drunk in LA and Lemon Glow"
+    },
+    {
+        name: "Thursday",
+        artist: "The Weeknd",
+        date: "2026-08-31",
+        releaseDate: "2011-08-18",
+        durationMs: 3019000,
+        coverAvif: "../assets/images/albums/thursday-md.avif",
+        spotify: "https://open.spotify.com/album/6F87lH0I09qlrzvCCKc7lz?si=222ab87da3e846c5",
+        blurb: "I recently moved and I have this wall of all of The Weeknd's albums and while putting it back up it inspired me to pick Thursday as the album this week (I know I missed last week, I was moving). This album is pretty freaky and is for sure up there when it comes to sexual content, but I really like the instrumentation and beats here. This is back when he was still finding his sound and I really like a lot of this funky trap style beats mixed in with some straight acoustic guitar as well. The abusive and tragic lyrics really help set a pretty unique and dark vibe for this album and I really like it. I love a lot of the Trilogy songs so it's hard for me to pick just two favorites like I normally do, so instead I picked four. My favorites here are Thursday, Rolling Stone, Heaven or Las Vegas, and Valerie (on the Trilogy version)."
+    },
+    {
+        name: "Lost Weekend",
+        artist: "Phoebe Bridgers",
+        date: "2026-08-17",
+        releaseDate: "2026-08-14",
+        durationMs: 3162000,
+        coverAvif: "../assets/images/albums/lost-weekend-md.avif",
+        spotify: "https://open.spotify.com/album/2NSzwyYvQvdOQAoEjrlw9c?si=4daW4S1EQOqNw8sh9KMQGw",
+        blurb: "Lost Weekend released this past Friday and after giving it a listen a couple times, I feel confident that we got another banger from Phoebe Bridgers. It kinda feels to me like Punisher with a new coat of paint. I really like the vibe, I don't have any definite favorites yet I don't think, but the songs I've been enjoying the most recently are Lost Boys and Kill Me."
+    },
+    {
         name: "Kiss Land",
         artist: "The Weeknd",
         date: "2026-08-10",
