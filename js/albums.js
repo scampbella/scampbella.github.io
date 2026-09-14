@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Stranger in the Alps",
+        artist: "Phoebe Bridgers",
+        date: "2026-09-14",
+        releaseDate: "2017-09-22",
+        durationMs: 2655000,
+        coverAvif: "../assets/images/albums/stranger-in-the-alps-md.avif",
+        spotify: "https://open.spotify.com/album/0qWcLfCZ8wtcoOdX14oGNI?si=D5B3O4y5SkGH_-Jx6STWbQ",
+        blurb: "I have had a terribly shitty week and I just want to curl up in a ball and cry. That is the exact sentiment that led me to chosing Stranger in the Alps as the album this week. This is the first album I really listened to over and over in high school and while its not a very happy album, it is near and dear to my heart. My oldest sister introduced me to Phoebe Bridgers around early high school and she ended up being one of my top artists throughout that time. Melancholic Folk music is the perfect music to cry in the shower to and this would probably be my top choice to recommend to anyone looking for something like that. My favorite songs on this album are Funeral and You Missed My Heart."
+    },
+    {
         name: "7",
         artist: "Beach House",
         date: "2026-09-09",
