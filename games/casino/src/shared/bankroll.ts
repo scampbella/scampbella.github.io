@@ -1,8 +1,7 @@
 // The casino's shared chip balance and lifetime stats.
 //
-// One module owns all bankroll persistence. Yahtzee's solo and versus modes
-// accidentally share a high-score key because storage was touched from several
-// renderers; nothing here is reachable except through this API.
+// One module owns all bankroll persistence; nothing here is reachable except
+// through this API.
 //
 // TWO INVARIANTS THAT MATTER:
 //
@@ -20,7 +19,7 @@
 // This module is deliberately DOM-free: pages wire up the `storage` event
 // themselves and call refresh(). That keeps it unit-testable with a fake store.
 
-import { BANKROLL_KEY } from './keys.ts';
+import { BANKROLL_KEY, CASINO_STORAGE_KEYS } from './keys.ts';
 
 export const STARTING_BANKROLL = 1000;
 
@@ -63,6 +62,8 @@ export interface Bankroll {
     canWager(amount: number): boolean;
     /** Normalise arbitrary user input to a legal wager, or null. */
     parseWager(input: string | number): number | null;
+    /** Reserve a casino-wide round ID that stays unique across games/reloads. */
+    allocateRoundId(): number;
     /** Deduct the wager for a round. Returns false if it can't be afforded.
      *  Idempotent: a round that already paid returns true without charging. */
     takeWager(roundId: number, amount: number): boolean;
@@ -93,6 +94,7 @@ interface StoredState {
     readonly stats: CasinoStats;
     readonly lastWageredRound: number;
     readonly lastSettledRound: number;
+    readonly nextRoundId: number;
 }
 
 const EMPTY_STATE: StoredState = {
@@ -101,6 +103,7 @@ const EMPTY_STATE: StoredState = {
     stats: EMPTY_STATS,
     lastWageredRound: 0,
     lastSettledRound: 0,
+    nextRoundId: 1,
 };
 
 function finite(value: unknown, fallback: number): number {
@@ -118,6 +121,8 @@ function coerce(parsed: unknown): StoredState {
     const stats = (typeof raw.stats === 'object' && raw.stats !== null ? raw.stats : {}) as Partial<CasinoStats>;
     const bestHand = typeof stats.bestHand === 'string' ? stats.bestHand : null;
 
+    const lastWageredRound = Math.max(0, Math.trunc(finite(raw.lastWageredRound, 0)));
+    const lastSettledRound = Math.max(0, Math.trunc(finite(raw.lastSettledRound, 0)));
     return {
         v: 1,
         balance: Math.max(0, Math.trunc(finite(raw.balance, STARTING_BANKROLL))),
@@ -129,8 +134,13 @@ function coerce(parsed: unknown): StoredState {
             bestHand,
             bestHandStrength: bestHand === null ? -1 : Math.trunc(finite(stats.bestHandStrength, -1)),
         },
-        lastWageredRound: Math.max(0, Math.trunc(finite(raw.lastWageredRound, 0))),
-        lastSettledRound: Math.max(0, Math.trunc(finite(raw.lastSettledRound, 0))),
+        lastWageredRound,
+        lastSettledRound,
+        nextRoundId: Math.max(
+            lastWageredRound + 1,
+            lastSettledRound + 1,
+            Math.trunc(finite(raw.nextRoundId, 1)),
+        ),
     };
 }
 
@@ -181,7 +191,8 @@ export function createBankroll(storage: StorageLike, persistent = true): Bankrol
     function parseWager(input: string | number): number | null {
         const cleaned = typeof input === 'number' ? input : Number(String(input).replace(/[,\s]/g, ''));
         if (!Number.isFinite(cleaned)) return null;
-        const amount = Math.trunc(cleaned);
+        if (!Number.isInteger(cleaned)) return null;
+        const amount = cleaned;
         if (amount <= 0) return null;
         if (amount > load().balance) return null;
         return amount;
@@ -196,6 +207,13 @@ export function createBankroll(storage: StorageLike, persistent = true): Bankrol
         },
 
         parseWager,
+
+        allocateRoundId() {
+            const state = load();
+            const roundId = state.nextRoundId;
+            commit({ ...state, nextRoundId: roundId + 1 });
+            return roundId;
+        },
 
         takeWager(roundId, amount) {
             const state = load();
@@ -245,12 +263,25 @@ export function createBankroll(storage: StorageLike, persistent = true): Bankrol
         },
 
         hardReset() {
+            const state = load();
+            // Invalidate any round that was open in this or another tab while
+            // preserving the monotonic allocator for future games.
+            const invalidThrough = Math.max(
+                state.lastWageredRound,
+                state.lastSettledRound,
+                state.nextRoundId - 1,
+            );
             try {
-                storage.removeItem(BANKROLL_KEY);
+                for (const key of CASINO_STORAGE_KEYS) storage.removeItem(key);
             } catch {
                 degraded = true;
             }
-            commit(EMPTY_STATE);
+            commit({
+                ...EMPTY_STATE,
+                lastWageredRound: invalidThrough,
+                lastSettledRound: invalidThrough,
+                nextRoundId: invalidThrough + 1,
+            });
         },
 
         refresh() {

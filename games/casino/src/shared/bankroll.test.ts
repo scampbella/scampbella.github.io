@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 
 import type { StorageLike } from './bankroll.ts';
 import { STARTING_BANKROLL, createBankroll, memoryStorage } from './bankroll.ts';
-import { BANKROLL_KEY } from './keys.ts';
+import { BANKROLL_KEY, POKER_ROUND_KEY } from './keys.ts';
 
 function fresh() {
     const storage = memoryStorage();
@@ -76,10 +76,10 @@ test('parseWager normalises the junk a free-form field will receive', () => {
     assert.equal(bank.parseWager('250'), 250);
     assert.equal(bank.parseWager('  12 '), 12);
     assert.equal(bank.parseWager('1,000'), 1000);
-    assert.equal(bank.parseWager(37.9), 37, 'truncates toward zero');
+    assert.equal(bank.parseWager(37.9), null, 'fractional numbers are not whole-chip wagers');
     assert.equal(bank.parseWager(1000), 1000, 'all-in is legal');
 
-    for (const bad of ['', 'abc', '-5', '0', '0.5', '1e9', 'Infinity', NaN]) {
+    for (const bad of ['', 'abc', '-5', '0', '0.5', '1.5', '1e9', 'Infinity', NaN]) {
         assert.equal(bank.parseWager(bad as string), null, JSON.stringify(bad));
     }
 });
@@ -192,23 +192,44 @@ test('rebuy never tops a player down', () => {
 });
 
 test('hardReset wipes balance and stats', () => {
-    const { bank } = fresh();
+    const { bank, storage } = fresh();
     bank.takeWager(1, 100);
     bank.settle(1, 900, meta(100));
+    storage.setItem(POKER_ROUND_KEY, '{"unfinished":true}');
 
     bank.hardReset();
     const { balance, stats } = bank.read();
     assert.equal(balance, STARTING_BANKROLL);
     assert.equal(stats.handsPlayed, 0);
     assert.equal(stats.bestHand, null);
+    assert.equal(storage.getItem(POKER_ROUND_KEY), null);
 });
 
-test('round counters reset too, so round 1 can charge again', () => {
+test('hard reset invalidates old rounds and allocates a fresh ID', () => {
     const { bank } = fresh();
-    bank.takeWager(1, 100);
+    const oldRound = bank.allocateRoundId();
+    bank.takeWager(oldRound, 100);
     bank.hardReset();
-    assert.equal(bank.takeWager(1, 100), true);
+    bank.settle(oldRound, 10000, meta(100));
+    assert.equal(bank.read().balance, STARTING_BANKROLL, 'an old hand cannot pay after reset');
+
+    const freshRound = bank.allocateRoundId();
+    assert.ok(freshRound > oldRound);
+    assert.equal(bank.takeWager(freshRound, 100), true);
     assert.equal(bank.read().balance, 900);
+});
+
+test('allocated round IDs survive a reload', () => {
+    const { bank, storage } = fresh();
+    const firstRound = bank.allocateRoundId();
+    bank.takeWager(firstRound, 100);
+    bank.settle(firstRound, 0, meta(100));
+
+    const reloaded = createBankroll(storage);
+    const nextRound = reloaded.allocateRoundId();
+    assert.ok(nextRound > firstRound);
+    assert.equal(reloaded.takeWager(nextRound, 100), true);
+    assert.equal(reloaded.read().balance, 800);
 });
 
 // --- corrupt storage -------------------------------------------------------

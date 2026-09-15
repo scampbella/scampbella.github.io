@@ -8,10 +8,10 @@
     <meta name="description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
     <meta property="og:title" content="Casino | Scott Campbell">
     <meta property="og:description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
-    <meta property="og:image" content="https://scampbella.github.io/favicon.svg">
-    <meta property="og:url" content="https://scampbella.github.io/games/casino/">
+    <meta property="og:image" content="https://scottcampbell.me/favicon.svg">
+    <meta property="og:url" content="https://scottcampbell.me/games/casino/">
     <meta name="twitter:card" content="summary">
-    <link rel="canonical" href="https://scampbella.github.io/games/casino/">
+    <link rel="canonical" href="https://scottcampbell.me/games/casino/">
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="preload" as="image" href="assets/cards.png">
     <link rel="stylesheet" href="casino.css">
@@ -32,8 +32,12 @@
         </div>
 
         <header class="hub-title">
-            <h1>Welcome to the Casino</h1>
-            <p>One chip balance, every game. The house is only slightly ahead.</p>
+            <h1 aria-label="Welcome to Scott's Casino!">
+                <span class="welcome-to" aria-hidden="true">Welcome to</span>
+                <span class="casino-name" aria-hidden="true">
+                    <span style="--wave: 0;">S</span><span style="--wave: 1;">c</span><span style="--wave: 2;">o</span><span style="--wave: 3;">t</span><span style="--wave: 4;">t</span><span style="--wave: 5;">&rsquo;</span><span style="--wave: 6;">s</span><span class="word-space">&nbsp;</span><span style="--wave: 7;">C</span><span style="--wave: 8;">a</span><span style="--wave: 9;">s</span><span style="--wave: 10;">i</span><span style="--wave: 11;">n</span><span style="--wave: 12;">o</span><span style="--wave: 13;">!</span>
+                </span>
+            </h1>
         </header>
 
         <p class="storage-warning" id="storage-warning" hidden>
@@ -41,38 +45,7 @@
             won&rsquo;t be saved between visits.
         </p>
 
-        <section aria-labelledby="stats-heading">
-            <h2 class="sr-only" id="stats-heading">Your record</h2>
-            <div class="stats">
-                <div class="stat">
-                    <span class="stat-label">Hands played</span>
-                    <span class="stat-value" id="stat-hands">0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Total wagered</span>
-                    <span class="stat-value" id="stat-wagered">0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Net profit</span>
-                    <span class="stat-value" id="stat-net">+0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Biggest win</span>
-                    <span class="stat-value" id="stat-biggest">0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Best hand</span>
-                    <span class="stat-value" id="stat-best">&mdash;</span>
-                </div>
-            </div>
-        </section>
-
-        <div class="bank-actions">
-            <button class="btn btn-quiet" id="rebuy" type="button">Take 1,000 chips</button>
-            <button class="btn btn-danger" id="hard-reset" type="button">Reset everything</button>
-        </div>
-
-        <section aria-labelledby="games-heading">
+        <section class="games-section" aria-labelledby="games-heading">
             <h2 class="sr-only" id="games-heading">Games</h2>
             <div class="game-grid">
 
@@ -83,8 +56,7 @@
                         <span class="card-face" style="--col: 11; --row: 3; --tilt: 12deg;"></span>
                     </span>
                     <span class="tile-name">Video Poker</span>
-                    <span class="tile-desc">Jacks or Better, 9/6. Deal, hold, draw, get paid.</span>
-                    <span class="tile-badge">Play now</span>
+                    <span class="tile-desc">Deal, hold, draw, get paid.</span>
                 </a>
 
                 <div class="game-tile is-soon">
@@ -116,10 +88,51 @@
                     <span class="tile-badge">Coming soon</span>
                 </div>
 
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="card-face" style="--col: 12; --row: 0; --tilt: -10deg;"></span>
+                        <span class="card-face" style="--col: 11; --row: 3; --tilt: 10deg;"></span>
+                    </span>
+                    <span class="tile-name">Texas Hold&rsquo;em</span>
+                    <span class="tile-desc">Build the best hand and take the pot.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="card-face" style="--col: 0; --row: 2; --tilt: -8deg;"></span>
+                        <span class="card-face" style="--col: 12; --row: 0; --tilt: 8deg;"></span>
+                    </span>
+                    <span class="tile-name">Baccarat</span>
+                    <span class="tile-desc">Back Player, Banker, or Tie.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="chip" style="--chip-scale: 2; --chip-col: 2; --chip-row: 1;"></span>
+                    </span>
+                    <span class="tile-name">Roulette</span>
+                    <span class="tile-desc">Pick your number and spin the wheel.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
+                <div class="game-tile is-soon">
+                    <span class="tile-art" aria-hidden="true">
+                        <span class="chip" style="--chip-scale: 2; --chip-col: 6; --chip-row: 0;"></span>
+                    </span>
+                    <span class="tile-name">Coin Flip</span>
+                    <span class="tile-desc">Call it right to double your bet.</span>
+                    <span class="tile-badge">Coming soon</span>
+                </div>
+
             </div>
         </section>
 
-        <p class="hub-foot">Chips are imaginary. Card art from the Poker Cards pack on itch.io.</p>
+        <div class="bank-actions">
+            <button class="btn btn-quiet" id="rebuy" type="button">Refill to 1,000</button>
+            <button class="btn btn-danger" id="hard-reset" type="button">Reset everything</button>
+        </div>
     </main>
 
     <script type="module" src="js/hub/main.js"></script>

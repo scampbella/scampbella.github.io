@@ -6,10 +6,10 @@ import { dealDeck } from "../shared/deck.js";
 import { HAND_STRENGTH } from "./hands.js";
 import { deserializeRound, draw, initialState, newRound, nextRound, serializeRound, toggleHold, } from "./machine.js";
 import { createUI } from "./ui.js";
-const DEFAULT_WAGER = 25;
+const DEFAULT_WAGER = '';
 const bankroll = getBankroll();
-let state = initialState();
-let wagerText = String(DEFAULT_WAGER);
+let state = initialState(bankroll.allocateRoundId());
+let wagerText = DEFAULT_WAGER;
 // --- round persistence -----------------------------------------------------
 //
 // The wager is taken at deal, so without this a mid-hand reload would pocket
@@ -47,18 +47,25 @@ function currentWager() {
 }
 function render() {
     const snapshot = bankroll.read();
+    const wager = currentWager();
     ui.render({
         state,
         balance: snapshot.balance,
         persistent: snapshot.persistent,
         wagerText,
-        wagerValid: currentWager() !== null,
+        // A player can type any whole number, but a round cannot be funded
+        // with more chips than are currently in the shared bank.
+        wagerValid: wager !== null && wager <= snapshot.balance,
     });
 }
 // --- actions ---------------------------------------------------------------
 function startRound() {
     if (state.phase !== 'betting')
         return;
+    if (bankroll.read().balance <= 0) {
+        ui.showOutOfChips();
+        return;
+    }
     const wager = currentWager();
     if (wager === null)
         return;
@@ -89,7 +96,7 @@ function finishRound() {
 function beginNextRound() {
     if (state.phase !== 'resolved')
         return;
-    state = nextRound(state);
+    state = nextRound(state, bankroll.allocateRoundId());
     // Offer the same stake again, trimmed to what's left in the bank.
     const snapshot = bankroll.read();
     const previous = Number(wagerText);
@@ -118,12 +125,8 @@ const ui = createUI({
         else
             beginNextRound();
     },
-    onRebuy() {
-        bankroll.rebuy();
-        render();
-    },
     onWagerInput(raw) {
-        wagerText = raw;
+        wagerText = raw.replace(/\D/g, '');
         render();
     },
     onWagerQuick(kind) {

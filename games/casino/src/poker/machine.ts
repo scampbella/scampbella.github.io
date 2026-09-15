@@ -138,11 +138,11 @@ export function draw(state: DealtState): ResolvedState {
 }
 
 /** Clear the table and advance the round counter. */
-export function nextRound(state: ResolvedState): BettingState {
+export function nextRound(state: ResolvedState, roundId = state.roundId + 1): BettingState {
     if (state.phase !== 'resolved') {
         throw new Error(`nextRound() requires the resolved phase, got "${(state as PokerState).phase}"`);
     }
-    return { phase: 'betting', roundId: state.roundId + 1 };
+    return { phase: 'betting', roundId };
 }
 
 // --- persistence -----------------------------------------------------------

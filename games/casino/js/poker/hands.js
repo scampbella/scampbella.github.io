@@ -1,11 +1,10 @@
-// Jacks or Better hand evaluation — 9/6 paytable.
+// Jacks or Better hand evaluation and payout table.
 //
 // Pure: no DOM, no storage, no randomness, nothing executed at import time.
 //
 // Payouts are TOTAL RETURNED per unit wagered, not profit. So Jacks or Better
-// at x1 hands the wager back and nets zero. That convention is what gives the
-// 9/6 table its real ~99.5% RTP; switching to profit-style payouts means adding
-// 1 to every non-zero multiplier here and nothing else.
+// at x1 hands the wager back and nets zero. Switching to profit-style payouts
+// means adding 1 to every non-zero multiplier here and nothing else.
 import { ACE, JACK, cardId } from "../shared/cards.js";
 export const HAND_RANKS = {
     ROYAL_FLUSH: 'royal-flush',
@@ -19,9 +18,8 @@ export const HAND_RANKS = {
     JACKS_OR_BETTER: 'jacks-or-better',
     NOTHING: 'nothing',
 };
-/** Multiplier applied to the wager. The Full House (9) and Flush (6) entries
- *  are what "9/6" names — they are the house-edge tuning knob. Don't change the
- *  others without saying so explicitly. */
+/** Multiplier applied to the wager. Don't change payout values without an
+ *  explicit product decision. */
 export const PAYTABLE = {
     [HAND_RANKS.ROYAL_FLUSH]: 800,
     [HAND_RANKS.STRAIGHT_FLUSH]: 50,

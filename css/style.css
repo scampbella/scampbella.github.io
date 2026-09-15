@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent accidental selection on the site UI while keeping editable content usable. */
+html {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+input,
+textarea,
+[contenteditable='true'] {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
 :root {
     --ct-primary: #7DD3FC;
     --ct-on-primary: #000000;

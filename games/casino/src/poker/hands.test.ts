@@ -51,12 +51,12 @@ test('classifies each paytable rank', () => {
     assert.equal(rankOf('KS 9D 7H 4S 2C'), HAND_RANKS.NOTHING);
 });
 
-test('multipliers match the 9/6 paytable', () => {
+test('multipliers match the payout table', () => {
     assert.equal(PAYTABLE[HAND_RANKS.ROYAL_FLUSH], 800);
     assert.equal(PAYTABLE[HAND_RANKS.STRAIGHT_FLUSH], 50);
     assert.equal(PAYTABLE[HAND_RANKS.FOUR_OF_A_KIND], 25);
-    assert.equal(PAYTABLE[HAND_RANKS.FULL_HOUSE], 9); // the "9"
-    assert.equal(PAYTABLE[HAND_RANKS.FLUSH], 6); // the "6"
+    assert.equal(PAYTABLE[HAND_RANKS.FULL_HOUSE], 9);
+    assert.equal(PAYTABLE[HAND_RANKS.FLUSH], 6);
     assert.equal(PAYTABLE[HAND_RANKS.STRAIGHT], 4);
     assert.equal(PAYTABLE[HAND_RANKS.THREE_OF_A_KIND], 3);
     assert.equal(PAYTABLE[HAND_RANKS.TWO_PAIR], 2);

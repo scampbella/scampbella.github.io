@@ -1,8 +1,7 @@
 // The casino's shared chip balance and lifetime stats.
 //
-// One module owns all bankroll persistence. Yahtzee's solo and versus modes
-// accidentally share a high-score key because storage was touched from several
-// renderers; nothing here is reachable except through this API.
+// One module owns all bankroll persistence; nothing here is reachable except
+// through this API.
 //
 // TWO INVARIANTS THAT MATTER:
 //
@@ -19,7 +18,7 @@
 //
 // This module is deliberately DOM-free: pages wire up the `storage` event
 // themselves and call refresh(). That keeps it unit-testable with a fake store.
-import { BANKROLL_KEY } from "./keys.js";
+import { BANKROLL_KEY, CASINO_STORAGE_KEYS } from "./keys.js";
 export const STARTING_BANKROLL = 1000;
 const EMPTY_STATS = {
     handsPlayed: 0,
@@ -35,6 +34,7 @@ const EMPTY_STATE = {
     stats: EMPTY_STATS,
     lastWageredRound: 0,
     lastSettledRound: 0,
+    nextRoundId: 1,
 };
 function finite(value, fallback) {
     return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
@@ -50,6 +50,8 @@ function coerce(parsed) {
         return EMPTY_STATE;
     const stats = (typeof raw.stats === 'object' && raw.stats !== null ? raw.stats : {});
     const bestHand = typeof stats.bestHand === 'string' ? stats.bestHand : null;
+    const lastWageredRound = Math.max(0, Math.trunc(finite(raw.lastWageredRound, 0)));
+    const lastSettledRound = Math.max(0, Math.trunc(finite(raw.lastSettledRound, 0)));
     return {
         v: 1,
         balance: Math.max(0, Math.trunc(finite(raw.balance, STARTING_BANKROLL))),
@@ -61,8 +63,9 @@ function coerce(parsed) {
             bestHand,
             bestHandStrength: bestHand === null ? -1 : Math.trunc(finite(stats.bestHandStrength, -1)),
         },
-        lastWageredRound: Math.max(0, Math.trunc(finite(raw.lastWageredRound, 0))),
-        lastSettledRound: Math.max(0, Math.trunc(finite(raw.lastSettledRound, 0))),
+        lastWageredRound,
+        lastSettledRound,
+        nextRoundId: Math.max(lastWageredRound + 1, lastSettledRound + 1, Math.trunc(finite(raw.nextRoundId, 1))),
     };
 }
 export function createBankroll(storage, persistent = true) {
@@ -112,7 +115,9 @@ export function createBankroll(storage, persistent = true) {
         const cleaned = typeof input === 'number' ? input : Number(String(input).replace(/[,\s]/g, ''));
         if (!Number.isFinite(cleaned))
             return null;
-        const amount = Math.trunc(cleaned);
+        if (!Number.isInteger(cleaned))
+            return null;
+        const amount = cleaned;
         if (amount <= 0)
             return null;
         if (amount > load().balance)
@@ -127,6 +132,12 @@ export function createBankroll(storage, persistent = true) {
             return amount <= load().balance;
         },
         parseWager,
+        allocateRoundId() {
+            const state = load();
+            const roundId = state.nextRoundId;
+            commit({ ...state, nextRoundId: roundId + 1 });
+            return roundId;
+        },
         takeWager(roundId, amount) {
             const state = load();
             if (roundId <= state.lastWageredRound)
@@ -174,13 +185,23 @@ export function createBankroll(storage, persistent = true) {
             commit({ ...state, balance: STARTING_BANKROLL });
         },
         hardReset() {
+            const state = load();
+            // Invalidate any round that was open in this or another tab while
+            // preserving the monotonic allocator for future games.
+            const invalidThrough = Math.max(state.lastWageredRound, state.lastSettledRound, state.nextRoundId - 1);
             try {
-                storage.removeItem(BANKROLL_KEY);
+                for (const key of CASINO_STORAGE_KEYS)
+                    storage.removeItem(key);
             }
             catch {
                 degraded = true;
             }
-            commit(EMPTY_STATE);
+            commit({
+                ...EMPTY_STATE,
+                lastWageredRound: invalidThrough,
+                lastSettledRound: invalidThrough,
+                nextRoundId: invalidThrough + 1,
+            });
         },
         refresh() {
             emit(load());

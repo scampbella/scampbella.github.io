@@ -19,6 +19,12 @@
     box-sizing: border-box;
 }
 
+/* Casino controls and labels are not selectable. */
+html {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 /* === Tokens === */
 :root {
     --felt-deep: #032118;
@@ -50,6 +56,7 @@
 
 html {
     color-scheme: dark;
+    scrollbar-width: none;
 }
 
 body {
@@ -61,10 +68,18 @@ body {
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font);
-    font-size: 16px;
+    /* Yahtzee-style viewport scaling: readable on short displays and fuller
+       on large screens. New Casino games inherit this baseline. */
+    font-size: clamp(15px, 1.8vh, 18px);
     line-height: 1.5;
     display: flex;
     flex-direction: column;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
 }
 
 :focus-visible {
@@ -135,18 +150,24 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
-    color: var(--ink-dim);
+    color: #fca5a5;
+    background: rgba(69, 10, 10, 0.38);
+    border: 2px solid rgba(185, 28, 28, 0.72);
+    border-radius: 9px;
     text-decoration: none;
     font-size: 0.9rem;
+    font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    padding: 0.4em 0.2em;
-    transition: color 0.15s ease;
+    padding: 0.52em 0.8em;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
 .back-link:hover,
 .back-link:focus-visible {
-    color: var(--gold);
+    color: #fff;
+    background: rgba(127, 29, 29, 0.58);
+    border-color: #dc2626;
 }
 
 .panel {
@@ -196,13 +217,15 @@ body {
 }
 
 .btn-danger {
-    color: var(--danger);
-    background: transparent;
-    border-color: rgba(248, 113, 113, 0.4);
+    color: #fca5a5;
+    background: rgba(69, 10, 10, 0.38);
+    border-color: rgba(185, 28, 28, 0.72);
 }
 
 .btn-danger:hover:not(:disabled) {
-    border-color: var(--danger);
+    color: #fff;
+    background: rgba(127, 29, 29, 0.58);
+    border-color: #dc2626;
     filter: none;
 }
 
@@ -248,7 +271,7 @@ body {
    ========================================================================== */
 
 .hub {
-    width: min(1000px, 100%);
+    width: min(1400px, 100%);
     margin: 0 auto;
     padding: 1.5rem 1.25rem 4rem;
     display: flex;
@@ -273,57 +296,52 @@ body {
 }
 
 .hub-title h1 {
-    font-size: clamp(2rem, 6vw, 3.25rem);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: var(--gold);
+    line-height: 1;
+}
+
+.welcome-to {
+    font-size: clamp(1.65rem, 3.75vw, 2.625rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.casino-name {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: clamp(4.05rem, 10.5vw, 6.9rem);
+    font-weight: 900;
+    letter-spacing: 0.06em;
     text-shadow: 0 2px 0 var(--gold-deep), 0 0 28px rgba(251, 191, 36, 0.28);
-    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.casino-name > span:not(.word-space) {
+    display: inline-block;
+    animation: casino-sign-wave 5s ease-in-out infinite;
+    animation-delay: calc(var(--wave) * -0.18s);
+    transform-origin: center bottom;
+}
+
+.casino-name .word-space {
+    width: 0.25em;
+}
+
+@keyframes casino-sign-wave {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-0.07em) rotate(-1.5deg); }
+    50% { transform: translateY(0.05em) rotate(1deg); }
+    75% { transform: translateY(-0.03em) rotate(-0.5deg); }
 }
 
 .hub-title p {
     color: var(--ink-dim);
     font-size: 1rem;
-}
-
-/* Stats */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1px;
-    background: var(--panel-edge);
-    border: 2px solid var(--panel-edge);
-    border-radius: 14px;
-    overflow: hidden;
-}
-
-.stat {
-    background: var(--panel-solid);
-    padding: 0.85rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-}
-
-.stat-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-}
-
-.stat-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-}
-
-.stat-value.is-positive {
-    color: var(--win);
-}
-
-.stat-value.is-negative {
-    color: var(--danger);
 }
 
 .bank-actions {
@@ -333,9 +351,14 @@ body {
     justify-content: center;
 }
 
+.games-section {
+    display: flex;
+    flex-direction: column;
+}
+
 /* Game tiles */
-/* Explicit column counts rather than auto-fit: with exactly four tiles,
-   auto-fit lands on three-plus-an-orphan across a wide band of widths. */
+/* Eight games form two tidy rows at desktop width; explicit columns avoid
+   uneven orphan tiles across intermediate widths. */
 .game-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -355,6 +378,7 @@ body {
 }
 
 .game-tile {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -432,10 +456,73 @@ a.game-tile:focus-visible {
     border-color: rgba(255, 255, 255, 0.12);
 }
 
-.hub-foot {
-    text-align: center;
-    color: var(--ink-faint);
-    font-size: 0.8rem;
+/* Casino pages are fixed desktop play surfaces. Short windows retain normal
+   scrolling so no controls or content become unreachable. */
+@media (min-width: 700px) and (min-height: 800px) {
+    html,
+    body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .hub {
+        height: 100dvh;
+        overflow: hidden;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        gap: 1rem;
+    }
+
+    .hub-title {
+        transform: translateY(-1.25rem);
+    }
+
+    .games-section {
+        margin-top: 1.5rem;
+    }
+
+    .games-section,
+    .game-grid {
+        min-height: 0;
+    }
+
+    .game-grid {
+        gap: 0.85rem;
+        grid-auto-rows: clamp(220px, 26.88vh, 538px);
+    }
+
+    .game-tile {
+        gap: 0.55rem;
+        padding: 0.85rem;
+    }
+
+    .tile-art {
+        --scale: 1;
+        height: 88px;
+        transform: scale(1.2);
+        transform-origin: center;
+    }
+
+    .tile-name {
+        font-size: 1.32rem;
+    }
+
+    .tile-desc {
+        min-height: 2em;
+        font-size: 0.94rem;
+    }
+
+    .tile-badge {
+        font-size: 0.82rem;
+    }
+
+    .bank-actions {
+        margin-top: auto;
+    }
+
+    .bank-actions .btn {
+        font-size: 0.75em;
+    }
 }
 
 @media (max-width: 560px) {
@@ -444,10 +531,40 @@ a.game-tile:focus-visible {
     }
 }
 
+/* Large fullscreen tiles use a centered four-part composition so the artwork
+   and labels occupy the card rather than collecting at its top edge. */
+@media (min-width: 700px) and (min-height: 1000px) {
+    .game-tile {
+        display: grid;
+        grid-template-rows: 140px auto minmax(2.2em, auto);
+        align-content: center;
+        justify-items: center;
+        gap: 0.8rem;
+    }
+
+    .game-tile.is-soon {
+        grid-template-rows: 140px auto minmax(2.2em, auto) auto;
+    }
+
+    .tile-art {
+        --scale: 2;
+        height: 140px;
+        transform: none;
+    }
+
+    .tile-art > .chip:only-child {
+        transform: scale(1.5);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     a.game-tile:hover,
     a.game-tile:focus-visible {
         transform: none;
+    }
+
+    .casino-name > span:not(.word-space) {
+        animation: none;
     }
 }

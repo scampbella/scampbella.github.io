@@ -90,11 +90,11 @@ export function draw(state) {
     };
 }
 /** Clear the table and advance the round counter. */
-export function nextRound(state) {
+export function nextRound(state, roundId = state.roundId + 1) {
     if (state.phase !== 'resolved') {
         throw new Error(`nextRound() requires the resolved phase, got "${state.phase}"`);
     }
-    return { phase: 'betting', roundId: state.roundId + 1 };
+    return { phase: 'betting', roundId };
 }
 export function serializeRound(state) {
     const payload = {

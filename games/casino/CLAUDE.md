@@ -26,7 +26,7 @@ Yahtzee compiles with `module: none` and concatenates into one global-scope
 `game.js`. Its own `games/yahtzee/CLAUDE.md` documents what that costs: a
 hardcoded file-order list to maintain by hand, a bundle that self-executes on
 `DOMContentLoaded` so testing pure logic needs a `vm` sandbox with stubbed
-`document`/`localStorage`, and solo/versus accidentally sharing a storage key.
+`document`/`localStorage`.
 
 Casino emits **native ES modules** instead (`<script type="module">` — the first
 on this site). No bundler, no concatenation, no file-order list; tests are plain
@@ -73,16 +73,16 @@ them testable. Keep it that way — blackjack will reuse all four.
 - **Art style: retro pixel-art**, from the `Poker cards 1.3` itch.io pack.
   Rendered via CSS `background-position` at integer scale with
   `image-rendering: pixelated`.
-- **First game: Video Poker, Jacks or Better, 9/6 paytable.** No opponents.
+- **First game: Video Poker, Jacks or Better payout table.** No opponents.
   Royal 800 / SF 50 / Quads 25 / **FH 9** / **Flush 6** / Straight 4 / Trips 3 /
-  Two Pair 2 / Jacks+ 1. The "9/6" names the Full House and Flush multipliers —
-  they're the house-edge knob; don't change the others without saying so.
+  Two Pair 2 / Jacks+ 1. Don't change payout values without saying so.
 - **Betting is free-form**: any whole wager up to the balance, with ½ / ×2 /
   All-in helpers. Scott chose this over denomination-style 1–5 coin betting
   precisely so large shared-bank wagers are possible, which is why there is no
   max-bet Royal bonus.
 - **Payout is TOTAL RETURNED, not profit** — so Jacks-or-Better at ×1 hands the
-  wager back and nets zero. That's what keeps 9/6 at its real ~99.5% RTP.
+  wager back and nets zero. The current table returns about 99.5% over the
+  long run.
   Scott has said the return math is changeable later; it's a one-line change in
   `hands.ts`.
 - **Bankroll is persistent and shared across all casino games**, starting at
@@ -102,14 +102,18 @@ Blackjack, Hearts, and Slots rulesets are **not decided yet**.
    in one task is effectively atomic, because localStorage is synchronous.
 2. **Money moves at most once per round.** `takeWager` and `settle` are keyed by
    `roundId` and no-op if that round already moved, so a double-click, a
-   re-render, or a restored save can't double-charge or double-pay.
+   re-render, or a restored save can't double-charge or double-pay. Round IDs
+   come from the bankroll's persisted casino-wide allocator; page-local counters
+   restart after a reload and must not be used as transaction IDs.
 
 Storage keys live in `shared/keys.ts` — add new ones there, never inline.
 Note localStorage is per-origin: a balance on `scampbella.github.io` is invisible
 on `scottcampbell.me` (the CNAME). That's expected, not a bug.
 
 Poker also persists the in-flight round (`casino_poker_round`) because the wager
-is taken at deal — without it a mid-hand reload would pocket the bet.
+is taken at deal — without it a mid-hand reload would pocket the bet. A hard
+reset clears every key in `CASINO_STORAGE_KEYS` and invalidates allocated IDs,
+so an old hand cannot pay into a fresh bankroll.
 
 ## Assets
 
@@ -156,21 +160,26 @@ Unused from the pack: `minicards.png` (superseded — we have full-size faces) a
 
 `casino.css` holds the tokens, the sprite rules, and the hub; `poker/poker.css`
 holds the table. Neither page loads `css/style.css` or `css/tailwind.css` — they
-are self-contained like yahtzee. Class names are deliberately bespoke so that
-Tailwind scanning `./games/**/*.html` produces no new utilities and leaves
-`css/tailwind.css` byte-identical.
+are self-contained like yahtzee. Tailwind scans only `./games/*.html` (the games
+index), not the individual game subdirectories.
+
+**Fullscreen scaling is a Casino-wide rule.** Follow Yahtzee's responsive
+rhythm: `casino.css` provides a `clamp(15px, 1.8vh, 18px)` type baseline, desktop
+surfaces should use the viewport well without browser scroll when content fits,
+and short or narrow windows must remain scrollable rather than hiding controls.
+New Casino games must inherit this shared baseline and add integer sprite-scale
+steps where pixel art is used.
 
 `--scale` must stay an **integer**. Breakpoints step 4→3→2→1 so that all five
 cards always fit on screen (a scrolling hand would mean choosing holds blind);
 each one engages just before the previous scale would overflow. `background-size`
 is always stated explicitly — `cover`/`contain` would destroy pixel alignment.
 
-## Local dev gotcha
+## Local development
 
-Use the **trailing slash**: `http://localhost:3001/games/casino/poker/`. Without
-it `server.js` serves `index.html` without redirecting, so relative module
-specifiers resolve one directory too high and the page silently blanks. GitHub
-Pages issues a proper 301, so this is local-only.
+Directory routes use trailing slashes. The local `server.js` redirects
+`/games/casino/poker` to `/games/casino/poker/`, matching GitHub Pages so
+relative module imports resolve correctly.
 
 ## Progress
 
