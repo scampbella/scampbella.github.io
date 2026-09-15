@@ -10,14 +10,18 @@
     "url": "https://github.com/scampbella/scampbella.github.io"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.18.0"
   },
   "scripts": {
     "start": "node --watch --watch-path=server.js --watch-path=index.html --watch-path=js/ --watch-path=css/style.css --watch-path=blogs/ --watch-path=games/ server.js",
     "convert-images": "node scripts/convert-to-avif.mjs",
     "build:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css",
     "dev:css": "npx tailwindcss -i ./css/style.css -o ./css/tailwind.css --watch",
-    "build:yahtzee": "node games/yahtzee/build.mjs"
+    "build:yahtzee": "node games/yahtzee/build.mjs",
+    "build:casino": "node -e \"require('fs').rmSync('games/casino/js',{recursive:true,force:true})\" && npx tsc -p games/casino/tsconfig.json",
+    "test:casino": "node --test \"games/casino/src/**/*.test.ts\"",
+    "check:casino": "npm run build:casino && node -e \"const s=require('child_process').execSync('git status --porcelain games/casino/js').toString(); if (s.trim()) { console.error('games/casino/js is out of sync with src/ — commit the rebuilt output:\\n' + s); process.exit(1); } console.log('games/casino/js is in sync with src/');\"",
+    "build:casino-sprites": "node scripts/build-casino-sprites.mjs"
   },
   "devDependencies": {
     "sharp": "^0.33.5",

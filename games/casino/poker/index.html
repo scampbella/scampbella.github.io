@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Poker | Scott Campbell</title>
+    <meta name="description" content="Play Video Poker online — deal, hold, draw, and win with a bankroll shared across the casino.">
+    <meta property="og:title" content="Video Poker | Scott Campbell">
+    <meta property="og:description" content="Play Video Poker online — deal, hold, draw, and win with a bankroll shared across the casino.">
+    <meta property="og:image" content="https://scottcampbell.me/favicon.svg">
+    <meta property="og:url" content="https://scottcampbell.me/games/casino/poker/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scottcampbell.me/games/casino/poker/">
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="preload" as="image" href="../assets/cards.png">
+    <link rel="stylesheet" href="../casino.css">
+    <link rel="stylesheet" href="poker.css">
+</head>
+
+<body>
+    <main class="poker-table">
+
+        <div class="poker-top">
+            <a class="back-link" href="../">&larr; Casino Floor</a>
+            <h1 class="poker-title">Video Poker</h1>
+            <div class="poker-metrics">
+                <div class="bank">
+                    <span class="chip" aria-hidden="true"></span>
+                    <span>
+                        <span class="bank-label">Bank</span><br>
+                        <strong class="bank-amount" id="balance">0</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <p class="storage-warning" id="storage-warning" hidden>
+            Your browser is blocking local storage, so this session&rsquo;s chips
+            and stats won&rsquo;t be saved.
+        </p>
+
+        <section class="paytable-card" aria-labelledby="paytable-heading">
+            <div class="paytable-heading">
+                <div>
+                    <h2 id="paytable-heading">Winning hands</h2>
+                </div>
+                <button class="rules-help" id="rules-help" type="button" aria-haspopup="dialog">
+                    <span aria-hidden="true">?</span>
+                    Rules
+                </button>
+            </div>
+
+            <div class="paytable" id="paytable" aria-label="Winning hands and payout multipliers">
+                <div class="paytable-body" id="paytable-body"></div>
+            </div>
+        </section>
+
+        <dialog class="rules-dialog" id="rules-dialog" aria-labelledby="rules-title">
+            <div class="rules-dialog-top">
+                <h2 id="rules-title">Rules</h2>
+                <button class="rules-close" id="rules-close" type="button" aria-label="Close rules and examples">×</button>
+            </div>
+            <p class="rules-explainer">After the deal, hold any cards you want to keep, then draw replacements. A pair only pays if it is Jacks, Queens, Kings, or Aces. Every listed payout includes your original bet.</p>
+            <div class="hand-examples" id="hand-examples"></div>
+        </dialog>
+
+        <dialog class="out-of-chips-dialog" id="out-of-chips-dialog" aria-labelledby="out-of-chips-title">
+            <button class="out-of-chips-close" id="out-of-chips-close" type="button" aria-label="Close out-of-chips notice">×</button>
+            <h2 id="out-of-chips-title">You&rsquo;re out of chips</h2>
+            <p>Return to the Casino Floor to refill your bank and keep playing.</p>
+            <a class="btn" href="../">Return to Casino Floor</a>
+        </dialog>
+
+        <section class="hand-area" aria-labelledby="hand-heading">
+            <h2 class="sr-only" id="hand-heading">Your hand</h2>
+
+            <div class="hand-scroll">
+                <ul class="hand-row" id="hand"></ul>
+            </div>
+
+            <div class="result" id="result" role="status" aria-live="polite" tabindex="-1"></div>
+        </section>
+
+        <div class="controls">
+            <div class="wager-row">
+                <label class="wager-label" for="wager">Bet</label>
+                <input class="wager-input" id="wager" type="text" inputmode="numeric" autocomplete="off"
+                    value="" aria-describedby="wager-help wager-error">
+                <button class="wager-quick" id="wager-half" type="button">&frac12;</button>
+                <button class="wager-quick" id="wager-double" type="button">&times;2</button>
+                <button class="wager-quick" id="wager-max" type="button">All in</button>
+                <span class="sr-only" id="wager-help">
+                    Whole-number bets only. Your wager cannot exceed the chips in your bank.
+                </span>
+            </div>
+            <p class="wager-error" id="wager-error" role="alert" hidden></p>
+
+            <div class="action-row">
+                <button class="btn btn-deal" id="deal" type="button">Deal</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" src="../js/poker/main.js"></script>
+</body>
+
+</html>

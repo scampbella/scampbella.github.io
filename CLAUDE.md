@@ -18,6 +18,12 @@ site silently goes stale:
   `games/yahtzee/CLAUDE.md` for the full yahtzee build/ruleset notes — that
   file is nested and loads automatically when working in that subtree; don't
   duplicate its content here.
+- `games/casino/js/` — rebuild with `npm run build:casino` after editing
+  anything under `games/casino/src/`. Unlike yahtzee this is a directory of ES
+  modules, not one bundle, so a renamed source file can leave an orphan behind;
+  the build script clears the directory first. `npm run check:casino` fails if
+  the committed output has drifted from the source. See
+  `games/casino/CLAUDE.md`.
 
 Follow `readme.md`'s pre-deploy checklist before pushing anything that
 touches CSS or the yahtzee source.
