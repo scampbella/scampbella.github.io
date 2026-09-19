@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casino | Scott Campbell</title>
-    <meta name="description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
+    <meta name="description" content="A little pixel-art casino with playable Video Poker and Blackjack, plus more games to come. One chip balance across every game.">
     <meta property="og:title" content="Casino | Scott Campbell">
-    <meta property="og:description" content="A little pixel-art casino — video poker now, blackjack, hearts and slots to come. One chip balance across every game.">
+    <meta property="og:description" content="A little pixel-art casino with playable Video Poker and Blackjack, plus more games to come. One chip balance across every game.">
     <meta property="og:image" content="https://scottcampbell.me/favicon.svg">
     <meta property="og:url" content="https://scottcampbell.me/games/casino/">
     <meta name="twitter:card" content="summary">
@@ -21,7 +21,13 @@
     <main class="hub">
 
         <div class="hub-top">
-            <a class="back-link" href="../">&larr; Games</a>
+            <div class="hub-nav">
+                <a class="back-link" href="../">&larr; Games</a>
+                <button class="menu-trigger" id="menu-open" type="button" aria-haspopup="dialog">
+                    <span aria-hidden="true">☰</span>
+                    Menu
+                </button>
+            </div>
             <div class="bank">
                 <span class="chip" aria-hidden="true"></span>
                 <span>
@@ -60,15 +66,14 @@
                     <span class="tile-desc">Deal, hold, draw, get paid.</span>
                 </a>
 
-                <div class="game-tile is-soon">
+                <a class="game-tile" href="blackjack/">
                     <span class="tile-art" aria-hidden="true">
                         <span class="card-face" style="--col: 4; --row: 4; --tilt: -8deg;"></span>
                         <span class="card-face" style="--col: 0; --row: 2; --tilt: 8deg;"></span>
                     </span>
                     <span class="tile-name">Blackjack</span>
                     <span class="tile-desc">Get to twenty-one before the dealer does.</span>
-                    <span class="tile-badge">Coming soon</span>
-                </div>
+                </a>
 
                 <div class="game-tile is-soon">
                     <span class="tile-art" aria-hidden="true">
@@ -131,11 +136,75 @@
             </section>
         </div>
 
-        <div class="bank-actions">
-            <button class="btn btn-quiet" id="rebuy" type="button">Refill to 1,000</button>
-            <button class="btn btn-danger" id="hard-reset" type="button">Reset everything</button>
-        </div>
     </main>
+
+    <dialog class="casino-menu" id="casino-menu" aria-labelledby="casino-menu-title">
+        <div class="casino-menu-top">
+            <div>
+                <span class="menu-eyebrow">Scott&rsquo;s Casino</span>
+                <h2 id="casino-menu-title">Casino Menu</h2>
+            </div>
+            <button class="menu-close" id="menu-close" type="button" aria-label="Close casino menu">×</button>
+        </div>
+
+        <div class="casino-menu-grid">
+            <section class="menu-panel menu-bank" aria-labelledby="menu-bank-title">
+                <h3 id="menu-bank-title">Bank</h3>
+                <div class="menu-bank-balance">
+                    <span class="chip" aria-hidden="true"></span>
+                    <strong id="menu-balance">0</strong>
+                </div>
+                <p>One chip balance is shared by every casino game.</p>
+                <div class="menu-actions">
+                    <button class="btn btn-quiet" id="rebuy" type="button">Refill to 1,000</button>
+                    <button class="btn btn-danger" id="hard-reset" type="button">Reset everything</button>
+                </div>
+            </section>
+
+            <section class="menu-panel menu-stats" aria-labelledby="menu-stats-title">
+                <h3 id="menu-stats-title">Lifetime Stats</h3>
+                <label class="stats-scope-label" for="stats-scope">
+                    <span class="sr-only">Stats for</span>
+                    <select id="stats-scope">
+                        <option value="overall">Overall</option>
+                    </select>
+                </label>
+                <dl class="stats-grid">
+                    <div><dt>Biggest win streak</dt><dd id="stat-best-streak">0</dd></div>
+                    <div><dt>Current win streak</dt><dd id="stat-current-streak">0</dd></div>
+                    <div><dt>Biggest win</dt><dd id="stat-biggest">0</dd></div>
+                    <div><dt>Total bet</dt><dd id="stat-wagered">0</dd></div>
+                    <div><dt>Hands played</dt><dd id="stat-hands">0</dd></div>
+                    <div><dt>Net profit</dt><dd id="stat-profit">+0</dd></div>
+                </dl>
+            </section>
+
+            <section class="menu-panel menu-settings" aria-labelledby="menu-settings-title">
+                <h3 id="menu-settings-title">Settings</h3>
+                <div class="settings-grid">
+                    <label class="setting-row">
+                        <span><strong>Reduced motion</strong><small>Stops sign, card, and win animations.</small></span>
+                        <input id="setting-motion" type="checkbox">
+                        <span class="setting-switch" aria-hidden="true"></span>
+                    </label>
+                    <label class="setting-row">
+                        <span><strong>Higher contrast</strong><small>Brightens secondary text and borders.</small></span>
+                        <input id="setting-contrast" type="checkbox">
+                        <span class="setting-switch" aria-hidden="true"></span>
+                    </label>
+                    <label class="setting-row">
+                        <span><strong>Larger interface text</strong><small>Makes labels and controls easier to read.</small></span>
+                        <input id="setting-labels" type="checkbox">
+                        <span class="setting-switch" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </section>
+        </div>
+
+        <p class="menu-footnote">
+            Progress and preferences stay in this browser.
+        </p>
+    </dialog>
 
     <script type="module" src="js/hub/main.js"></script>
 </body>

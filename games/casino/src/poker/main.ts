@@ -2,7 +2,8 @@
 // bankroll, and the renderer together.
 
 import { getBankroll } from '../shared/bankroll.ts';
-import { BANKROLL_KEY, POKER_ROUND_KEY } from '../shared/keys.ts';
+import { BANKROLL_KEY, CASINO_SETTINGS_KEY, POKER_ROUND_KEY } from '../shared/keys.ts';
+import { applyCasinoSettings, readCasinoSettings } from '../shared/settings.ts';
 import { dealDeck } from '../shared/deck.ts';
 import { HAND_STRENGTH } from './hands.ts';
 import type { PokerState } from './machine.ts';
@@ -18,6 +19,8 @@ import {
 import { createUI } from './ui.ts';
 
 const DEFAULT_WAGER = '';
+
+applyCasinoSettings(readCasinoSettings());
 
 const bankroll = getBankroll();
 
@@ -107,6 +110,8 @@ function finishRound(): void {
     // Idempotent per roundId, so a double-click or a re-render can't double-pay.
     bankroll.settle(resolved.roundId, resolved.payout, {
         wager: resolved.wager,
+        gameId: 'video-poker',
+        gameLabel: 'Video Poker',
         handLabel: resolved.result.label,
         handStrength: HAND_STRENGTH[resolved.result.rank],
     });
@@ -171,6 +176,9 @@ window.addEventListener('storage', (event) => {
     if (event.key === null || event.key === BANKROLL_KEY) {
         bankroll.refresh();
         render();
+    }
+    if (event.key === null || event.key === CASINO_SETTINGS_KEY) {
+        applyCasinoSettings(readCasinoSettings());
     }
 });
 

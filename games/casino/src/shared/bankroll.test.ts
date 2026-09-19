@@ -5,15 +5,23 @@ import assert from 'node:assert/strict';
 
 import type { StorageLike } from './bankroll.ts';
 import { STARTING_BANKROLL, createBankroll, memoryStorage } from './bankroll.ts';
-import { BANKROLL_KEY, POKER_ROUND_KEY } from './keys.ts';
+import { BANKROLL_KEY, BLACKJACK_ROUND_KEY, CASINO_SETTINGS_KEY, POKER_ROUND_KEY } from './keys.ts';
 
 function fresh() {
     const storage = memoryStorage();
     return { storage, bank: createBankroll(storage) };
 }
 
-const meta = (wager: number, label = 'Flush', strength = 5) => ({
+const meta = (
+    wager: number,
+    label = 'Flush',
+    strength = 5,
+    gameId = 'video-poker',
+    gameLabel = 'Video Poker',
+) => ({
     wager,
+    gameId,
+    gameLabel,
     handLabel: label,
     handStrength: strength,
 });
@@ -30,8 +38,43 @@ test('starts at the opening stake with empty stats', () => {
         totalWagered: 0,
         netProfit: 0,
         biggestWin: 0,
+        currentWinStreak: 0,
+        biggestWinStreak: 0,
+        byGame: {},
         bestHand: null,
         bestHandStrength: -1,
+    });
+});
+
+test('version 1 totals migrate into the Video Poker breakdown', () => {
+    const storage = memoryStorage();
+    storage.setItem(BANKROLL_KEY, JSON.stringify({
+        v: 1,
+        balance: 1250,
+        stats: {
+            handsPlayed: 12,
+            totalWagered: 600,
+            netProfit: 250,
+            biggestWin: 500,
+            bestHand: 'Flush',
+            bestHandStrength: 5,
+        },
+        lastWageredRound: 12,
+        lastSettledRound: 12,
+        nextRoundId: 13,
+    }));
+
+    const { stats } = createBankroll(storage).read();
+    assert.equal(stats.handsPlayed, 12);
+    assert.equal(stats.biggestWin, 0, 'legacy total returns cannot become net wins');
+    assert.deepEqual(stats.byGame['video-poker'], {
+        gameLabel: 'Video Poker',
+        handsPlayed: 12,
+        totalWagered: 600,
+        netProfit: 250,
+        biggestWin: 0,
+        currentWinStreak: 0,
+        biggestWinStreak: 0,
     });
 });
 
@@ -96,7 +139,7 @@ test('settle credits the payout and records the hand', () => {
     assert.equal(stats.handsPlayed, 1);
     assert.equal(stats.totalWagered, 100);
     assert.equal(stats.netProfit, 500);
-    assert.equal(stats.biggestWin, 600);
+    assert.equal(stats.biggestWin, 500);
     assert.equal(stats.bestHand, 'Flush');
 });
 
@@ -158,13 +201,57 @@ test('a losing hand never becomes the best hand', () => {
     assert.equal(bank.read().stats.bestHand, 'Jacks or Better');
 });
 
-test('biggest win keeps the maximum across rounds', () => {
+test('biggest win records net winnings, not the total return', () => {
     const { bank } = fresh();
     bank.takeWager(1, 10);
     bank.settle(1, 900, meta(10));
     bank.takeWager(2, 10);
     bank.settle(2, 30, meta(10));
-    assert.equal(bank.read().stats.biggestWin, 900);
+    assert.equal(bank.read().stats.biggestWin, 890);
+});
+
+test('win streaks advance on profit and reset on a loss or break-even hand', () => {
+    const { bank } = fresh();
+    for (let round = 1; round <= 3; round++) {
+        bank.takeWager(round, 10);
+        bank.settle(round, 20, meta(10));
+    }
+    assert.equal(bank.read().stats.currentWinStreak, 3);
+    assert.equal(bank.read().stats.biggestWinStreak, 3);
+
+    bank.takeWager(4, 10);
+    bank.settle(4, 10, meta(10, 'Jacks or Better', 1));
+    assert.equal(bank.read().stats.currentWinStreak, 0, 'break even is not a win');
+    assert.equal(bank.read().stats.biggestWinStreak, 3);
+});
+
+test('stats are also tracked independently for each game', () => {
+    const { bank } = fresh();
+    bank.takeWager(1, 100);
+    bank.settle(1, 200, meta(100));
+    bank.takeWager(2, 50);
+    bank.settle(2, 0, meta(50, 'No Win', 0, 'blackjack', 'Blackjack'));
+
+    const { stats } = bank.read();
+    assert.equal(stats.handsPlayed, 2);
+    assert.deepEqual(stats.byGame['video-poker'], {
+        gameLabel: 'Video Poker',
+        handsPlayed: 1,
+        totalWagered: 100,
+        netProfit: 100,
+        biggestWin: 100,
+        currentWinStreak: 1,
+        biggestWinStreak: 1,
+    });
+    assert.deepEqual(stats.byGame.blackjack, {
+        gameLabel: 'Blackjack',
+        handsPlayed: 1,
+        totalWagered: 50,
+        netProfit: -50,
+        biggestWin: 0,
+        currentWinStreak: 0,
+        biggestWinStreak: 0,
+    });
 });
 
 // --- re-buy and reset ------------------------------------------------------
@@ -196,6 +283,8 @@ test('hardReset wipes balance and stats', () => {
     bank.takeWager(1, 100);
     bank.settle(1, 900, meta(100));
     storage.setItem(POKER_ROUND_KEY, '{"unfinished":true}');
+    storage.setItem(BLACKJACK_ROUND_KEY, '{"unfinished":true}');
+    storage.setItem(CASINO_SETTINGS_KEY, '{"v":1}');
 
     bank.hardReset();
     const { balance, stats } = bank.read();
@@ -203,6 +292,8 @@ test('hardReset wipes balance and stats', () => {
     assert.equal(stats.handsPlayed, 0);
     assert.equal(stats.bestHand, null);
     assert.equal(storage.getItem(POKER_ROUND_KEY), null);
+    assert.equal(storage.getItem(BLACKJACK_ROUND_KEY), null);
+    assert.equal(storage.getItem(CASINO_SETTINGS_KEY), null);
 });
 
 test('hard reset invalidates old rounds and allocates a fresh ID', () => {
@@ -254,7 +345,7 @@ test('corrupt or hostile stored values degrade to defaults, never NaN', () => {
         assert.ok(Number.isFinite(balance), `balance not finite for ${bad}`);
         assert.ok(balance >= 0, `negative balance for ${bad}`);
         for (const [key, value] of Object.entries(stats)) {
-            if (key === 'bestHand') continue;
+            if (key === 'bestHand' || key === 'byGame') continue;
             assert.ok(Number.isFinite(value), `${key} not finite for ${bad}`);
         }
     }

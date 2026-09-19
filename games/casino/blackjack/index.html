@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack | Scott Campbell</title>
+    <meta name="description" content="Play Blackjack with a chip balance shared across Scott's Casino.">
+    <meta property="og:title" content="Blackjack | Scott Campbell">
+    <meta property="og:description" content="Play Blackjack with a chip balance shared across Scott's Casino.">
+    <meta property="og:image" content="https://scottcampbell.me/favicon.svg">
+    <meta property="og:url" content="https://scottcampbell.me/games/casino/blackjack/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://scottcampbell.me/games/casino/blackjack/">
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="preload" as="image" href="../assets/cards.png">
+    <link rel="stylesheet" href="../casino.css">
+    <link rel="stylesheet" href="blackjack.css">
+</head>
+
+<body>
+    <main class="blackjack-table">
+        <div class="blackjack-top">
+            <a class="back-link" href="../">&larr; Casino Floor</a>
+            <h1 class="blackjack-title">Blackjack</h1>
+            <div class="bank">
+                <span class="chip" aria-hidden="true"></span>
+                <span><span class="bank-label">Bank</span><br><strong class="bank-amount" id="balance">0</strong></span>
+            </div>
+        </div>
+
+        <p class="storage-warning" id="storage-warning" hidden>
+            Your browser is blocking local storage, so this session&rsquo;s chips and stats won&rsquo;t be saved.
+        </p>
+
+        <section class="blackjack-board" aria-label="Blackjack table">
+            <div class="table-heading">
+                <div>
+                    <span class="table-eyebrow">Dealer stands on soft 17</span>
+                    <h2>Beat the dealer to 21</h2>
+                </div>
+                <button class="rules-help" id="rules-help" type="button" aria-haspopup="dialog">
+                    <span aria-hidden="true">?</span> Rules
+                </button>
+            </div>
+
+            <section class="seat dealer-seat" aria-labelledby="dealer-heading">
+                <h3 id="dealer-heading">Dealer <span class="hand-total" id="dealer-total"></span></h3>
+                <div class="card-row" id="dealer-hand" role="group" aria-label="Dealer hand"></div>
+            </section>
+
+            <div class="blackjack-result" id="result" role="status" aria-live="polite" tabindex="-1"></div>
+
+            <section class="seat player-seat" aria-labelledby="player-heading">
+                <h3 id="player-heading">Your hand <span class="hand-total" id="player-total"></span></h3>
+                <div class="card-row" id="player-hand" role="group" aria-label="Your hand"></div>
+            </section>
+        </section>
+
+        <div class="controls">
+            <div class="wager-row" id="wager-row">
+                <label class="wager-label" for="wager">Bet</label>
+                <input class="wager-input" id="wager" type="text" inputmode="numeric" autocomplete="off"
+                    value="" aria-describedby="wager-help wager-error">
+                <button class="wager-quick" id="wager-half" type="button">&frac12;</button>
+                <button class="wager-quick" id="wager-double" type="button">&times;2</button>
+                <button class="wager-quick" id="wager-max" type="button">All in</button>
+                <span class="sr-only" id="wager-help">Whole-number bets only. Your wager cannot exceed the chips in your bank.</span>
+            </div>
+            <p class="wager-error" id="wager-error" role="alert" hidden></p>
+            <div class="action-row">
+                <button class="btn blackjack-action" id="hit" type="button" hidden>Hit</button>
+                <button class="btn blackjack-action" id="stand" type="button" hidden>Stand</button>
+                <button class="btn blackjack-action btn-double" id="double-down" type="button" hidden>Double Down</button>
+                <button class="btn btn-deal" id="deal" type="button">Deal</button>
+            </div>
+        </div>
+    </main>
+
+    <dialog class="rules-dialog" id="rules-dialog" aria-labelledby="rules-title">
+        <div class="rules-dialog-top">
+            <h2 id="rules-title">Rules</h2>
+            <button class="dialog-close" id="rules-close" type="button" aria-label="Close rules">×</button>
+        </div>
+        <div class="rules-copy">
+            <p>Build a hand closer to 21 than the dealer without going over. Number cards count at face value, face cards count as 10, and an Ace counts as 1 or 11&mdash;whichever helps your hand.</p>
+            <div class="rule-grid">
+                <article><h3>Blackjack</h3><p>An Ace with a 10-value card on the opening deal. It pays 3:2; fractional chips round down.</p></article>
+                <article><h3>Dealer</h3><p>The dealer draws to 16 and stands on every 17, including a soft 17.</p></article>
+                <article><h3>Double Down</h3><p>On your first decision, double your bet and receive exactly one more card.</p></article>
+                <article><h3>Push</h3><p>If you and the dealer finish with the same total, your wager is returned.</p></article>
+            </div>
+            <p class="rules-keys">Keyboard: <strong>H</strong> to hit, <strong>S</strong> to stand, <strong>D</strong> to double, and <strong>Enter</strong> or <strong>Space</strong> to deal or play again.</p>
+        </div>
+    </dialog>
+
+    <dialog class="out-of-chips-dialog" id="out-of-chips-dialog" aria-labelledby="out-of-chips-title">
+        <button class="dialog-close" id="out-of-chips-close" type="button" aria-label="Close out-of-chips notice">×</button>
+        <h2 id="out-of-chips-title">You&rsquo;re out of chips</h2>
+        <p>Return to the Casino Floor to refill your bank and keep playing.</p>
+        <a class="btn" href="../">Return to Casino Floor</a>
+    </dialog>
+
+    <script type="module" src="../js/blackjack/main.js"></script>
+</body>
+
+</html>

@@ -1,8 +1,8 @@
 # Casino — notes for agents
 
 A collection of classic casino games at `games/casino/`. Landing on
-`games/casino/` shows a "Welcome to the Casino" hub; **Video Poker is built and
-playable**, Blackjack / Hearts / Slots are Coming Soon tiles.
+`games/casino/` shows a "Welcome to the Casino" hub; **Video Poker and
+Blackjack are built and playable**. The remaining games are Coming Soon tiles.
 
 Build order: poker (done) → blackjack → hearts → slots.
 
@@ -59,8 +59,9 @@ emit `./deck.js`. That's what lets Node run the same files without a build.
 ### Module layout
 
 ```
-src/shared/   keys.ts  cards.ts  deck.ts  bankroll.ts  format.ts
+src/shared/   keys.ts  cards.ts  deck.ts  bankroll.ts  format.ts  settings.ts
 src/poker/    hands.ts  machine.ts  ui.ts  main.ts  (+ *.test.ts)
+src/blackjack/ machine.ts  ui.ts  main.ts  (+ machine.test.ts)
 src/hub/      main.ts
 ```
 
@@ -89,7 +90,12 @@ them testable. Keep it that way — blackjack will reuse all four.
   1000, with lifetime stats. Re-buy tops it back up and keeps stats; hard reset
   wipes both.
 
-Blackjack, Hearts, and Slots rulesets are **not decided yet**.
+- **Blackjack:** dealer stands on soft 17; a natural pays 3:2 (fractional chips
+  round down); Hit, Stand, and Double Down are supported; splitting and
+  insurance are not. Double Down is only available on the opening two cards,
+  doubles the total stake, draws exactly one card, and ends the player's turn.
+
+Hearts and Slots rulesets are **not decided yet**.
 
 ## Bankroll invariants
 
@@ -110,8 +116,8 @@ Storage keys live in `shared/keys.ts` — add new ones there, never inline.
 Note localStorage is per-origin: a balance on `scampbella.github.io` is invisible
 on `scottcampbell.me` (the CNAME). That's expected, not a bug.
 
-Poker also persists the in-flight round (`casino_poker_round`) because the wager
-is taken at deal — without it a mid-hand reload would pocket the bet. A hard
+Poker and Blackjack also persist their in-flight rounds because the wager is
+taken at deal — without that, a mid-hand reload would pocket the bet. A hard
 reset clears every key in `CASINO_STORAGE_KEYS` and invalidates allocated IDs,
 so an old hand cannot pay into a fresh bankroll.
 
@@ -176,6 +182,15 @@ games must inherit this shared baseline and add integer sprite-scale steps where
 pixel art is used; do not gate an entirely different desktop layout on a single
 height threshold.
 
+The Casino Floor menu owns refill/reset controls, lifetime-stat presentation,
+and persistent display preferences. Lifetime totals track hands, total bets,
+net profit, true net biggest win, and current/best win streaks both casino-wide
+and per game. `shared/settings.ts` stores display settings and applies them as
+`data-*` attributes on `<html>` so every game can inherit the same
+reduced-motion, contrast, and text-size preferences.
+Apply the saved settings during each game's bootstrap and listen for the shared
+settings storage key so changes made in another tab take effect immediately.
+
 `--scale` must stay an **integer**. Breakpoints step 4→3→2→1 so that all five
 cards always fit on screen (a scrolling hand would mean choosing holds blind);
 each one engages just before the previous scale would overflow. `background-size`
@@ -195,6 +210,6 @@ relative module imports resolve correctly.
 - [x] Hand evaluator + tests (incl. exhaustive all-2,598,960-hands frequency check)
 - [x] Round state machine + tests (deal-10 model, round persistence)
 - [x] Poker UI, hub, `games/index.html` card flipped to "Play Now"
-- [ ] Decide Blackjack ruleset, then build
+- [x] Blackjack rules/state machine, persistence, shared stats, and table UI
 - [ ] Decide Hearts ruleset, then build
 - [ ] Decide Slots ruleset, then build

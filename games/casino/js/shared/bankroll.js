@@ -20,16 +20,22 @@
 // themselves and call refresh(). That keeps it unit-testable with a fake store.
 import { BANKROLL_KEY, CASINO_STORAGE_KEYS } from "./keys.js";
 export const STARTING_BANKROLL = 1000;
-const EMPTY_STATS = {
+const EMPTY_SUMMARY = {
     handsPlayed: 0,
     totalWagered: 0,
     netProfit: 0,
     biggestWin: 0,
+    currentWinStreak: 0,
+    biggestWinStreak: 0,
+};
+const EMPTY_STATS = {
+    ...EMPTY_SUMMARY,
+    byGame: {},
     bestHand: null,
     bestHandStrength: -1,
 };
 const EMPTY_STATE = {
-    v: 1,
+    v: 2,
     balance: STARTING_BANKROLL,
     stats: EMPTY_STATS,
     lastWageredRound: 0,
@@ -39,6 +45,37 @@ const EMPTY_STATE = {
 function finite(value, fallback) {
     return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
+function coerceSummary(raw, legacy) {
+    return {
+        handsPlayed: Math.max(0, Math.trunc(finite(raw.handsPlayed, 0))),
+        totalWagered: Math.max(0, Math.trunc(finite(raw.totalWagered, 0))),
+        netProfit: Math.trunc(finite(raw.netProfit, 0)),
+        // Version 1 stored the total return under this name, so it cannot be
+        // truthfully migrated into the new net-win definition.
+        biggestWin: legacy ? 0 : Math.max(0, Math.trunc(finite(raw.biggestWin, 0))),
+        currentWinStreak: legacy ? 0 : Math.max(0, Math.trunc(finite(raw.currentWinStreak, 0))),
+        biggestWinStreak: legacy ? 0 : Math.max(0, Math.trunc(finite(raw.biggestWinStreak, 0))),
+    };
+}
+function coerceGames(value) {
+    if (typeof value !== 'object' || value === null)
+        return {};
+    const result = {};
+    for (const [gameId, candidate] of Object.entries(value)) {
+        if (!/^[a-z0-9-]{1,40}$/.test(gameId))
+            continue;
+        if (typeof candidate !== 'object' || candidate === null)
+            continue;
+        const raw = candidate;
+        result[gameId] = {
+            ...coerceSummary(raw, false),
+            gameLabel: typeof raw.gameLabel === 'string' && raw.gameLabel.trim()
+                ? raw.gameLabel.trim().slice(0, 50)
+                : gameId,
+        };
+    }
+    return result;
+}
 /** Coerce whatever is in storage into a usable state. A corrupt or partial
  *  payload degrades to defaults rather than letting NaN leak into the UI, where
  *  it would render as "NaN" forever and make every comparison silently false. */
@@ -46,20 +83,28 @@ function coerce(parsed) {
     if (typeof parsed !== 'object' || parsed === null)
         return EMPTY_STATE;
     const raw = parsed;
-    if (raw.v !== 1)
+    if (raw.v !== 1 && raw.v !== 2)
         return EMPTY_STATE;
+    const legacy = raw.v === 1;
     const stats = (typeof raw.stats === 'object' && raw.stats !== null ? raw.stats : {});
     const bestHand = typeof stats.bestHand === 'string' ? stats.bestHand : null;
+    const summary = coerceSummary(stats, legacy);
+    // Video Poker was the only playable game under version 1, so its historic
+    // aggregate totals can also seed that game's breakdown. Streaks and true
+    // net biggest-win data cannot be reconstructed and begin at zero.
+    const byGame = legacy
+        ? summary.handsPlayed > 0
+            ? { 'video-poker': { ...summary, gameLabel: 'Video Poker' } }
+            : {}
+        : coerceGames(stats.byGame);
     const lastWageredRound = Math.max(0, Math.trunc(finite(raw.lastWageredRound, 0)));
     const lastSettledRound = Math.max(0, Math.trunc(finite(raw.lastSettledRound, 0)));
     return {
-        v: 1,
+        v: 2,
         balance: Math.max(0, Math.trunc(finite(raw.balance, STARTING_BANKROLL))),
         stats: {
-            handsPlayed: Math.max(0, Math.trunc(finite(stats.handsPlayed, 0))),
-            totalWagered: Math.max(0, Math.trunc(finite(stats.totalWagered, 0))),
-            netProfit: Math.trunc(finite(stats.netProfit, 0)),
-            biggestWin: Math.max(0, Math.trunc(finite(stats.biggestWin, 0))),
+            ...summary,
+            byGame,
             bestHand,
             bestHandStrength: bestHand === null ? -1 : Math.trunc(finite(stats.bestHandStrength, -1)),
         },
@@ -160,6 +205,13 @@ export function createBankroll(storage, persistent = true) {
             const credited = Math.max(0, Math.trunc(finite(payout, 0)));
             const wagered = Math.max(0, Math.trunc(finite(meta.wager, 0)));
             const prev = state.stats;
+            const netWin = Math.max(0, credited - wagered);
+            const won = netWin > 0;
+            const currentWinStreak = won ? prev.currentWinStreak + 1 : 0;
+            const gameId = /^[a-z0-9-]{1,40}$/.test(meta.gameId) ? meta.gameId : 'unknown';
+            const gameLabel = meta.gameLabel.trim().slice(0, 50) || gameId;
+            const previousGame = prev.byGame[gameId] ?? { ...EMPTY_SUMMARY, gameLabel };
+            const gameCurrentWinStreak = won ? previousGame.currentWinStreak + 1 : 0;
             // Strength 0 is "no hand" — without this floor, the first loss
             // beats the -1 sentinel and the hub proudly reports a best hand of
             // "No Win".
@@ -172,7 +224,21 @@ export function createBankroll(storage, persistent = true) {
                     handsPlayed: prev.handsPlayed + 1,
                     totalWagered: prev.totalWagered + wagered,
                     netProfit: prev.netProfit + credited - wagered,
-                    biggestWin: Math.max(prev.biggestWin, credited),
+                    biggestWin: Math.max(prev.biggestWin, netWin),
+                    currentWinStreak,
+                    biggestWinStreak: Math.max(prev.biggestWinStreak, currentWinStreak),
+                    byGame: {
+                        ...prev.byGame,
+                        [gameId]: {
+                            gameLabel,
+                            handsPlayed: previousGame.handsPlayed + 1,
+                            totalWagered: previousGame.totalWagered + wagered,
+                            netProfit: previousGame.netProfit + credited - wagered,
+                            biggestWin: Math.max(previousGame.biggestWin, netWin),
+                            currentWinStreak: gameCurrentWinStreak,
+                            biggestWinStreak: Math.max(previousGame.biggestWinStreak, gameCurrentWinStreak),
+                        },
+                    },
                     bestHand: beatsBest ? meta.handLabel : prev.bestHand,
                     bestHandStrength: beatsBest ? meta.handStrength : prev.bestHandStrength,
                 },

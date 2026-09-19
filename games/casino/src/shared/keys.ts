@@ -9,6 +9,13 @@
 
 export const BANKROLL_KEY = 'casino_bankroll';
 export const POKER_ROUND_KEY = 'casino_poker_round';
+export const BLACKJACK_ROUND_KEY = 'casino_blackjack_round';
+export const CASINO_SETTINGS_KEY = 'casino_settings';
 
 /** Every persisted casino document. A hard reset must clear this complete list. */
-export const CASINO_STORAGE_KEYS = [BANKROLL_KEY, POKER_ROUND_KEY] as const;
+export const CASINO_STORAGE_KEYS = [
+    BANKROLL_KEY,
+    POKER_ROUND_KEY,
+    BLACKJACK_ROUND_KEY,
+    CASINO_SETTINGS_KEY,
+] as const;

@@ -1,12 +1,14 @@
 // Poker table bootstrap: owns the round state and wires the machine, the
 // bankroll, and the renderer together.
 import { getBankroll } from "../shared/bankroll.js";
-import { BANKROLL_KEY, POKER_ROUND_KEY } from "../shared/keys.js";
+import { BANKROLL_KEY, CASINO_SETTINGS_KEY, POKER_ROUND_KEY } from "../shared/keys.js";
+import { applyCasinoSettings, readCasinoSettings } from "../shared/settings.js";
 import { dealDeck } from "../shared/deck.js";
 import { HAND_STRENGTH } from "./hands.js";
 import { deserializeRound, draw, initialState, newRound, nextRound, serializeRound, toggleHold, } from "./machine.js";
 import { createUI } from "./ui.js";
 const DEFAULT_WAGER = '';
+applyCasinoSettings(readCasinoSettings());
 const bankroll = getBankroll();
 let state = initialState(bankroll.allocateRoundId());
 let wagerText = DEFAULT_WAGER;
@@ -86,6 +88,8 @@ function finishRound() {
     // Idempotent per roundId, so a double-click or a re-render can't double-pay.
     bankroll.settle(resolved.roundId, resolved.payout, {
         wager: resolved.wager,
+        gameId: 'video-poker',
+        gameLabel: 'Video Poker',
         handLabel: resolved.result.label,
         handStrength: HAND_STRENGTH[resolved.result.rank],
     });
@@ -145,6 +149,9 @@ window.addEventListener('storage', (event) => {
     if (event.key === null || event.key === BANKROLL_KEY) {
         bankroll.refresh();
         render();
+    }
+    if (event.key === null || event.key === CASINO_SETTINGS_KEY) {
+        applyCasinoSettings(readCasinoSettings());
     }
 });
 restoreRound();
