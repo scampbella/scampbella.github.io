@@ -165,10 +165,16 @@ index), not the individual game subdirectories.
 
 **Fullscreen scaling is a Casino-wide rule.** Follow Yahtzee's responsive
 rhythm: `casino.css` provides a `clamp(15px, 1.8vh, 18px)` type baseline, desktop
-surfaces should use the viewport well without browser scroll when content fits,
-and short or narrow windows must remain scrollable rather than hiding controls.
-New Casino games must inherit this shared baseline and add integer sprite-scale
-steps where pixel art is used.
+surfaces should use the viewport well without browser scroll when content fits.
+The hub's supported desktop range starts at 901x650 CSS pixels (comfortably
+below a 13-inch MacBook Air browser viewport) and scales through 4K using a
+three-row shell: chrome, centered floor menu, actions. The desktop game tiles
+are compact horizontal plaques rather than viewport-filling cards; unused
+screen space belongs around the menu instead of inside every tile. Shorter or
+narrower windows must remain scrollable rather than hiding controls. New Casino
+games must inherit this shared baseline and add integer sprite-scale steps where
+pixel art is used; do not gate an entirely different desktop layout on a single
+height threshold.
 
 `--scale` must stay an **integer**. Breakpoints step 4→3→2→1 so that all five
 cards always fit on screen (a scrolling hand would mean choosing holds blind);
