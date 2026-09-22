@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "The Record",
+        artist: "boygenius",
+        date: "2026-09-22",
+        releaseDate: "2023-03-31",
+        durationMs: 2533000,
+        coverAvif: "../assets/images/albums/the-record-md.avif",
+        spotify: "https://open.spotify.com/album/0e9GjrztzBw8oMC6n2CDeI",
+        blurb: "As I've mentioned before, a lot of my music taste has come from both of my sisters, and this one in particular is from my oldest sister. I remember when this album came out because she was so excited and she was talking about how many awards it would win (which it did). All that talk got me interested and I was hooked on my first listen. I originally just liked Not Strong Enough which is the song that won all the awards, but I ended up listening to the whole album very consistently at the end of my junior year of high school and it ended up meaning a lot to me. Fast forward 3 years and I hadn't listened to this album in a long time but felt the sudden urge to and boy I'm glad I did. My love for the record has not diminished a bit and I still think it really is fantastic and I'd highly recommend a listen. Favorites here are Revolution 0 and Letter To An Old Poet.\n\nP.S. This album also contains the song We're In Love which I genuinely cannot listen to without feeling this crippling sadness and curdling in my stomach. It's like my kryptonite or something. Great song though!"
+    },
+    {
         name: "Stranger in the Alps",
         artist: "Phoebe Bridgers",
         date: "2026-09-14",
@@ -191,8 +201,8 @@ function buildAlbumCard(album) {
             '<p class="text-on-surface-variant font-body-md italic text-lg mb-2">by ' + esc(album.artist) + '</p>' +
             '<p class="font-label-sm text-on-surface-variant/70 mb-6">Released ' + fmtDate(album.releaseDate) + ' &middot; ' + fmtDuration(album.durationMs) + '</p>' +
             '<div class="blurb-container mb-6">' +
-                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed blurb-preview line-clamp-2">' + esc(album.blurb) + '</p>' +
-                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed blurb-full hidden">' + esc(album.blurb) + '</p>' +
+                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-preview line-clamp-2">' + esc(album.blurb) + '</p>' +
+                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-full hidden">' + esc(album.blurb) + '</p>' +
                 '<button class="read-more-btn flex items-center gap-1.5 font-label-sm text-label-sm text-primary hover:underline mt-2 transition-colors" aria-expanded="false">' +
                     '<span class="read-more-text">Read more</span>' +
                     '<span class="material-symbols-outlined text-[16px] read-more-icon">expand_more</span>' +
