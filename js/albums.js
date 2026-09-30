@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "After Hours",
+        artist: "The Weeknd",
+        date: "2026-09-30",
+        releaseDate: "2020-03-20",
+        durationMs: 5036000,
+        coverAvif: "../assets/images/albums/after-hours-md.avif",
+        spotify: "https://open.spotify.com/album/742eAldb4AJKLoPgJhGRE7?si=f3681a694216485d",
+        blurb: "I loved this album in 2023, then forgot about it until last year where I was quite happy to rediscover it. Even though it has one of the most overplayed songs in the history of music, I still think it is really important in The Weeknd's discography. After Hours marks the first album in the second unofficial trilogy consisting of this album, Dawn FM, and Hurry Up Tomorrow. Anyways, I like how this album has a very clear vibe. It's super moody and most of the songs feel pretty similar which could either be a good or bad thing depending on whether you like it or not. I chose to use the deluxe art here because not only do I think it's cooler, but the deluxe album has four songs that I really like. All four of them have a completely different vibe from the rest of the album and have really cool production. Favorites on this album are Escape From LA and Until I Bleed Out."
+    },
+    {
         name: "The Record",
         artist: "boygenius",
         date: "2026-09-22",
