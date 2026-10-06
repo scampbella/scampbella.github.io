@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "The Alexander Technique",
+        artist: "Rex Orange County",
+        date: "2026-10-05",
+        releaseDate: "2024-09-06",
+        durationMs: 3187000,
+        coverAvif: "../assets/images/albums/the-alexander-technique-md.avif",
+        spotify: "https://open.spotify.com/album/5HSZsS7TGsyMvur547zjVe?si=gN-3OXaESJW5AuE9wzN6eA",
+        blurb: "Ok you're gonna have to hear me out on this one. Literally as I was writing this I found out that the Alexander Technique has significantly less streams than all of Rex Orange County's other albums (with the exception of a live album but that doesn't really count). It's actually pretty crazy how much this album underperformed. Seven of the sixteen tracks have less than 2.5 million streams, and only one of the songs even breaks ten million, that being 2008. That's pretty rough considering the album released two years ago around this time and was put out by an artist with 20 million monthly listeners. Putting that aside, I actually really like this album. I listened to it the night it came out cuz I had been listening to Pony a lot and I think I may had some kinda ethereal experience when listening cuz I don't know why I like it as much as I do. I have never heard a single person mention this album or even seen anyone listening to a single song off of it. Despite that, I still really like it. It has this charm that really captivated me when listening. It almost just feels like a Broadway performance of someone's notes or diary. It feels incredibly intimate which is a vibe that I haven't really found in a lot of other music (especially considering how niche this appears to be among fans). The instrumentation is quite strange in a lot of the songs but I think that just makes it unique. I think Rex Orange County already found his sound and this was a weird misstep for most people but I am a fan regardless. If there are a million Alexander Technique fans, I am one. If there is only one Alexander Technique fan, it's me. If there are no Alexander Technique fans, I'm either dead or realized how trash this album is. Favorites here are Guitar Song and Carrera. Please do give it a listen and let me know if it is actually as garbage as the streams suggest! On a side note, as I was looking through the album on Spotify I noticed that there is like a coherent full video going on in the side video of him painting something. Pretty neat!"
+    },
+    {
         name: "After Hours",
         artist: "The Weeknd",
         date: "2026-09-30",
