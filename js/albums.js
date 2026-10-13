@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Channel Orange",
+        artist: "Frank Ocean",
+        date: "2026-10-12",
+        releaseDate: "2012-07-10",
+        durationMs: 3347000,
+        coverAvif: "../assets/images/albums/channel-orange-md.avif",
+        spotify: "https://open.spotify.com/album/392p3shh2jkxUxY2VHvlH8?si=jpknejpGQaCliKWnHm-KUw",
+        blurb: "The first time I ever heard Frank Ocean, excluding the \"potato flew around my room\" vine, was in the car with my sister. I think she was playing Pyramids but honestly I don't remember. All I remember thinking was \"Why is this guy's last name Ocean? That's not a real last name.\" I was totally onto him because that is not in fact his real last name. While Channel Orange wasn't the first Frank Ocean album I listened to, it was for a ton of people and I think it's so iconic for just that reason. This album is really what blew him up in the public space and I will forever be grateful for that cuz I just love this album as well as everything that came before and after it. Within the liner notes of Channel Orange there was a note titled \"thank you's.\" Unless you're a superfan, you probably would never know that this existed but it's very key to the story of this album and I would highly recommend you read it (<a href=\"../assets/images/thankyous.png\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-primary hover:underline\">here</a>). Given I wrote basically nothing about Blonde, I just want to mention that if you are a fan of either of these albums, I highly recommend you check out Dissect season 4. This is a podcast I fell in love with after listening to this season because I have never heard anyone <i>dissect</i> this album to the same extent that Cole Cuchna does. This dude is genuinely a genious. With that all being said, Channel Orange is genuinely magnificently put together, and while it is my least favorite of his four albums/mixtapes, I still love it with all my heart. My favorites here are Super Rich Kids, Pyramids, Bad Religion, and Pink Matter. I can't always pick just two songs, especially when an album is made by an artist as special to me as Frank. Please listen if you haven't! I think I'll probably do Endless and Nostalgia, Ultra sometime soon so keep an eye out for those :)"
+    },
+    {
         name: "The Alexander Technique",
         artist: "Rex Orange County",
         date: "2026-10-05",
@@ -221,8 +231,8 @@ function buildAlbumCard(album) {
             '<p class="text-on-surface-variant font-body-md italic text-lg mb-2">by ' + esc(album.artist) + '</p>' +
             '<p class="font-label-sm text-on-surface-variant/70 mb-6">Released ' + fmtDate(album.releaseDate) + ' &middot; ' + fmtDuration(album.durationMs) + '</p>' +
             '<div class="blurb-container mb-6">' +
-                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-preview line-clamp-2">' + esc(album.blurb) + '</p>' +
-                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-full hidden">' + esc(album.blurb) + '</p>' +
+                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-preview line-clamp-2">' + album.blurb + '</p>' +
+                '<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line blurb-full hidden">' + album.blurb + '</p>' +
                 '<button class="read-more-btn flex items-center gap-1.5 font-label-sm text-label-sm text-primary hover:underline mt-2 transition-colors" aria-expanded="false">' +
                     '<span class="read-more-text">Read more</span>' +
                     '<span class="material-symbols-outlined text-[16px] read-more-icon">expand_more</span>' +
