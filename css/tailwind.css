@@ -996,6 +996,10 @@ video {
   scroll-behavior: smooth;
 }
 
+.whitespace-pre-line {
+  white-space: pre-line;
+}
+
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -1620,6 +1624,13 @@ textarea,
 .album-card:hover {
   transform: translateY(-8px);
   border-color: var(--ct-primary);
+}
+
+/* Archive blurbs are populated from JS and use newlines to mark paragraphs. */
+
+.album-card .blurb-preview,
+.album-card .blurb-full {
+  white-space: pre-line;
 }
 
 .active-sort-field {

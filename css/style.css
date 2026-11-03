@@ -115,6 +115,12 @@ textarea,
     border-color: var(--ct-primary);
 }
 
+/* Archive blurbs are populated from JS and use newlines to mark paragraphs. */
+.album-card .blurb-preview,
+.album-card .blurb-full {
+    white-space: pre-line;
+}
+
 .active-sort-field {
     background: var(--ct-primary-container);
     color: var(--ct-on-primary-container);
