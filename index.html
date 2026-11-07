@@ -277,6 +277,74 @@
                 </div>
             </div>
         </section>
+        <!-- Hidden class-assignment page: no nav link, no visible entry point.
+             Open with #about (e.g. scottcampbell.me/#about) or press "a".
+             To remove: delete this section and the "about" block in js/main.js. -->
+        <section class="bg-surface-container-lowest py-section-gap border-t border-outline-variant/30 scroll-mt-24"
+            hidden id="about">
+            <div class="max-w-container-max mx-auto px-margin-desktop">
+                <div class="max-w-3xl mb-16">
+                    <span class="text-primary font-label-md tracking-[0.2em] mb-4 block uppercase">About</span>
+                    <h2 class="font-headline-lg text-headline-lg md:text-[56px] text-on-surface mb-8">Bio</h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                        I am a data science student at Oregon State University and am interested in exploring the
+                        field as much as I can. I love to work on miscellaneous projects (which frequently end up on
+                        this website) and I love to learn!</p>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        I have experience working with EEG signals to create visualization and exploration tools.
+                        These projects help people of all experience levels explore the most complex organ in the
+                        human body: the brain!</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Skills -->
+                    <div class="border-2 border-on-surface/20 bg-surface-container p-8 md:p-10 rounded-[32px]">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Skills</h3>
+                        <p class="text-on-surface-variant font-body-md mb-8">Some skills I'm developing:</p>
+                        <div class="flex flex-wrap gap-3">
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">Python</span>
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">SQL</span>
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">R</span>
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">Statistical
+                                Analysis</span>
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">Probability</span>
+                            <span
+                                class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md">Communication
+                                and Professionalism</span>
+                        </div>
+                    </div>
+                    <!-- Projects -->
+                    <div class="border-2 border-on-surface/20 bg-surface-container p-8 md:p-10 rounded-[32px]">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Projects</h3>
+                        <p class="text-on-surface-variant font-body-md mb-8">Check out some projects I've worked on:
+                        </p>
+                        <ul class="flex flex-col gap-8">
+                            <li>
+                                <a class="text-primary font-headline-md inline-flex items-center gap-2 hover:underline"
+                                    href="https://maps.soundtrip.ai" target="_blank" rel="noopener noreferrer">
+                                    Soundtrip <span class="material-symbols-outlined text-lg">open_in_new</span></a>
+                                <p class="text-on-surface-variant font-body-md mt-1">A relaxing 3D audio experience.
+                                </p>
+                            </li>
+                            <li>
+                                <a class="text-primary font-headline-md inline-flex items-center gap-2 hover:underline"
+                                    href="https://soundtrip.health/nouscope" target="_blank"
+                                    rel="noopener noreferrer">
+                                    Nouscope <span class="material-symbols-outlined text-lg">open_in_new</span></a>
+                                <p class="text-on-surface-variant font-body-md mt-1">An EEG data visualizer for
+                                    reviewing live or prerecorded data.</p>
+                            </li>
+                        </ul>
+                        <p class="text-on-surface-variant/60 font-body-md italic mt-8">Other projects live on this
+                            site!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     <!-- Footer -->
     <footer class="w-full py-12 bg-surface-container-lowest border-t border-outline-variant/30">

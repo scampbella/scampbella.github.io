@@ -73,6 +73,36 @@ if (yearEl) {
     });
 })();
 
+// Hidden "about" page (class assignment): the section ships in index.html
+// with [hidden] and no visible entry point. It opens via #about
+// (e.g. scottcampbell.me/#about) or by pressing "a". Remove alongside the
+// #about section in index.html when the assignment is done.
+(function () {
+    const about = document.getElementById("about");
+    if (!about) return;
+
+    function reveal(scroll) {
+        about.hidden = false;
+        if (scroll) about.scrollIntoView();
+    }
+
+    if (window.location.hash === "#about") reveal(true);
+
+    window.addEventListener("hashchange", () => {
+        if (window.location.hash === "#about") reveal(true);
+    });
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key !== "a" && e.key !== "A") return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        const t = e.target;
+        if (t instanceof HTMLElement &&
+            (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName))) return;
+        about.hidden = !about.hidden;
+        if (!about.hidden) about.scrollIntoView();
+    });
+})();
+
 // Blog post fade-in animation (used on blog article pages)
 const blogArticle = document.querySelector('article > div');
 if (blogArticle) {
