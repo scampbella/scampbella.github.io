@@ -14,6 +14,7 @@ games/               — standalone games, each with its own assets/
   _upcoming/         —   placeholder cover art for not-yet-built games
 scripts/             — build helpers (image conversion, casino sprite extraction)
 assets/              — images (medium AVIF only, see below), PDFs
+  data/              —   content data (albums.json — the album-of-the-week archive, fetched by js/albums.js)
 ```
 
 Images are committed as a single `-md.avif` per source image (`scripts/convert-to-avif.mjs` / `npm run convert-images`) — no full-size originals or extra size tiers are checked into git. See `CLAUDE.md` for details.

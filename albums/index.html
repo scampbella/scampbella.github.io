@@ -68,6 +68,14 @@
             <p class="text-on-surface-variant font-body-md py-8" id="album-list-loading">Loading albums…</p>
         </section>
 
+        <div class="flex items-center justify-center gap-4 mt-12">
+            <button id="load-more-btn" class="hidden items-center gap-2 px-8 py-3 rounded-full border-2 border-outline-variant text-on-surface hover:bg-surface-container transition-all font-label-md text-label-md">
+                Load more
+                <span class="material-symbols-outlined text-[18px]">expand_more</span>
+            </button>
+            <span id="page-info" class="font-label-sm text-label-sm text-on-surface-variant/60" aria-live="polite"></span>
+        </div>
+
         <div id="empty-state" class="hidden text-center py-20">
             <span class="material-symbols-outlined text-[64px] text-outline-variant mb-4 block">album</span>
             <p class="font-body-lg text-on-surface-variant">No albums match this filter.</p>
