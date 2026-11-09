@@ -1,5 +1,15 @@
 const albums = [
     {
+        name: "Dream Fatigue",
+        artist: "Rex Orange County",
+        date: "2026-11-09",
+        releaseDate: "2026-11-06",
+        durationMs: 2378000,
+        coverAvif: "../assets/images/albums/dream-fatigue-md.avif",
+        spotify: "https://open.spotify.com/album/4a0VAhpeGZ4oqr6MCQp9AV",
+        blurb: "Have you ever listened to an album that has just released and thought \"this is exactly what I wanted\" or something like that? If you'd asked me this last week I might have said <i>Oh Yeah?</i> by Steve Lacy but not really. That album has a couple songs that I really like but in totality it's just alright. Last Friday when I sat down to listen to this album, that is exactly the feeling I got. This is fucking amazing. Every single song on this album is so damn good. I've written before about how I really like albums that have a consistent vibe and this one really nails it. I love every instrument in every song, especially the strings and background vocals. I love <i>Dream Fatigue</i>!!!\n\nI've been behind on schoolwork for a bit and this past week was really hard for me. I'm the kinda guy that really needs downtime and I did NOT get that this week. Nearly every waking hour was spent working on schoolwork, eating, sleeping, or doing some other essential task. I had such a backlog of stuff that I only had like 8 hours to study for one of my midterms and 5 to study for the other. Finishing the first one on Thursday was a good boost of confidence, and once I got done with that last one on Friday I felt free. That is when I sat down to listen to this album.\n\nFriday was a cold day, it'd been pretty foggy recently and the trees have been turning orange so it was a nice little vibe. I was sitting on a bench in this little side path while I watched everyone else walk by. All these people had places to be, stuff to do, but I was with the privilege of sitting and existing. I have not felt that content in recent history. These songs aren't the most uplifting, but they are definitely beautiful and that was the feeling I was getting at that moment. Life felt genuinely beautiful for once and I just wanted to sit there and feel that for as long as I could. As each of the songs played, my satisfaction grew and grew. From now on, whenever I listen to this album, all I will see are those orange trees and everyone else walking by. Nothing but good.\n\nMy favorites on this one are Penelope, Grandma Song, Empty Stage, and Dream Fatigue."
+    },
+    {
         name: "Did you know that there's a tunnel under Ocean Blvd",
         artist: "Lana Del Rey",
         date: "2026-11-02",

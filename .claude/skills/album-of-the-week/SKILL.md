@@ -1,6 +1,6 @@
 ---
 name: album-of-the-week
-description: "Update the Album of the Week on scampbella.github.io. Provide a Spotify album URL and a blurb; the skill fetches metadata, downloads + converts cover art, updates index.html and js/albums.js."
+description: "Update the Album of the Week on scampbella.github.io. Provide a Spotify album URL and a blurb; the skill fetches metadata, downloads + converts cover art, proofs the blurb for spelling, and updates index.html and js/albums.js."
 ---
 
 # Album of the Week
@@ -24,8 +24,9 @@ Or provide everything inline:
 2. Gets the duration (via web search when available, or asks user)
 3. Downloads the full-size cover art (kept locally, not committed)
 4. Converts it to a single AVIF (`-md.avif` at 1280w) — the only file committed to git
-5. Updates `index.html` — replaces the entire "Album of the Week" section
-6. Prepends the new album to the `albums` array in `js/albums.js`
+5. Proofs the blurb: fixes spelling mistakes, leaves grammar alone but flags major errors
+6. Updates `index.html` — replaces the entire "Album of the Week" section
+7. Prepends the new album to the `albums` array in `js/albums.js`
 
 ## Step-by-Step
 
@@ -111,7 +112,17 @@ convert().catch(e => { console.error(e); process.exit(1); });
 
 Replace `<slug>` with the actual slug.
 
-### Step 4 — Update `js/albums.js`
+### Step 4 — Proof the Blurb
+
+Scan the blurb text for **spelling mistakes** and fix them in place (both the `js/albums.js` entry and the `index.html` section use the corrected text).
+
+- Fix only clear misspellings/typos: doubled or dropped letters, transposed characters, wrong character substitutions (e.g. `recieve` → `receive`, `genious` → `genius`), accidental missing spaces at sentence boundaries.
+- **Do not fix grammar, style, or punctuation** — Scott's voice is deliberate and casual (e.g. "the kinda guy", run-ons, `!!!`). Leave it exactly as written.
+- Don't "correct" lowercase song/album titles or artist names, slang, or intentional emphasis. Watch out for proper nouns that spell-checkers flag but should stay as-is.
+- After fixing, **report the changes** to the user (list each fix) in the final reply.
+- **Warn about major grammar errors** without fixing them: a genuinely broken or ambiguous sentence, wrong word usage that changes meaning (e.g. "their" for "there"), or a subject-verb error that would read as a mistake to a visitor. Minor stylistic awkwardness is not a warning. Phrase it as a heads-up the user may choose to act on.
+
+### Step 5 — Update `js/albums.js`
 
 The albums array in `js/albums.js` is a `const albums = [...]` array. New albums go at the beginning (index 0 of the array).
 
@@ -138,7 +149,7 @@ For **durationMs**: convert the `H:MM:SS` or `MM:SS` string to total millisecond
 - `MM:SS` → `(M * 60 + S) * 1000`
 - `H:MM:SS` → `(H * 3600 + M * 60 + S) * 1000`
 
-### Step 5 — Update `index.html`
+### Step 6 — Update `index.html`
 
 Replace the entire Album of the Week section in `index.html`. The section is a `<section>` with the comment `<!-- Album of the Week -->` directly above it. The section starts at that comment and ends at the closing `</section>` tag before `<!-- Redesigned Personal Computers Section -->`.
 
@@ -223,7 +234,7 @@ than the cover. Keep these ids exactly as shown; don't rename or drop them.
 - `{{release_date_formatted}}` — format `YYYY-MM-DD` as `Month DD, YYYY` (e.g. `March 12, 2001`)
 - `{{duration_formatted}}` — format milliseconds as `M:SS` or `H:MM:SS` (e.g. `60:50`)
 
-### Step 6 — Verify
+### Step 7 — Verify
 
 After all edits, check:
 - `index.html` has the new album info with correct cover path
