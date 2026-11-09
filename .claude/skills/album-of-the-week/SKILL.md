@@ -1,6 +1,6 @@
 ---
 name: album-of-the-week
-description: "Update the Album of the Week on scampbella.github.io. Provide a Spotify album URL and a blurb; the skill fetches metadata, downloads + converts cover art, proofs the blurb for spelling, and updates index.html and js/albums.js."
+description: "Update the Album of the Week on scampbella.github.io. Provide a Spotify album URL and a blurb; the skill fetches metadata, downloads + converts cover art, proofs the blurb for spelling, and updates index.html and assets/data/albums.json."
 ---
 
 # Album of the Week
@@ -26,7 +26,7 @@ Or provide everything inline:
 4. Converts it to a single AVIF (`-md.avif` at 1280w) — the only file committed to git
 5. Proofs the blurb: fixes spelling mistakes, leaves grammar alone but flags major errors
 6. Updates `index.html` — replaces the entire "Album of the Week" section
-7. Prepends the new album to the `albums` array in `js/albums.js`
+7. Prepends the new album to the array in `assets/data/albums.json`
 
 ## Step-by-Step
 
@@ -114,7 +114,7 @@ Replace `<slug>` with the actual slug.
 
 ### Step 4 — Proof the Blurb
 
-Scan the blurb text for **spelling mistakes** and fix them in place (both the `js/albums.js` entry and the `index.html` section use the corrected text).
+Scan the blurb text for **spelling mistakes** and fix them in place (both the `assets/data/albums.json` entry and the `index.html` section use the corrected text).
 
 - Fix only clear misspellings/typos: doubled or dropped letters, transposed characters, wrong character substitutions (e.g. `recieve` → `receive`, `genious` → `genius`), accidental missing spaces at sentence boundaries.
 - **Do not fix grammar, style, or punctuation** — Scott's voice is deliberate and casual (e.g. "the kinda guy", run-ons, `!!!`). Leave it exactly as written.
@@ -122,32 +122,34 @@ Scan the blurb text for **spelling mistakes** and fix them in place (both the `j
 - After fixing, **report the changes** to the user (list each fix) in the final reply.
 - **Warn about major grammar errors** without fixing them: a genuinely broken or ambiguous sentence, wrong word usage that changes meaning (e.g. "their" for "there"), or a subject-verb error that would read as a mistake to a visitor. Minor stylistic awkwardness is not a warning. Phrase it as a heads-up the user may choose to act on.
 
-### Step 5 — Update `js/albums.js`
+### Step 5 — Update `assets/data/albums.json`
 
-The albums array in `js/albums.js` is a `const albums = [...]` array. New albums go at the beginning (index 0 of the array).
+The archive data lives in `assets/data/albums.json` — a JSON array of album objects, rendered by `js/albums.js` on the `albums/` page (it fetches the file at runtime, supports sorting, shows 10 at a time with a Load-more button, and builds cover paths as `../assets/images/albums/<slug>-md.avif`). New albums go at the beginning (index 0 of the array); the page sorts client-side, but keeping the file newest-first matches the default view.
 
 The album object structure:
 
-```js
+```json
 {
-    name: "<Album Name>",
-    artist: "<Artist>",
-    date: "<YYYY-MM-DD>",
-    releaseDate: "<YYYY-MM-DD>",
-    durationMs: <milliseconds as integer>,
-    coverAvif: "../assets/images/albums/<slug>-md.avif",
-    spotify: "<original spotify URL>",
-    blurb: "<blurb text>"
+    "slug": "<slug>",
+    "name": "<Album Name>",
+    "artist": "<Artist>",
+    "date": "<YYYY-MM-DD>",
+    "releaseDate": "<YYYY-MM-DD>",
+    "durationMs": 0,
+    "spotify": "<original spotify URL>",
+    "blurb": "<blurb text>"
 }
 ```
 
-Prepend this object after `const albums = [` on line 1. Follow the existing formatting (4-space indent, trailing commas).
+`<slug>` is the filename slug from Step 2 (the cover image is derived from it — there is no `coverAvif` field anymore). Follow the existing formatting (4-space indent).
 
-For the **blurb**: escape double quotes as `\"`, any `&` as `\&`, and any `<i>` or `</i>` HTML tags must be left as-is (the blurb renders as innerHTML). Unicode characters (em dashes, smart quotes) should be kept as literal Unicode — don't escape them.
+For the **blurb**: plain JSON string escaping (`"` → `\"`, no backslash-escaping of `&`). Any `<i>` or `</i>` HTML tags must be left as-is (the blurb renders as innerHTML). Unicode characters (em dashes, smart quotes) are kept as literal Unicode.
 
 For **durationMs**: convert the `H:MM:SS` or `MM:SS` string to total milliseconds:
 - `MM:SS` → `(M * 60 + S) * 1000`
 - `H:MM:SS` → `(H * 3600 + M * 60 + S) * 1000`
+
+Check syntax with `node -e "JSON.parse(require('fs').readFileSync('assets/data/albums.json','utf8'))"`.
 
 ### Step 6 — Update `index.html`
 
@@ -238,8 +240,7 @@ than the cover. Keep these ids exactly as shown; don't rename or drop them.
 
 After all edits, check:
 - `index.html` has the new album info with correct cover path
-- `js/albums.js` has the new album object at index 0
+- `assets/data/albums.json` has the new album object at index 0 and parses (`node -e "JSON.parse(require('fs').readFileSync('assets/data/albums.json','utf8'))"`)
 - Cover image exists: `assets/images/albums/<slug>-md.avif`
-- Run `node --check js/albums.js` to verify syntax
 - `git status` shows only the `-md.avif` as new/untracked for this album — the downloaded `<slug>.jpg` original should not appear (it's gitignored)
 
