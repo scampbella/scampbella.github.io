@@ -28,6 +28,24 @@ site silently goes stale:
 Follow `readme.md`'s pre-deploy checklist before pushing anything that
 touches CSS or the yahtzee source.
 
+## Commits
+
+Subject line is one short sentence sized to the change. For anything
+beyond a tiny fix, add a body of short `-` bullets — each one a plain
+statement of what was done, no reasons or "so that" clauses, no "X
+instead of Y" comparisons, no files-changed or tests-run lists; the diff
+covers that. Write for anyone with basic coding experience: plain
+wording, no jargon. Prefer amending/squashing over stacking "fixup"
+style follow-up commits. Example:
+
+    Move album list into data file
+
+    - Album list moved to assets/data/albums.json from js/albums.js
+    - Each entry stores the album's file name, the cover image path is
+      built from it
+    - Page shows 10 albums at a time with a Load more button
+    - Skill and readme updated to match
+
 ## Images: single medium AVIF, no committed originals
 
 Every image on the site ships as one committed file: `<name>-md.avif`. There
