@@ -234,7 +234,7 @@ than the cover. Keep these ids exactly as shown; don't rename or drop them.
 
 **Formatting helpers:**
 - `{{release_date_formatted}}` — format `YYYY-MM-DD` as `Month DD, YYYY` (e.g. `March 12, 2001`)
-- `{{duration_formatted}}` — format milliseconds as `M:SS` or `H:MM:SS` (e.g. `60:50`)
+- `{{duration_formatted}}` — format milliseconds as total minutes and seconds, `M:SS` with no hour rollover, zero-padded seconds (e.g. `60:50`, `75:42`)
 
 ### Step 7 — Verify
 
